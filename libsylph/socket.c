@@ -1444,9 +1444,9 @@ static gboolean sock_get_address_info_async_cb(GIOChannel *source,
 	struct sockaddr *addr;
 
 	for (;;) {
-		if (g_io_channel_read(source, (gchar *)ai_member,
-				      sizeof(ai_member), &bytes_read)
-		    != G_IO_ERROR_NONE) {
+		if (g_io_channel_read_chars(source, (gchar *)ai_member,
+                                            sizeof(ai_member), &bytes_read, NULL)
+		    != G_IO_STATUS_NORMAL) {
 			g_warning("sock_get_address_info_async_cb: "
 				  "address length read error\n");
 			break;
@@ -1461,9 +1461,9 @@ static gboolean sock_get_address_info_async_cb(GIOChannel *source,
 		}
 
 		addr = g_malloc(ai_member[3]);
-		if (g_io_channel_read(source, (gchar *)addr, ai_member[3],
-				      &bytes_read)
-		    != G_IO_ERROR_NONE) {
+		if (g_io_channel_read_chars(source, (gchar *)addr, ai_member[3],
+                                            &bytes_read, NULL)
+		    != G_IO_STATUS_NORMAL) {
 			g_warning("sock_get_address_info_async_cb: "
 				  "address data read error\n");
 			g_free(addr);
@@ -1611,6 +1611,7 @@ static SockLookupData *sock_get_address_info_async(const gchar *hostname,
 		lookup_data->data = data;
 
 		lookup_data->channel = g_io_channel_unix_new(pipe_fds[0]);
+		g_io_channel_set_encoding(lookup_data->channel, NULL, NULL);
 		lookup_data->io_tag = g_io_add_watch
 			(lookup_data->channel, G_IO_IN,
 			 sock_get_address_info_async_cb, lookup_data);
