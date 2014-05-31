@@ -77,7 +77,9 @@ static void trayicon_popup_menu_cb	(GtkStatusIcon	*status_icon,
 
 static GtkWidget *trayicon_img;
 static GtkWidget *eventbox;
+#if !GTK_CHECK_VERSION(2, 12, 0)
 static GtkTooltips *trayicon_tip;
+#endif
 
 static void trayicon_button_pressed	(GtkWidget	*widget,
 					 GdkEventButton	*event,
@@ -292,12 +294,20 @@ void trayicon_set_tooltip(const gchar *text)
 {
 	if (text) {
 		default_tooltip = FALSE;
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text(trayicon.widget, text);
+#else
 		gtk_tooltips_set_tip(trayicon_tip, trayicon.widget, text,
 				     NULL);
+#endif
 	} else if (!default_tooltip) {
 		default_tooltip = TRUE;
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text(trayicon.widget, _("Sylpheed"));
+#else
 		gtk_tooltips_set_tip(trayicon_tip, trayicon.widget,
 				     _("Sylpheed"), NULL);
+#endif
 	}
 }
 

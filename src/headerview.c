@@ -235,7 +235,11 @@ void headerview_show(HeaderView *headerview, MsgInfo *msginfo)
 	gtk_label_set_text(GTK_LABEL(headerview->from_body_label),
 			   msginfo->from ? msginfo->from : _("(No From)"));
 	if (msginfo->from) {
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text(headerview->from_body_label, msginfo->from);
+#else
 		gtk_tooltips_set_tip(headerview->tip, headerview->from_body_label, msginfo->from, NULL);
+#endif
 	}
 
 	if (msginfo->to) {
@@ -243,7 +247,11 @@ void headerview_show(HeaderView *headerview, MsgInfo *msginfo)
 				   msginfo->to);
 		gtk_widget_show(headerview->to_header_label);
 		gtk_widget_show(headerview->to_body_label);
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text(headerview->to_body_label, msginfo->to);
+#else
 		gtk_tooltips_set_tip(headerview->tip, headerview->to_body_label, msginfo->to, NULL);
+#endif
 	}
 
 	if (msginfo->cc) {
@@ -251,7 +259,11 @@ void headerview_show(HeaderView *headerview, MsgInfo *msginfo)
 				   msginfo->cc);
 		gtk_widget_show(headerview->cc_header_label);
 		gtk_widget_show(headerview->cc_body_label);
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text(headerview->cc_body_label, msginfo->cc);
+#else
 		gtk_tooltips_set_tip(headerview->tip, headerview->cc_body_label, msginfo->cc, NULL);
+#endif
 	}
 
 	if (msginfo->newsgroups) {
@@ -259,14 +271,22 @@ void headerview_show(HeaderView *headerview, MsgInfo *msginfo)
 				   msginfo->newsgroups);
 		gtk_widget_show(headerview->ng_header_label);
 		gtk_widget_show(headerview->ng_body_label);
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text(headerview->ng_body_label, msginfo->newsgroups);
+#else
 		gtk_tooltips_set_tip(headerview->tip, headerview->ng_body_label, msginfo->newsgroups, NULL);
+#endif
 	}
 
 	gtk_label_set_text(GTK_LABEL(headerview->subject_body_label),
 			   msginfo->subject ? msginfo->subject
 			   : _("(No Subject)"));
 	if (msginfo->subject) {
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text(headerview->subject_body_label, msginfo->subject);
+#else
 		gtk_tooltips_set_tip(headerview->tip, headerview->subject_body_label, msginfo->subject, NULL);
+#endif
 	}
 
 #if HAVE_LIBCOMPFACE

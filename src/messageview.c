@@ -338,7 +338,9 @@ MessageView *messageview_create(void)
 	HeaderView *headerview;
 	TextView *textview;
 	MimeView *mimeview;
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	GtkTooltips *tip;
+#endif
 
 	debug_print(_("Creating message view...\n"));
 	messageview = g_new0(MessageView, 1);
@@ -394,9 +396,14 @@ MessageView *messageview_create(void)
 	gtk_widget_show(image);
 	gtk_container_add(GTK_CONTAINER(mime_toggle_btn), image);
 
+#if GTK_CHECK_VERSION(2, 12, 0)
+	gtk_widget_set_tooltip_text(mime_toggle_btn,
+				    _("Switch to attachment list view"));
+#else
 	tip = gtk_tooltips_new();
 	gtk_tooltips_set_tip(tip, mime_toggle_btn,
 			     _("Switch to attachment list view"), NULL);
+#endif
 
 	arrow = gtk_arrow_new(GTK_ARROW_DOWN, GTK_SHADOW_OUT);
 	gtk_widget_show(arrow);

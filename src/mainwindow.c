@@ -1053,7 +1053,9 @@ MainWindow *main_window_create(SeparateType type)
 			 G_CALLBACK(online_switch_clicked), mainwin);
 	gtk_box_pack_start(GTK_BOX(statusbar), online_switch, FALSE, FALSE, 0);
 
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	online_tip = gtk_tooltips_new();
+#endif
 
 #if !GTK_CHECK_VERSION(2, 6, 0)
 	spacer_hbox = gtk_hbox_new(FALSE, 0);
@@ -1108,7 +1110,9 @@ MainWindow *main_window_create(SeparateType type)
 	mainwin->online_switch  = online_switch;
 	mainwin->online_pixmap  = online_pixmap;
 	mainwin->offline_pixmap = offline_pixmap;
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	mainwin->online_tip     = online_tip;
+#endif
 	mainwin->ac_button      = ac_button;
 	mainwin->ac_label       = ac_label;
 
@@ -3115,10 +3119,16 @@ static void online_switch_clicked(GtkWidget *widget, gpointer data)
 		prefs_common.online_mode = FALSE;
 		gtk_widget_hide(mainwin->online_pixmap);
 		gtk_widget_show(mainwin->offline_pixmap);
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text
+			(mainwin->online_switch,
+			 _("You are offline. Click the icon to go online."));
+#else
 		gtk_tooltips_set_tip
 			(mainwin->online_tip, mainwin->online_switch,
 			 _("You are offline. Click the icon to go online."),
 			 NULL);
+#endif
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem),
 					       TRUE);
 		inc_autocheck_timer_remove();
@@ -3127,10 +3137,16 @@ static void online_switch_clicked(GtkWidget *widget, gpointer data)
 		prefs_common.online_mode = TRUE;
 		gtk_widget_hide(mainwin->offline_pixmap);
 		gtk_widget_show(mainwin->online_pixmap);
+#if GTK_CHECK_VERSION(2, 12, 0)
+		gtk_widget_set_tooltip_text
+			(mainwin->online_switch,
+			 _("You are online. Click the icon to go offline."));
+#else
 		gtk_tooltips_set_tip
 			(mainwin->online_tip, mainwin->online_switch,
 			 _("You are online. Click the icon to go offline."),
 			 NULL);
+#endif
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem),
 					       FALSE);
 		inc_autocheck_timer_set();

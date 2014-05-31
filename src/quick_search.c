@@ -150,8 +150,12 @@ QuickSearch *quick_search_create(SummaryView *summaryview)
         g_signal_connect(G_OBJECT(entry), "key_press_event",
                          G_CALLBACK(entry_key_pressed), qsearch);
 
+#if GTK_CHECK_VERSION(2, 12, 0)
+	gtk_widget_set_tooltip_text(entry, _("Search for Subject or From"));
+#else
 	tip = gtk_tooltips_new();
 	gtk_tooltips_set_tip(tip, entry, _("Search for Subject or From"), NULL);
+#endif
 
 	hbox2 = gtk_hbox_new(FALSE, 0);
 	gtk_widget_set_size_request(hbox2, 2, -1);
