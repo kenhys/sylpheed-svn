@@ -74,6 +74,12 @@ static gint procmsg_cmp_by_to			(gconstpointer	 a,
 static gint procmsg_cmp_by_subject		(gconstpointer	 a,
 						 gconstpointer	 b);
 
+#if !GLIB_CHECK_VERSION(2, 22, 0)
+static void g_mapped_file_unref(GMappedFile *file)
+{
+	g_mapped_file_free(file);
+}
+#endif
 
 GHashTable *procmsg_msg_hash_table_create(GSList *mlist)
 {
@@ -183,7 +189,7 @@ static gint procmsg_read_cache_data_str_mem(const gchar **p, const gchar *endp, 
 		g_warning("Cache data is corrupted\n");			\
 		procmsg_msginfo_free(msginfo);				\
 		procmsg_msg_list_free(mlist);				\
-		g_mapped_file_free(mapfile);				\
+		g_mapped_file_unref(mapfile);				\
 		return NULL;						\
 	}								\
 }
@@ -194,7 +200,7 @@ static gint procmsg_read_cache_data_str_mem(const gchar **p, const gchar *endp, 
 		g_warning("Cache data is corrupted\n");		\
 		procmsg_msginfo_free(msginfo);			\
 		procmsg_msg_list_free(mlist);			\
-		g_mapped_file_free(mapfile);			\
+		g_mapped_file_unref(mapfile);			\
 		return NULL;					\
 	} else {						\
 		guint32 idata;					\
@@ -315,7 +321,7 @@ GSList *procmsg_read_cache(FolderItem *item, gboolean scan_file)
 		}
 	}
 
-	g_mapped_file_free(mapfile);
+	g_mapped_file_unref(mapfile);
 
 	if (item->cache_queue) {
 		GSList *qlist;
@@ -1131,7 +1137,7 @@ static GMappedFile *procmsg_open_cache_file_mmap(FolderItem *item,
 		size = g_mapped_file_get_length(map);
 		if (size < sizeof(data_ver)) {
 			g_warning("%s: cannot read mark/cache file (truncated?)", cachefile);
-			g_mapped_file_free(map);
+			g_mapped_file_unref(map);
 			g_free(cachefile);
 			return NULL;
 		}
@@ -1140,7 +1146,7 @@ static GMappedFile *procmsg_open_cache_file_mmap(FolderItem *item,
 		if (CACHE_VERSION != data_ver) {
 			g_message("%s: Mark/Cache version is different (%u != %u). Discarding it.\n",
 				  cachefile, data_ver, CACHE_VERSION);
-			g_mapped_file_free(map);
+			g_mapped_file_unref(map);
 			g_free(cachefile);
 			return NULL;
 		}
