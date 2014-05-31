@@ -744,7 +744,7 @@ static ChildInfo *fork_child(gchar *cmd, const gchar *msg_str,
 		sigaction(SIGPIPE, &sa, NULL);
 
 #ifdef GDK_WINDOWING_X11
-		close(ConnectionNumber(gdk_display));
+		close(ConnectionNumber(gdk_display_get_default()));
 #endif /* GDK_WINDOWING_X11 */
 
 		gch_pid = fork();
