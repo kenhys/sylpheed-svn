@@ -254,6 +254,7 @@ gint path_cmp		(const gchar	*s1,
 gboolean is_path_parent	(const gchar	*parent,
 			 const gchar	*child);
 const gchar *my_basename(const gchar *path);
+gchar *my_strdown	(gchar *string);
 
 gchar *strretchomp	(gchar		*str);
 gchar *strtailchomp	(gchar		*str,

@@ -1568,7 +1568,7 @@ gchar *procmime_get_mime_type(const gchar *filename)
 	static GHashTable *mime_type_table = NULL;
 	MimeType *mime_type;
 	const gchar *p;
-	gchar ext[64];
+	gchar *ext;
 	static gboolean no_mime_type_table = FALSE;
 
 	if (no_mime_type_table)
@@ -1586,9 +1586,9 @@ gchar *procmime_get_mime_type(const gchar *filename)
 	p = strrchr(filename, '.');
 	if (!p) return NULL;
 
-	strncpy2(ext, p + 1, sizeof(ext));
-	g_strdown(ext);
+	ext = g_ascii_strdown(p + 1, -1);
 	mime_type = g_hash_table_lookup(mime_type_table, ext);
+	g_free(ext);
 	if (mime_type) {
 		gchar *str;
 
@@ -1648,8 +1648,6 @@ static GHashTable *procmime_get_mime_type_table(void)
 
 		exts = g_strsplit(mime_type->extension, " ", 16);
 		for (i = 0; exts[i] != NULL; i++) {
-			/* make the key case insensitive */
-			g_strdown(exts[i]);
 			/* use previously dup'd key on overwriting */
 			if (g_hash_table_lookup(table, exts[i]))
 				key = exts[i];
@@ -1697,7 +1695,7 @@ static GList *procmime_get_mime_type_list(const gchar *file)
 
 		while (*p && g_ascii_isspace(*p)) p++;
 		if (*p)
-			mime_type->extension = g_strdup(p);
+			mime_type->extension = g_ascii_strdown(p, -1);
 		else
 			mime_type->extension = NULL;
 

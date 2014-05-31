@@ -1239,8 +1239,7 @@ void addrbook_update_address_list( AddressBookFile *book, ItemPerson *person, GL
 	   	node = listEMail;
 		while( node ) {
 			ItemEMail *email = node->data;
-			gchar *addr = g_strdup( email->address );
-			g_strdown( addr );
+			gchar *addr = g_ascii_strdown( email->address, -1 );
 			if( ! g_hash_table_lookup( hashEMail, addr ) ) {
 				g_hash_table_insert( hashEMail, addr, email );
 			}
@@ -1262,8 +1261,7 @@ void addrbook_update_address_list( AddressBookFile *book, ItemPerson *person, GL
 				if( ADDRITEM_PARENT(emailGrp) == ADDRITEM_OBJECT(person) ) {
 					/* Found an email address for this person */
 					ItemEMail *emailNew = NULL;
-					gchar *addr = g_strdup( emailGrp->address );
-					g_strdown( addr );
+					gchar *addr = g_ascii_strdown( emailGrp->address, -1 );
 					emailNew = ( ItemEMail * ) g_hash_table_lookup( hashEMail, addr );
 					g_free( addr );
 					if( emailNew ) {

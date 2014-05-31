@@ -307,9 +307,8 @@ static gchar *vcard_get_tagname( gchar* line, gchar dlm ) {
 	while( *lptr++ ) {
 		if( *lptr == dlm ) {
 			len = lptr - line;
-			tag = g_strndup( line, len+1 );
+			tag = g_ascii_strdown( line, len+1 );
 			tag[ len ] = '\0';
-			g_strdown( tag );
 			return tag;
 		}
 	}

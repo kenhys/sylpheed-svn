@@ -398,6 +398,17 @@ const gchar *my_basename(const gchar *path)
 	return path;
 }
 
+gchar *my_strdown	(gchar *string)
+{
+	gchar *s = string;
+	while (*s) {
+		if (isupper(*s))
+			*s = tolower(*s);
+		s++;
+	}
+	return string;
+}
+
 /* compare paths */
 gint path_cmp(const gchar *s1, const gchar *s2)
 {

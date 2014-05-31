@@ -273,9 +273,8 @@ static gchar *ldif_get_tagname( char* line, gboolean *flag64 ) {
 			/* Base-64 encoding? */
 			if( * ++lptr == LDIF_SEP_TAG ) *flag64 = TRUE;
 
-			tag = g_strndup( line, len+1 );
+			tag = g_ascii_strdown( line, len+1 );
 			tag[ len ] = '\0';
-			g_strdown( tag );
 			return tag;
 		}
 	}
@@ -502,8 +501,7 @@ static void ldif_add_user_attr( Ldif_ParsedRec *rec, gchar *tagName, gchar *tagV
 static void ldif_add_value( Ldif_ParsedRec *rec, gchar *tagName, gchar *tagValue, GHashTable *hashField ) {
 	gchar *nm, *val;
 
-	nm = g_strdup( tagName );
-	g_strdown( nm );
+	nm = g_ascii_strdown( tagName, -1 );
 	if( tagValue ) {
 		val = g_strdup( tagValue );
 	}

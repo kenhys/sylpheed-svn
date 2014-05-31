@@ -449,12 +449,12 @@ static HTMLTag *html_get_tag(const gchar *str)
 	}
 
 	if (*tmpp == '\0') {
-		g_strdown(tmp);
+		my_strdown(tmp);
 		tag->name = tmp;
 		return tag;
 	} else {
 		*tmpp++ = '\0';
-		g_strdown(tmp);
+		my_strdown(tmp);
 		tag->name = g_strdup(tmp);
 	}
 
@@ -505,7 +505,7 @@ static HTMLTag *html_get_tag(const gchar *str)
 			attr_value = "";
 
 		g_strchomp(attr_name);
-		g_strdown(attr_name);
+		my_strdown(attr_name);
 		attr = g_new(HTMLAttr, 1);
 		attr->name = g_strdup(attr_name);
 		attr->value = g_strdup(attr_value);
