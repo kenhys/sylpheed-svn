@@ -751,11 +751,19 @@ static gint get_queued_message_num(void)
 
 #if USE_THREADS
 /* enables recursive locking with gdk_thread_enter / gdk_threads_leave */
+#if GLIB_CHECK_VERSION(2, 32, 0)
+static GRecMutex syl_mutex;
+#else
 static GStaticRecMutex syl_mutex = G_STATIC_REC_MUTEX_INIT;
+#endif
 
 static void thread_enter_func(void)
 {
+#if GLIB_CHECK_VERSION(2, 32, 0)
+	g_rec_mutex_lock(&syl_mutex);
+#else
 	g_static_rec_mutex_lock(&syl_mutex);
+#endif
 #if 0
 	syl_mutex_lock_count++;
 	if (syl_mutex_lock_count > 1)
@@ -770,7 +778,11 @@ static void thread_leave_func(void)
 	if (syl_mutex_lock_count > 0)
 		g_print("leave: syl_mutex_lock_count: %d\n", syl_mutex_lock_count);
 #endif
+#if GLIB_CHECK_VERSION(2, 32, 0)
+	g_rec_mutex_unlock(&syl_mutex);
+#else
 	g_static_rec_mutex_unlock(&syl_mutex);
+#endif
 }
 
 static void event_loop_iteration_func(void)
