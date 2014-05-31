@@ -88,7 +88,6 @@ static void messageview_size_allocate_cb(GtkWidget		*widget,
 static void messageview_toggle_attach_cb(GtkToggleButton	*toggle,
 					 MessageView		*messageview);
 static void messageview_switch_page_cb	(GtkNotebook		*notebook,
-					 GtkNotebookPage	*page,
 					 guint			 page_num,
 					 MessageView		*messageview);
 static gint messageview_menu_tool_btn_pressed
@@ -1003,7 +1002,7 @@ static void messageview_toggle_attach_cb(GtkToggleButton *toggle,
 }
 
 static void messageview_switch_page_cb(GtkNotebook *notebook,
-				       GtkNotebookPage *page, guint page_num,
+				       guint page_num,
 				       MessageView *messageview)
 {
 	if (messageview->current_page != page_num) {
