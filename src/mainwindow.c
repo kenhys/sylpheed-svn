@@ -1044,7 +1044,11 @@ MainWindow *main_window_create(SeparateType type)
 
 	online_switch = gtk_button_new();
 	gtk_button_set_relief(GTK_BUTTON(online_switch), GTK_RELIEF_NONE);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(online_switch, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(online_switch, GTK_CAN_FOCUS);
+#endif
 #ifdef G_OS_WIN32
 	gtk_widget_set_size_request(online_switch, 34, 20);
 #else
@@ -1066,7 +1070,11 @@ MainWindow *main_window_create(SeparateType type)
 
 	ac_button = gtk_button_new();
 	gtk_button_set_relief(GTK_BUTTON(ac_button), GTK_RELIEF_NONE);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(ac_button, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(ac_button, GTK_CAN_FOCUS);
+#endif
 	gtk_widget_set_size_request(ac_button, -1, 1);
 	gtk_box_pack_end(GTK_BOX(statusbar), ac_button, FALSE, FALSE, 0);
 	g_signal_connect(G_OBJECT(ac_button), "button_press_event",

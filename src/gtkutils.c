@@ -217,20 +217,32 @@ void gtkut_stock_button_set_create(GtkWidget **bbox,
 
 	if (button3) {
 		*button3 = gtk_button_new_from_stock(label3);
+#if GTK_CHECK_VERSION(2, 18, 0)
+		gtk_widget_set_can_default(*button3, TRUE);
+#else
 		GTK_WIDGET_SET_FLAGS(*button3, GTK_CAN_DEFAULT);
+#endif
 		gtk_box_pack_start(GTK_BOX(*bbox), *button3, FALSE, FALSE, 0);
 		gtk_widget_show(*button3);
 	}
 
 	if (button2) {
 		*button2 = gtk_button_new_from_stock(label2);
+#if GTK_CHECK_VERSION(2, 18, 0)
+		gtk_widget_set_can_default(*button2, TRUE);
+#else
 		GTK_WIDGET_SET_FLAGS(*button2, GTK_CAN_DEFAULT);
+#endif
 		gtk_box_pack_start(GTK_BOX(*bbox), *button2, FALSE, FALSE, 0);
 		gtk_widget_show(*button2);
 	}
 
 	*button1 = gtk_button_new_from_stock(label1);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(*button1, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(*button1, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(*bbox), *button1, FALSE, FALSE, 0);
 	gtk_widget_show(*button1);
 

@@ -944,15 +944,27 @@ static void addressbook_create(void)
 
 	to_btn = gtk_button_new_with_label
 		(prefs_common.trans_hdr ? _("To:") : "To:");
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(to_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(to_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(hbbox1), to_btn, TRUE, TRUE, 0);
 	cc_btn = gtk_button_new_with_label
 		(prefs_common.trans_hdr ? _("Cc:") : "Cc:");
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(cc_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(cc_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(hbbox1), cc_btn, TRUE, TRUE, 0);
 	bcc_btn = gtk_button_new_with_label
 		(prefs_common.trans_hdr ? _("Bcc:") : "Bcc:");
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(bcc_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(bcc_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(hbbox1), bcc_btn, TRUE, TRUE, 0);
 
 	g_signal_connect(G_OBJECT(to_btn), "clicked",
@@ -973,16 +985,32 @@ static void addressbook_create(void)
 	gtk_box_pack_end(GTK_BOX(hbbox), hbbox2, TRUE, TRUE, 0);
 
 	del_btn = gtk_button_new_with_label(_("Delete"));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(del_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(del_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(hbbox2), del_btn, TRUE, TRUE, 0);
 	reg_btn = gtk_button_new_with_label(_("Add"));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(reg_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(reg_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(hbbox2), reg_btn, TRUE, TRUE, 0);
 	lup_btn = gtk_button_new_with_label(_("Search"));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(lup_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(lup_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(hbbox2), lup_btn, TRUE, TRUE, 0);
 	close_btn = gtk_button_new_with_mnemonic(_("_Close"));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(close_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(close_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_box_pack_start(GTK_BOX(hbbox2), close_btn, TRUE, TRUE, 0);
 	gtk_button_box_set_child_secondary(GTK_BUTTON_BOX(hbbox2), close_btn,
 					   TRUE);

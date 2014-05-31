@@ -2054,7 +2054,11 @@ static gboolean folderview_focus_idle_func(gpointer data)
 	FolderView *folderview = (FolderView *)data;
 
 	gdk_threads_enter();
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(folderview->treeview, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(folderview->treeview, GTK_CAN_FOCUS);
+#endif
 	gdk_threads_leave();
 
 	return FALSE;
@@ -2130,8 +2134,12 @@ static void folderview_selection_changed(GtkTreeSelection *selection,
 		if (item->total > 0) {
 			/* don't let GtkTreeView::gtk_tree_view_button_press()
 			 * grab focus */
+#if GTK_CHECK_VERSION(2, 18, 0)
+			gtk_widget_set_can_focus(folderview->treeview, FALSE);
+#else
 			GTK_WIDGET_UNSET_FLAGS(folderview->treeview,
 					       GTK_CAN_FOCUS);
+#endif
 			g_idle_add(folderview_focus_idle_func, folderview);
 		}
 	} else

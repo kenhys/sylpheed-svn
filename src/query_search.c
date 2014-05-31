@@ -386,7 +386,11 @@ static void query_search_create(void)
 	gtk_box_pack_start(GTK_BOX(hbbox), clear_btn, FALSE, FALSE, 0);
 
 	search_btn = gtk_button_new_from_stock(GTK_STOCK_FIND);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(search_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(search_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_widget_show(search_btn);
 	gtk_box_pack_start(GTK_BOX(hbbox), search_btn, FALSE, FALSE, 0);
 	gtk_widget_grab_default(search_btn);
@@ -1198,7 +1202,11 @@ static QuerySearchSaveDialog *query_search_save_dialog_create(void)
 				      &cancel_btn, GTK_STOCK_CANCEL,
 				      NULL, NULL);
 	gtk_box_pack_end(GTK_BOX(confirm_area), hbbox, FALSE, FALSE, 0);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_default(ok_btn, TRUE);
+#else
 	GTK_WIDGET_SET_FLAGS(ok_btn, GTK_CAN_DEFAULT);
+#endif
 	gtk_widget_grab_default(ok_btn);
 	g_signal_connect(G_OBJECT(ok_btn), "clicked",
 			 G_CALLBACK(query_search_save_ok), dialog);

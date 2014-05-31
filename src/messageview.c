@@ -411,7 +411,11 @@ MessageView *messageview_create(void)
 
 	menu_tool_btn = gtk_button_new();
 	gtk_container_add(GTK_CONTAINER(menu_tool_btn), arrow);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(menu_tool_btn, TRUE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(menu_tool_btn, GTK_CAN_FOCUS);
+#endif
 	gtk_widget_show(menu_tool_btn);
 	gtk_box_pack_start(GTK_BOX(toolbar_hbox), menu_tool_btn,
 			   FALSE, FALSE, 0);
