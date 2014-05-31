@@ -1691,8 +1691,13 @@ gint sock_info_connect_async_thread(SockInfo *sock)
 	data->flag = 0;
 	data->sock = sock;
 
+#if GLIB_CHECK_VERSION(2, 32, 0)
+	data->thread = g_thread_new("sock_connect_async_func",
+				    sock_connect_async_func, data);
+#else
 	data->thread = g_thread_create(sock_connect_async_func, data, TRUE,
 				       NULL);
+#endif
 	if (!data->thread) {
 		g_free(data->hostname);
 		g_free(data);

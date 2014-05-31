@@ -844,7 +844,12 @@ static void query_search_folder(FolderItem *item)
 	data.queue = g_async_queue_new();
 	data.timer_tag = g_timeout_add(PROGRESS_UPDATE_INTERVAL,
 				       query_search_progress_func, &data);
+#if GLIB_CHECK_VERSION(2, 32, 0)
+	thread = g_thread_new("query_search_folder_func",
+			      query_search_folder_func, &data);
+#else
 	thread = g_thread_create(query_search_folder_func, &data, TRUE, NULL);
+#endif
 
 	debug_print("query_search_folder: thread started\n");
 	while (g_atomic_int_get(&data.flag) == 0)

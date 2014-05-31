@@ -4214,8 +4214,13 @@ gint execute_command_line_async_wait(const gchar *cmdline)
 	}
 
 	data.cmdline = cmdline;
+#if GLIB_CHECK_VERSION(2, 32, 0)
+	thread = g_thread_new("execute_command_line_async_func",
+			      execute_command_line_async_func, &data);
+#else
 	thread = g_thread_create(execute_command_line_async_func, &data, TRUE,
 				 NULL);
+#endif
 	if (!thread)
 		return -1;
 
