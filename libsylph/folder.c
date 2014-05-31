@@ -773,7 +773,7 @@ FolderItem *folder_find_child_item_by_name(FolderItem *item, const gchar *name)
 
 	for (node = item->node->children; node != NULL; node = node->next) {
 		child = FOLDER_ITEM(node->data);
-		base = g_basename(child->path);
+		base = my_basename(child->path);
 #ifdef G_OS_WIN32
 		if (base && g_ascii_strcasecmp(base, name) == 0)
 #else

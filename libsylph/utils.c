@@ -388,6 +388,16 @@ gint strcmp2(const gchar *s1, const gchar *s2)
 		return strcmp(s1, s2);
 }
 
+/* return basename without memory allocation. */
+const gchar *my_basename(const gchar *path)
+{
+	gchar *base;
+	base = g_strrstr(path, G_DIR_SEPARATOR_S);
+	if (base)
+		return base + 1;
+	return path;
+}
+
 /* compare paths */
 gint path_cmp(const gchar *s1, const gchar *s2)
 {

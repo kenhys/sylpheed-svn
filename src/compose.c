@@ -2352,7 +2352,7 @@ void compose_attach_append(Compose *compose, const gchar *file,
 			if (msginfo && msginfo->subject)
 				name = msginfo->subject;
 			else
-				name = g_basename(filename ? filename : file);
+				name = my_basename(filename ? filename : file);
 
 			ainfo->name = g_strdup_printf(_("Message: %s"), name);
 
@@ -2362,8 +2362,7 @@ void compose_attach_append(Compose *compose, const gchar *file,
 				ainfo->encoding = procmime_get_encoding_for_text_file(file);
 			else
 				ainfo->encoding = ENC_BASE64;
-			ainfo->name = g_strdup
-				(g_basename(filename ? filename : file));
+			ainfo->name = g_path_get_basename(filename ? filename : file);
 		}
 	} else {
 		ainfo->content_type = procmime_get_mime_type(file);
@@ -2376,7 +2375,7 @@ void compose_attach_append(Compose *compose, const gchar *file,
 				procmime_get_encoding_for_text_file(file);
 		else
 			ainfo->encoding = ENC_BASE64;
-		ainfo->name = g_strdup(g_basename(filename ? filename : file));	
+		ainfo->name = g_path_get_basename(filename ? filename : file);
 	}
 	ainfo->size = size;
 

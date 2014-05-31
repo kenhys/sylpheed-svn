@@ -677,7 +677,7 @@ static void parse_cmd_opt(int argc, char *argv[])
 			init_console();
 
 			g_print(_("Usage: %s [OPTIONS ...] [URL]\n"),
-				g_basename(argv[0]));
+				my_basename(argv[0]));
 
 			g_print("%s\n", _("  --compose [mailto URL] open composition window"));
 			g_print("%s\n", _("  --attach file1 [file2]...\n"

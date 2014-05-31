@@ -1857,7 +1857,7 @@ void main_window_add_mailbox(MainWindow *mainwin)
 	if (!strcmp(path, "Mail"))
 		folder = folder_new(F_MH, _("Mailbox"), path);
 	else
-		folder = folder_new(F_MH, g_basename(path), path);
+		folder = folder_new(F_MH, my_basename(path), path);
 	g_free(path);
 
 	if (folder->klass->create_tree(folder) < 0) {

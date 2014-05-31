@@ -224,7 +224,7 @@ static gint import_do(void)
 		return -1;
 	}
 
-	msg = g_strdup_printf(_("Importing %s ..."), g_basename(utf8filename));
+	msg = g_strdup_printf(_("Importing %s ..."), my_basename(utf8filename));
 	progress = progress_dialog_simple_create();
 	gtk_window_set_title(GTK_WINDOW(progress->window), _("Importing"));
 	progress_dialog_set_label(progress, msg);

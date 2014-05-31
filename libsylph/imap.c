@@ -2044,7 +2044,7 @@ static gint imap_scan_tree_recursive(IMAPSession *session, FolderItem *item,
 		} else if (!item->parent || item->stype == F_INBOX) {
 			const gchar *base;
 
-			base = g_basename(new_item->path);
+			base = my_basename(new_item->path);
 
 			if (!folder->outbox &&
 			    !g_ascii_strcasecmp(base, "Sent")) {
@@ -2179,7 +2179,7 @@ static GSList *imap_parse_list(IMAPSession *session, const gchar *real_path,
 
 		if (separator_str[0] != '\0')
 			subst_char(buf, separator_str[0], '/');
-		name = g_basename(buf);
+		name = my_basename(buf);
 		if (name[0] == '.') continue;
 
 		loc_name = imap_modified_utf7_to_utf8(name);
@@ -2255,7 +2255,7 @@ static GSList *imap_add_inter_folders(GSList *item_list, const gchar *root_path)
 						(root_path, "/", parent, NULL);
 				else
 					full_parent = g_strdup(parent);
-				new_item = folder_item_new(g_basename(parent),
+				new_item = folder_item_new(my_basename(parent),
 							   full_parent);
 				new_item->no_select = TRUE;
 				add_list = g_slist_prepend(add_list, new_item);

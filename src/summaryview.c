@@ -2240,7 +2240,7 @@ static void summary_status_show(SummaryView *summaryview)
 	if (FOLDER_TYPE(summaryview->folder_item->folder) == F_NEWS) {
 		gchar *group;
 		group = get_abbrev_newsgroup_name
-			(g_basename(summaryview->folder_item->path),
+			(my_basename(summaryview->folder_item->path),
 			 prefs_common.ng_abbrev_len);
 		name = trim_string_before(group, 32);
 		g_free(group);
@@ -3967,7 +3967,7 @@ void summary_save_as(SummaryView *summaryview)
 
 		utf8_dest = conv_filename_to_utf8(dest);
 		alertpanel_error(_("Can't save the file `%s'."),
-				 g_basename(utf8_dest));
+				 my_basename(utf8_dest));
 		g_free(utf8_dest);
 	}
 
@@ -6454,7 +6454,7 @@ static void summary_drag_data_get(GtkWidget        *widget,
 				filename = g_strdup(msginfo->subject);
 				subst_for_filename(filename);
 			} else
-				filename = g_strdup(g_basename(file));
+				filename = g_path_get_basename(file);
 			fs_filename = conv_filename_from_utf8(filename);
 
 			suffix = 0;

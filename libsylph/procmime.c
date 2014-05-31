@@ -1459,7 +1459,7 @@ gchar *procmime_get_part_file_name(MimeInfo *mimeinfo)
 
 	base_ = mimeinfo->filename ? mimeinfo->filename
 		: mimeinfo->name ? mimeinfo->name : "mimetmp";
-	base_ = g_basename(base_);
+	base_ = my_basename(base_);
 	if (*base_ == '\0') base_ = "mimetmp";
 	base = conv_filename_from_utf8(base_);
 	subst_for_filename(base);
@@ -1582,7 +1582,7 @@ gchar *procmime_get_mime_type(const gchar *filename)
 		}
 	}
 
-	filename = g_basename(filename);
+	filename = my_basename(filename);
 	p = strrchr(filename, '.');
 	if (!p) return NULL;
 

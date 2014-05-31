@@ -701,7 +701,7 @@ static void messageview_set_tool_menu(MessageView *messageview,
 	for (partinfo = mimeinfo; partinfo != NULL;
 	     partinfo = procmime_mimeinfo_next(partinfo)) {
 		if (partinfo->filename || partinfo->name) {
-			name = g_basename(partinfo->filename ? partinfo->filename : partinfo->name);
+			name = my_basename(partinfo->filename ? partinfo->filename : partinfo->name);
 			if (*name == '\0')
 				name = "mimetmp";
 			menuitem = gtk_menu_item_new_with_label(name);
@@ -957,7 +957,7 @@ void messageview_save_as(MessageView *messageview)
 
 		utf8_dest = conv_filename_to_utf8(dest);
 		alertpanel_error(_("Can't save the file `%s'."),
-				 g_basename(utf8_dest));
+				 my_basename(utf8_dest));
 		g_free(utf8_dest);
 	}
 

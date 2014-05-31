@@ -1001,7 +1001,7 @@ static void mimeview_drag_begin(GtkWidget *widget, GdkDragContext *drag_context,
 	if (filename) {
 		const gchar *bname_;
 
-		bname_ = g_basename(filename);
+		bname_ = my_basename(filename);
 		bname = conv_filename_from_utf8(bname_);
 		subst_for_filename(bname);
 	}
