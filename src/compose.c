@@ -1620,7 +1620,7 @@ static gchar *compose_parse_references(const gchar *ref, const gchar *msgid)
 	for (cur = ref_id_list; cur != NULL; cur = cur->next) {
 		if (new_ref->len > 0)
 			g_string_append(new_ref, "\n\t");
-		g_string_sprintfa(new_ref, "<%s>", (gchar *)cur->data);
+		g_string_append_printf(new_ref, "<%s>", (gchar *)cur->data);
 	}
 
 	slist_free_strings(ref_id_list);
