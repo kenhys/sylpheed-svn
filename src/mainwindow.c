@@ -2087,7 +2087,7 @@ void main_window_set_toolbar_sensitive(MainWindow *mainwin)
 	for (i = 0; i < n; i++) {
 		if (entry[i].widget) {
 			prev_sensitive =
-				GTK_WIDGET_IS_SENSITIVE(entry[i].widget);
+				gtkut_widget_is_sensitive(entry[i].widget);
 			sensitive = ((entry[i].cond & state) == entry[i].cond);
 			if (prev_sensitive != sensitive) {
 				/* workaround for GTK+ bug (#56070) */

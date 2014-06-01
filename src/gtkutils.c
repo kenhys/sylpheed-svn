@@ -1160,3 +1160,12 @@ GtkStateType gtkut_widget_get_state(GtkWidget *widget)
 	return GTK_WIDGET_STATE(widget);
 #endif
 }
+
+gboolean gtkut_widget_is_sensitive(GtkWidget *widget)
+{
+#if GTK_CHECK_VERSION(2, 18, 0)
+	return gtk_widget_is_sensitive(widget);
+#else
+	return GTK_WIDGET_IS_SENSITIVE(widget);
+#endif
+}
