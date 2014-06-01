@@ -247,7 +247,7 @@ static void log_window_append_real(const gchar *str, LogType type)
 			(buffer, &iter, str, -1, tag, NULL);
 	}
 
-	if (GTK_WIDGET_VISIBLE(text)) {
+        if (gtkut_widget_get_visible(GTK_WIDGET(text))) {
 		GtkTextMark *mark;
 		mark = gtk_text_buffer_get_mark(buffer, "end");
 		gtk_text_view_scroll_mark_onscreen(text, mark);

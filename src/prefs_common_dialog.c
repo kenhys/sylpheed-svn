@@ -4777,7 +4777,7 @@ static void prefs_common_ok(void)
 {
 	prefs_common_apply();
 	gtk_widget_hide(dialog.window);
-	if (quote_desc_win && GTK_WIDGET_VISIBLE(quote_desc_win))
+	if (quote_desc_win && gtkut_widget_get_visible(quote_desc_win))
 		gtk_widget_hide(quote_desc_win);
 
 	main_window_popup(main_window_get());

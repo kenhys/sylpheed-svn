@@ -8519,15 +8519,15 @@ static void compose_insert_drag_received_cb (GtkWidget		*widget,
 
 static void to_activated(GtkWidget *widget, Compose *compose)
 {
-	if (GTK_WIDGET_VISIBLE(compose->newsgroups_entry))
+	if (gtkut_widget_get_visible(compose->newsgroups_entry))
 		gtk_widget_grab_focus(compose->newsgroups_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->cc_entry))
+	else if (gtkut_widget_get_visible(compose->cc_entry))
 		gtk_widget_grab_focus(compose->cc_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->bcc_entry))
+	else if (gtkut_widget_get_visible(compose->bcc_entry))
 		gtk_widget_grab_focus(compose->bcc_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->reply_entry))
+	else if (gtkut_widget_get_visible(compose->reply_entry))
 		gtk_widget_grab_focus(compose->reply_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->followup_entry))
+	else if (gtkut_widget_get_visible(compose->followup_entry))
 		gtk_widget_grab_focus(compose->followup_entry);
 	else
 		gtk_widget_grab_focus(compose->subject_entry);
@@ -8535,13 +8535,13 @@ static void to_activated(GtkWidget *widget, Compose *compose)
 
 static void newsgroups_activated(GtkWidget *widget, Compose *compose)
 {
-	if (GTK_WIDGET_VISIBLE(compose->cc_entry))
+	if (gtkut_widget_get_visible(compose->cc_entry))
 		gtk_widget_grab_focus(compose->cc_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->bcc_entry))
+	else if (gtkut_widget_get_visible(compose->bcc_entry))
 		gtk_widget_grab_focus(compose->bcc_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->reply_entry))
+	else if (gtkut_widget_get_visible(compose->reply_entry))
 		gtk_widget_grab_focus(compose->reply_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->followup_entry))
+	else if (gtkut_widget_get_visible(compose->followup_entry))
 		gtk_widget_grab_focus(compose->followup_entry);
 	else
 		gtk_widget_grab_focus(compose->subject_entry);
@@ -8549,11 +8549,11 @@ static void newsgroups_activated(GtkWidget *widget, Compose *compose)
 
 static void cc_activated(GtkWidget *widget, Compose *compose)
 {
-	if (GTK_WIDGET_VISIBLE(compose->bcc_entry))
+	if (gtkut_widget_get_visible(compose->bcc_entry))
 		gtk_widget_grab_focus(compose->bcc_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->reply_entry))
+	else if (gtkut_widget_get_visible(compose->reply_entry))
 		gtk_widget_grab_focus(compose->reply_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->followup_entry))
+	else if (gtkut_widget_get_visible(compose->followup_entry))
 		gtk_widget_grab_focus(compose->followup_entry);
 	else
 		gtk_widget_grab_focus(compose->subject_entry);
@@ -8561,9 +8561,9 @@ static void cc_activated(GtkWidget *widget, Compose *compose)
 
 static void bcc_activated(GtkWidget *widget, Compose *compose)
 {
-	if (GTK_WIDGET_VISIBLE(compose->reply_entry))
+	if (gtkut_widget_get_visible(compose->reply_entry))
 		gtk_widget_grab_focus(compose->reply_entry);
-	else if (GTK_WIDGET_VISIBLE(compose->followup_entry))
+	else if (gtkut_widget_get_visible(compose->followup_entry))
 		gtk_widget_grab_focus(compose->followup_entry);
 	else
 		gtk_widget_grab_focus(compose->subject_entry);
@@ -8571,7 +8571,7 @@ static void bcc_activated(GtkWidget *widget, Compose *compose)
 
 static void replyto_activated(GtkWidget *widget, Compose *compose)
 {
-	if (GTK_WIDGET_VISIBLE(compose->followup_entry))
+	if (gtkut_widget_get_visible(compose->followup_entry))
 		gtk_widget_grab_focus(compose->followup_entry);
 	else
 		gtk_widget_grab_focus(compose->subject_entry);

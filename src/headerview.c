@@ -312,13 +312,13 @@ static void headerview_show_xface(HeaderView *headerview, MsgInfo *msginfo)
 
 	if (!msginfo->xface || strlen(msginfo->xface) < 5) {
 		if (headerview->image &&
-		    GTK_WIDGET_VISIBLE(headerview->image)) {
+		    gtkut_widget_get_visible(headerview->image)) {
 			gtk_widget_hide(headerview->image);
 			gtk_widget_queue_resize(hbox);
 		}
 		return;
 	}
-	if (!GTK_WIDGET_VISIBLE(headerview->hbox)) return;
+	if (!gtkut_widget_get_visible(headerview->hbox)) return;
 
 	strncpy2(xface, msginfo->xface, sizeof(xface));
 
@@ -373,7 +373,7 @@ void headerview_clear(HeaderView *headerview)
 	gtk_tooltips_disable(headerview->tip);
 #endif
 
-	if (headerview->image && GTK_WIDGET_VISIBLE(headerview->image)) {
+	if (headerview->image && gtkut_widget_get_visible(headerview->image)) {
 		gtk_widget_hide(headerview->image);
 		gtk_widget_queue_resize(headerview->hbox);
 	}

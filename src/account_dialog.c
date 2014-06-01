@@ -210,7 +210,7 @@ void account_open(PrefsAccount *ac_prefs)
 	prev_name = g_strdup(ac_prefs->account_name ? ac_prefs->account_name : "");
 
 	prefs_account_open(ac_prefs);
-	if (edit_account.window && GTK_WIDGET_VISIBLE(edit_account.window))
+	if (edit_account.window && gtkut_widget_get_visible(edit_account.window))
 		gtk_window_present(GTK_WINDOW(edit_account.window));
 	else
 		main_window_popup(main_window_get());

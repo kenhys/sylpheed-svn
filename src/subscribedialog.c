@@ -130,7 +130,7 @@ GSList *subscribe_dialog(Folder *folder)
 	GNode *node;
 	FolderItem *item;
 
-	if (dialog && GTK_WIDGET_VISIBLE(dialog)) return NULL;
+	if (dialog && gtkut_widget_get_visible(dialog)) return NULL;
 
 	if (!dialog)
 		subscribe_dialog_create();

@@ -1614,7 +1614,7 @@ void main_window_toggle_message_view(MainWindow *mainwin)
 
 	if (msgwin) {
 		/* separate message view */
-		if (GTK_WIDGET_VISIBLE(msgwin)) {
+		if (gtkut_widget_get_visible(msgwin)) {
 			gtk_widget_hide(msgwin);
 			mainwin->messageview->visible = FALSE;
 			summaryview->displayed = NULL;

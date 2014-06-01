@@ -1044,7 +1044,7 @@ gboolean gtkut_window_modal_exist(void)
 	for (cur = window_list; cur != NULL; cur = cur->next) {
 		GtkWidget *window = GTK_WIDGET(cur->data);
 
-		if (GTK_WIDGET_VISIBLE(window) &&
+		if (gtkut_widget_get_visible(window) &&
 		    gtk_window_get_modal(GTK_WINDOW(window))) {
 			exist = TRUE;
 			break;
@@ -1092,7 +1092,7 @@ void gtkut_widget_get_uposition(GtkWidget *widget, gint *px, gint *py)
 
 void gtkut_widget_draw_now(GtkWidget *widget)
 {
-	if (GTK_WIDGET_VISIBLE(widget) && GTK_WIDGET_DRAWABLE(widget))
+	if (gtkut_widget_get_visible(widget) && GTK_WIDGET_DRAWABLE(widget))
 		gdk_window_process_updates(widget->window, FALSE);
 }
 
@@ -1132,4 +1132,13 @@ void gtkut_widget_init(void)
 void gtkut_events_flush(void)
 {
 	GTK_EVENTS_FLUSH();
+}
+
+gboolean gtkut_widget_get_visible(GtkWidget *widget)
+{
+#if GTK_CHECK_VERSION(2, 18, 0)
+	return gtk_widget_get_visible(widget);
+#else
+	return GTK_WIDGET_VISIBLE(widget);
+#endif
 }
