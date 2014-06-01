@@ -1005,7 +1005,9 @@ MainWindow *main_window_create(SeparateType type)
 	ifactory = gtk_item_factory_from_widget(menubar);
 
 	/* toolbar */
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	mainwin->toolbar_tip = gtk_tooltips_new();
+#endif
 	toolbar = main_window_toolbar_create(mainwin);
 	gtk_widget_set_size_request(toolbar, 300, -1);
 	gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 0);
@@ -2735,10 +2737,15 @@ static GtkWidget *main_window_toolbar_create_from_list(MainWindow *mainwin,
 		icon_wid = stock_pixbuf_widget_for_toolbar(ditem->icon);
 		toolitem = gtk_tool_button_new(icon_wid, gettext(ditem->label));
 		if (ditem->description) {
+#if GTK_CHECK_VERSION(2, 12, 0)
+			gtk_tool_item_set_tooltip_text(toolitem,
+						       gettext(ditem->description));
+#else
 			gtk_tool_item_set_tooltip(toolitem,
 						  mainwin->toolbar_tip,
 						  gettext(ditem->description),
 						  ditem->name);
+#endif
 		}
 
 		gtkut_get_str_size(GTK_WIDGET(toolitem), gettext(ditem->label),
@@ -2769,10 +2776,15 @@ static GtkWidget *main_window_toolbar_create_from_list(MainWindow *mainwin,
 			gtk_container_add(GTK_CONTAINER(comboitem),
 					  GTK_WIDGET_PTR(combo));
 			if (ditem->description) {
+#if GTK_CHECK_VERSION(2, 12, 0)
+				gtk_tool_item_set_tooltip_text(comboitem,
+							       gettext(ditem->description));
+#else
 				gtk_tool_item_set_tooltip
 					(comboitem, mainwin->toolbar_tip,
 					 gettext(ditem->description),
 					 ditem->name);
+#endif
 			}
 
 			gtk_toolbar_insert(GTK_TOOLBAR(toolbar), comboitem, -1);
@@ -2793,10 +2805,15 @@ static GtkWidget *main_window_toolbar_create_from_list(MainWindow *mainwin,
 			gtk_container_add(GTK_CONTAINER(comboitem),
 					  GTK_WIDGET_PTR(combo));
 			if (ditem->description) {
+#if GTK_CHECK_VERSION(2, 12, 0)
+				gtk_tool_item_set_tooltip_text(comboitem,
+							       gettext(ditem->description));
+#else
 				gtk_tool_item_set_tooltip
 					(comboitem, mainwin->toolbar_tip,
 					 gettext(ditem->description),
 					 ditem->name);
+#endif
 			}
 
 			gtk_toolbar_insert(GTK_TOOLBAR(toolbar), comboitem, -1);

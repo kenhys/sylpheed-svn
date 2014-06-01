@@ -5441,8 +5441,10 @@ static Compose *compose_create(PrefsAccount *account, ComposeMode mode)
 	gtk_widget_set_size_request(menubar, 300, -1);
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, TRUE, 0);
 
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	compose->toolbar_tip = gtk_tooltips_new();
 	g_object_ref_sink(compose->toolbar_tip);
+#endif
 	toolbar = compose_toolbar_create(compose);
 	gtk_widget_set_size_request(toolbar, 300, -1);
 	gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 0);
@@ -6104,10 +6106,15 @@ static GtkWidget *compose_toolbar_create_from_list(Compose *compose,
 		icon_wid = stock_pixbuf_widget_for_toolbar(ditem->icon);
 		toolitem = gtk_tool_button_new(icon_wid, gettext(ditem->label));
 		if (ditem->description) {
+#if GTK_CHECK_VERSION(2, 12, 0)
+			gtk_tool_item_set_tooltip_text(toolitem,
+						       gettext(ditem->description));
+#else
 			gtk_tool_item_set_tooltip(toolitem,
 						  compose->toolbar_tip,
 						  gettext(ditem->description),
 						  ditem->name);
+#endif
 		}
 
 		gtkut_get_str_size(GTK_WIDGET(toolitem), gettext(ditem->label),
@@ -6630,7 +6637,9 @@ static void compose_destroy(Compose *compose)
 	clipboard = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
 	gtk_text_buffer_remove_selection_clipboard(buffer, clipboard);
 
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	g_object_unref(compose->toolbar_tip);
+#endif
 
 	gtk_widget_destroy(compose->window);
 
