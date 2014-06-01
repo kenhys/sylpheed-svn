@@ -7984,7 +7984,7 @@ static void compose_redo_cb(Compose *compose)
 static void compose_cut_cb(Compose *compose)
 {
 	if (compose->focused_editable &&
-	    GTK_WIDGET_HAS_FOCUS(compose->focused_editable)) {
+	    gtkut_widget_has_focus(compose->focused_editable)) {
 		if (GTK_IS_EDITABLE(compose->focused_editable)) {
 			gtk_editable_cut_clipboard
 				(GTK_EDITABLE(compose->focused_editable));
@@ -8004,7 +8004,7 @@ static void compose_cut_cb(Compose *compose)
 static void compose_copy_cb(Compose *compose)
 {
 	if (compose->focused_editable &&
-	    GTK_WIDGET_HAS_FOCUS(compose->focused_editable)) {
+	    gtkut_widget_has_focus(compose->focused_editable)) {
 		if (GTK_IS_EDITABLE(compose->focused_editable)) {
 			gtk_editable_copy_clipboard
 				(GTK_EDITABLE(compose->focused_editable));
@@ -8024,7 +8024,7 @@ static void compose_copy_cb(Compose *compose)
 static void compose_paste_cb(Compose *compose)
 {
 	if (compose->focused_editable &&
-	    GTK_WIDGET_HAS_FOCUS(compose->focused_editable)) {
+	    gtkut_widget_has_focus(compose->focused_editable)) {
 		if (GTK_IS_EDITABLE(compose->focused_editable)) {
 			gtk_editable_paste_clipboard
 				(GTK_EDITABLE(compose->focused_editable));
@@ -8055,7 +8055,7 @@ static void compose_paste_as_quote_cb(Compose *compose)
 	gchar *str = NULL;
 
 	if (!compose->focused_editable ||
-	    !GTK_WIDGET_HAS_FOCUS(compose->focused_editable) ||
+	    !gtkut_widget_has_focus(compose->focused_editable) ||
 	    !GTK_IS_TEXT_VIEW(compose->focused_editable))
 			return;
 
@@ -8076,7 +8076,7 @@ static void compose_paste_as_quote_cb(Compose *compose)
 static void compose_allsel_cb(Compose *compose)
 {
 	if (compose->focused_editable &&
-	    GTK_WIDGET_HAS_FOCUS(compose->focused_editable)) {
+	    gtkut_widget_has_focus(compose->focused_editable)) {
 		if (GTK_IS_EDITABLE(compose->focused_editable)) {
 			gtk_editable_select_region
 				(GTK_EDITABLE(compose->focused_editable),

@@ -843,7 +843,7 @@ static gboolean address_completion_complete_address_in_entry(GtkEntry *entry,
 
 	g_return_val_if_fail(entry != NULL, FALSE);
 
-	if (!GTK_WIDGET_HAS_FOCUS(entry)) return FALSE;
+	if (!gtkut_widget_has_focus(entry)) return FALSE;
 
 	/* get an address component from the cursor */
 	address = get_address_from_edit(entry, &cursor_pos);

@@ -3215,7 +3215,7 @@ static gboolean main_window_key_pressed(GtkWidget *widget, GdkEventKey *event,
 	if (!mainwin)
 		return FALSE;
 
-	if (!GTK_WIDGET_HAS_FOCUS(mainwin->summaryview->qsearch->entry))
+	if (!gtkut_widget_has_focus(mainwin->summaryview->qsearch->entry))
 		return FALSE;
 
 	/* g_print("keyval: %d, state: %d\n", event->keyval, event->state); */
@@ -3452,7 +3452,7 @@ static void save_as_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
 	MessageView *messageview = mainwin->messageview;
 
 	if (messageview_get_selected_mime_part(messageview) &&
-	    GTK_WIDGET_HAS_FOCUS(messageview->mimeview->treeview))
+	    gtkut_widget_has_focus(messageview->mimeview->treeview))
 		mimeview_save_as(messageview->mimeview);
 	else
 		summary_save_as(mainwin->summaryview);
@@ -3940,7 +3940,7 @@ static void prev_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
 	MessageView *messageview = mainwin->messageview;
 
 	if (messageview_get_selected_mime_part(messageview) &&
-	    GTK_WIDGET_HAS_FOCUS(messageview->mimeview->treeview) &&
+	    gtkut_widget_has_focus(messageview->mimeview->treeview) &&
 	    mimeview_step(messageview->mimeview, GTK_SCROLL_STEP_BACKWARD))
 		return;
 
@@ -3953,7 +3953,7 @@ static void next_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
 	MessageView *messageview = mainwin->messageview;
 
 	if (messageview_get_selected_mime_part(messageview) &&
-	    GTK_WIDGET_HAS_FOCUS(messageview->mimeview->treeview) &&
+	    gtkut_widget_has_focus(messageview->mimeview->treeview) &&
 	    mimeview_step(messageview->mimeview, GTK_SCROLL_STEP_FORWARD))
 		return;
 
@@ -4028,15 +4028,15 @@ static void allsel_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
 {
 	MessageView *msgview = mainwin->messageview;
 
-	if (GTK_WIDGET_HAS_FOCUS(mainwin->summaryview->treeview))
+	if (gtkut_widget_has_focus(mainwin->summaryview->treeview))
 		summary_select_all(mainwin->summaryview);
-	else if (GTK_WIDGET_HAS_FOCUS(mainwin->summaryview->qsearch->entry))
+	else if (gtkut_widget_has_focus(mainwin->summaryview->qsearch->entry))
 		gtk_editable_select_region
 			(GTK_EDITABLE(mainwin->summaryview->qsearch->entry),
 			 0, -1);
 	else if (messageview_is_visible(msgview) &&
-		 (GTK_WIDGET_HAS_FOCUS(msgview->textview->text) ||
-		  GTK_WIDGET_HAS_FOCUS(msgview->mimeview->textview->text)))
+		 (gtkut_widget_has_focus(msgview->textview->text) ||
+		  gtkut_widget_has_focus(msgview->mimeview->textview->text)))
 		messageview_select_all(msgview);
 }
 

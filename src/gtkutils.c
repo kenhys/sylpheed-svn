@@ -1142,3 +1142,12 @@ gboolean gtkut_widget_get_visible(GtkWidget *widget)
 	return GTK_WIDGET_VISIBLE(widget);
 #endif
 }
+
+gboolean gtkut_widget_has_focus(GtkWidget *widget)
+{
+#if GTK_CHECK_VERSION(2, 18, 0)
+	return gtk_widget_has_focus(widget);
+#else
+	return GTK_WIDGET_HAS_FOCUS(widget);
+#endif
+}

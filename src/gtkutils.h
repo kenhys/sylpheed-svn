@@ -236,4 +236,5 @@ void gtkut_widget_init			(void);
 void gtkut_events_flush			(void);
 
 gboolean gtkut_widget_get_visible	(GtkWidget	*widget);
+gboolean gtkut_widget_has_focus		(GtkWidget	*widget);
 #endif /* __GTKUTILS_H__ */

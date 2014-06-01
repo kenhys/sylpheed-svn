@@ -207,7 +207,7 @@ QuickSearch *quick_search_create(SummaryView *summaryview)
 void quick_search_clear_entry(QuickSearch *qsearch)
 {
 	qsearch->entry_entered = FALSE;
-	if (GTK_WIDGET_HAS_FOCUS(qsearch->entry))
+	if (gtkut_widget_has_focus(qsearch->entry))
 		entry_focus_in(qsearch->entry, NULL, qsearch);
 	else
 		entry_focus_out(qsearch->entry, NULL, qsearch);
