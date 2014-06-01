@@ -767,7 +767,7 @@ static gboolean textview_part_widget_exposed(GtkWidget *widget,
 		return FALSE;
 
 	drawable = GDK_DRAWABLE(widget->window);
-	gc = widget->style->dark_gc[GTK_WIDGET_STATE(widget)];
+	gc = widget->style->dark_gc[gtkut_widget_get_state(widget)];
 	gdk_gc_set_clip_rectangle(gc, &event->area);
 	gdk_gc_set_line_attributes(gc, 1, GDK_LINE_SOLID, GDK_CAP_NOT_LAST,
 				   GDK_JOIN_MITER);

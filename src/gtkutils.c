@@ -294,11 +294,11 @@ static void combo_button_enter(GtkWidget *widget, gpointer data)
 {
 	ComboButton *combo = (ComboButton *)data;
 
-	if (GTK_WIDGET_STATE(combo->arrow) != GTK_STATE_PRELIGHT) {
+	if (gtkut_widget_get_state(combo->arrow) != GTK_STATE_PRELIGHT) {
 		gtk_widget_set_state(combo->arrow, GTK_STATE_PRELIGHT);
 		gtk_widget_queue_draw(combo->arrow);
 	}
-	if (GTK_WIDGET_STATE(combo->button) != GTK_STATE_PRELIGHT) {
+	if (gtkut_widget_get_state(combo->button) != GTK_STATE_PRELIGHT) {
 		gtk_widget_set_state(combo->button, GTK_STATE_PRELIGHT);
 		gtk_widget_queue_draw(combo->button);
 	}
@@ -308,11 +308,11 @@ static void combo_button_leave(GtkWidget *widget, gpointer data)
 {
 	ComboButton *combo = (ComboButton *)data;
 
-	if (GTK_WIDGET_STATE(combo->arrow) != GTK_STATE_NORMAL) {
+	if (gtkut_widget_get_state(combo->arrow) != GTK_STATE_NORMAL) {
 		gtk_widget_set_state(combo->arrow, GTK_STATE_NORMAL);
 		gtk_widget_queue_draw(combo->arrow);
 	}
-	if (GTK_WIDGET_STATE(combo->button) != GTK_STATE_NORMAL) {
+	if (gtkut_widget_get_state(combo->button) != GTK_STATE_NORMAL) {
 		gtk_widget_set_state(combo->button, GTK_STATE_NORMAL);
 		gtk_widget_queue_draw(combo->button);
 	}
@@ -1149,5 +1149,14 @@ gboolean gtkut_widget_has_focus(GtkWidget *widget)
 	return gtk_widget_has_focus(widget);
 #else
 	return GTK_WIDGET_HAS_FOCUS(widget);
+#endif
+}
+
+GtkStateType gtkut_widget_get_state(GtkWidget *widget)
+{
+#if GTK_CHECK_VERSION(2, 18, 0)
+	return gtk_widget_get_state(widget);
+#else
+	return GTK_WIDGET_STATE(widget);
 #endif
 }
