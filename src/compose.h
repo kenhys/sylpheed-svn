@@ -200,9 +200,13 @@ struct _Compose
 
 	gboolean block_modified;
 
+#if GTK_CHECK_VERSION(2, 12, 0)
+	GtkTooltip *toolbar_tip;
+#else
 	GtkTooltips *toolbar_tip;
 
 	GtkWidget *sig_combo;
+#endif
 };
 
 struct _AttachInfo

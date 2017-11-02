@@ -88,7 +88,11 @@ HeaderView *headerview_create(void)
 	GtkWidget *ng_body_label;
 	GtkWidget *subject_header_label;
 	GtkWidget *subject_body_label;
+#if GTK_CHECK_VERSION(2, 12, 0)
+	GtkTooltip *tip;
+#else
 	GtkTooltips *tip;
+#endif
 
 	debug_print(_("Creating header view...\n"));
 	headerview = g_new0(HeaderView, 1);
@@ -132,8 +136,10 @@ HeaderView *headerview_create(void)
 	gtk_widget_add_events(ng_body_label, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
 	gtk_widget_add_events(subject_body_label, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
 
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	tip = gtk_tooltips_new();
 	g_object_ref_sink(tip);
+#endif
 
 	gtk_box_pack_start(GTK_BOX(hbox1), from_header_label, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox1), from_body_label, FALSE, FALSE, 0);
@@ -222,7 +228,9 @@ void headerview_init(HeaderView *headerview)
 void headerview_show(HeaderView *headerview, MsgInfo *msginfo)
 {
 	headerview_clear(headerview);
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	gtk_tooltips_enable(headerview->tip);
+#endif
 
 	gtk_label_set_text(GTK_LABEL(headerview->from_body_label),
 			   msginfo->from ? msginfo->from : _("(No From)"));
@@ -333,7 +341,9 @@ void headerview_clear(HeaderView *headerview)
 	gtk_widget_set_tooltip_text(headerview->from_body_label, NULL);
 	gtk_widget_set_tooltip_text(headerview->subject_body_label, NULL);
 #endif
+#if !GTK_CHECK_VERSION(2, 12, 0)
 	gtk_tooltips_disable(headerview->tip);
+#endif
 
 	if (headerview->image && GTK_WIDGET_VISIBLE(headerview->image)) {
 		gtk_widget_hide(headerview->image);

@@ -107,7 +107,11 @@ struct _MainWindow
 	GtkWidget *online_switch;
 	GtkWidget *online_pixmap;
 	GtkWidget *offline_pixmap;
+#if GTK_CHECK_VERSION(2, 12, 0)
+	GtkTooltip *online_tip;
+#else
 	GtkTooltips *online_tip;
+#endif
 	GtkWidget *ac_button;
 	GtkWidget *ac_label;
 	GtkWidget *ac_menu;
@@ -134,7 +138,11 @@ struct _MainWindow
 	MessageView	*messageview;
 	LogWindow	*logwin;
 
+#if GTK_CHECK_VERSION(2, 12, 0)
+	GtkTooltip *toolbar_tip;
+#else
 	GtkTooltips *toolbar_tip;
+#endif
 };
 
 MainWindow *main_window_create		(SeparateType	 type);

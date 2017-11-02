@@ -21,6 +21,7 @@
 #define __HEADERVIEW_H__
 
 #include <glib.h>
+#include <gtk/gtk.h>
 #include <gtk/gtkwidget.h>
 #include <gtk/gtktooltips.h>
 
@@ -45,7 +46,11 @@ struct _HeaderView
 
 	GtkWidget *image;
 
+#if GTK_CHECK_VERSION(2, 12, 0)
+	GtkTooltip *tip;
+#else
 	GtkTooltips *tip;
+#endif
 };
 
 HeaderView *headerview_create	(void);

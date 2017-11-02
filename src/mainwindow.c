@@ -940,7 +940,11 @@ MainWindow *main_window_create(SeparateType type)
 	GtkWidget *online_switch;
 	GtkWidget *online_pixmap;
 	GtkWidget *offline_pixmap;
+#if GTK_CHECK_VERSION(2, 12, 0)
+	GtkTooltip *online_tip;
+#else
 	GtkTooltips *online_tip;
+#endif
 #if !GTK_CHECK_VERSION(2, 6, 0)
 	GtkWidget *spacer_hbox;
 #endif

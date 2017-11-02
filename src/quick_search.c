@@ -83,7 +83,11 @@ QuickSearch *quick_search_create(SummaryView *summaryview)
 	GtkWidget *hbox2;
 	GtkWidget *label;
 	GtkWidget *entry;
+#if GTK_CHECK_VERSION(2, 12, 0)
+	GtkTooltip *tip;
+#else
 	GtkTooltips *tip;
+#endif
 	GtkWidget *vbox;
 	GtkWidget *clear_btn;
 	GtkWidget *image;
