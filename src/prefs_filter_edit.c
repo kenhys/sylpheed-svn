@@ -1589,8 +1589,13 @@ static void prefs_filter_edit_edit_header_list_dialog_create(void)
 	gtk_clist_set_column_width(GTK_CLIST(clist), 0, 80);
 	gtk_clist_set_selection_mode(GTK_CLIST(clist), GTK_SELECTION_BROWSE);
 	gtkut_clist_set_redraw(GTK_CLIST(clist));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(GTK_CLIST(clist)->column[0].button,
+				 FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(clist)->column[0].button,
 			       GTK_CAN_FOCUS);
+#endif
 
 	entry_hbox = gtk_hbox_new(FALSE, 8);
 	gtk_box_pack_start(GTK_BOX(vbox), entry_hbox, FALSE, TRUE, 0);

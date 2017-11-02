@@ -168,8 +168,13 @@ PrefsDisplayItemsDialog *prefs_display_items_dialog_create(void)
 	gtk_container_add(GTK_CONTAINER(scrolledwin), stock_clist);
 	gtk_clist_set_selection_mode(GTK_CLIST(stock_clist),
 				     GTK_SELECTION_BROWSE);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(GTK_CLIST(stock_clist)->column[0].button,
+				 FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(stock_clist)->column[0].button,
 			       GTK_CAN_FOCUS);
+#endif
 	gtkut_clist_set_redraw(GTK_CLIST(stock_clist));
 
 	/* add/remove button */
@@ -219,8 +224,13 @@ PrefsDisplayItemsDialog *prefs_display_items_dialog_create(void)
 	gtk_clist_set_reorderable(GTK_CLIST(shown_clist), TRUE);
 	gtk_clist_set_use_drag_icons(GTK_CLIST(shown_clist), FALSE);
 #endif
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(GTK_CLIST(shown_clist)->column[0].button,
+				 FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(shown_clist)->column[0].button,
 			       GTK_CAN_FOCUS);
+#endif
 	gtkut_clist_set_redraw(GTK_CLIST(shown_clist));
 
 	g_signal_connect(G_OBJECT(shown_clist), "select-row",

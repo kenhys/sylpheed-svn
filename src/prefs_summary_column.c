@@ -238,8 +238,13 @@ static void prefs_summary_column_create(void)
 	gtk_clist_set_selection_mode(GTK_CLIST(stock_clist),
 				     GTK_SELECTION_BROWSE);
 	gtkut_clist_set_redraw(GTK_CLIST(stock_clist));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(GTK_CLIST(stock_clist)->column[0].button,
+				 FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(stock_clist)->column[0].button,
 			       GTK_CAN_FOCUS);
+#endif
 
 	/* add/remove button */
 	btn_vbox = gtk_vbox_new(FALSE, 0);
@@ -286,8 +291,13 @@ static void prefs_summary_column_create(void)
 	gtk_clist_set_use_drag_icons(GTK_CLIST(shown_clist), FALSE);
 #endif
 	gtkut_clist_set_redraw(GTK_CLIST(shown_clist));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(GTK_CLIST(shown_clist)->column[0].button,
+				 FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(shown_clist)->column[0].button,
 			       GTK_CAN_FOCUS);
+#endif
 
 	/* up/down button */
 	btn_vbox = gtk_vbox_new(FALSE, 0);

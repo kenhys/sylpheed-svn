@@ -297,8 +297,12 @@ static void prefs_actions_create(MainWindow *mainwin)
 	gtk_clist_set_selection_mode(GTK_CLIST (cond_clist),
 				     GTK_SELECTION_BROWSE);
 	gtkut_clist_set_redraw(GTK_CLIST(cond_clist));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(GTK_CLIST(cond_clist)->column[0].button, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(cond_clist)->column[0].button,
 			       GTK_CAN_FOCUS);
+#endif
 	g_signal_connect(G_OBJECT(cond_clist), "select_row",
 			 G_CALLBACK(prefs_actions_select), NULL);
 	g_signal_connect_after(G_OBJECT(cond_clist), "row_move",

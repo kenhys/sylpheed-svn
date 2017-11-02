@@ -261,8 +261,13 @@ static void prefs_display_header_create(void)
 	gtk_clist_set_reorderable (GTK_CLIST (headers_clist), TRUE);
 	gtk_clist_set_use_drag_icons (GTK_CLIST (headers_clist), FALSE);
 	gtkut_clist_set_redraw (GTK_CLIST (headers_clist));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus (GTK_CLIST (headers_clist)->column[0].button,
+				  FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS (GTK_CLIST (headers_clist)->column[0].button,
 				GTK_CAN_FOCUS);
+#endif
 	g_signal_connect_after
 		(G_OBJECT (headers_clist), "row_move",
 		 G_CALLBACK (prefs_display_header_row_moved), NULL);

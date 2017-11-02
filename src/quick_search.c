@@ -169,7 +169,11 @@ QuickSearch *quick_search_create(SummaryView *summaryview)
         gtk_widget_set_size_request(clear_btn, 20, 20);
         image = gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
         gtk_container_add(GTK_CONTAINER(clear_btn), image);
+#if GTK_CHECK_VERSION(2, 18, 0)
+        gtk_widget_set_can_focus(clear_btn, FALSE);
+#else
         GTK_WIDGET_UNSET_FLAGS(clear_btn, GTK_CAN_FOCUS);
+#endif
         gtk_box_pack_start(GTK_BOX(vbox), clear_btn, TRUE, FALSE, 0);
         g_signal_connect(G_OBJECT(clear_btn), "clicked",
                          G_CALLBACK(clear_clicked), qsearch);

@@ -565,7 +565,11 @@ static void imp_ldif_page_fields( gint pageNum, gchar *pageLbl ) {
 	gtkut_clist_set_redraw( GTK_CLIST(clist_field) );
 
 	for( i = 0; i < FIELDS_N_COLS; i++ )
+#if GTK_CHECK_VERSION(2, 18, 0)
+		gtk_widget_set_can_focus(GTK_CLIST(clist_field)->column[i].button, FALSE);
+#else
 		GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(clist_field)->column[i].button, GTK_CAN_FOCUS);
+#endif
 
 	/* Lower area - Edit area */
 	vboxb = gtk_vbox_new( FALSE, 4 );

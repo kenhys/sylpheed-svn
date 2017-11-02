@@ -3319,7 +3319,11 @@ static gboolean compose_check_recipients(Compose *compose)
 	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
 	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 	gtk_label_set_selectable(GTK_LABEL(label), TRUE);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(label, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(label, GTK_CAN_FOCUS);
+#endif
 
 	table = gtk_table_new(2, 2, FALSE);
 	gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, FALSE, 0);
@@ -5543,10 +5547,18 @@ static Compose *compose_create(PrefsAccount *account, ComposeMode mode)
 	gtk_box_pack_start(GTK_BOX(vbox2), misc_hbox, FALSE, FALSE, 0);
 
 	signing_chkbtn = gtk_check_button_new_with_label(_("PGP Sign"));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(signing_chkbtn, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(signing_chkbtn, GTK_CAN_FOCUS);
+#endif
 	gtk_box_pack_start(GTK_BOX(misc_hbox), signing_chkbtn, FALSE, FALSE, 8);
 	encrypt_chkbtn = gtk_check_button_new_with_label(_("PGP Encrypt"));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(encrypt_chkbtn, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(encrypt_chkbtn, GTK_CAN_FOCUS);
+#endif
 	gtk_box_pack_start(GTK_BOX(misc_hbox), encrypt_chkbtn, FALSE, FALSE, 8);
 
 	g_signal_connect(G_OBJECT(signing_chkbtn), "toggled",

@@ -298,8 +298,13 @@ static void prefs_template_window_create(void)
 	gtk_clist_set_selection_mode(GTK_CLIST(clist_tmpls),
 				     GTK_SELECTION_BROWSE);
 	gtkut_clist_set_redraw(GTK_CLIST(clist_tmpls));
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(GTK_CLIST(clist_tmpls)->column[0].button,
+				 FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(GTK_CLIST(clist_tmpls)->column[0].button,
 			       GTK_CAN_FOCUS);
+#endif
 	g_signal_connect(G_OBJECT (clist_tmpls), "select_row",
 			 G_CALLBACK (prefs_template_select_cb), NULL);
 

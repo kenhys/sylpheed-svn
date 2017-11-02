@@ -299,7 +299,11 @@ static void alertpanel_create(const gchar *title,
 	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
 	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 	gtk_label_set_selectable(GTK_LABEL(label), TRUE);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(label, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(label, GTK_CAN_FOCUS);
+#endif
 #ifdef G_OS_WIN32
 	{
 		GtkStyle *style;

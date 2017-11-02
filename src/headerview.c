@@ -124,11 +124,19 @@ HeaderView *headerview_create(void)
 	gtk_label_set_selectable(GTK_LABEL(ng_body_label), TRUE);
 	gtk_label_set_selectable(GTK_LABEL(subject_body_label), TRUE);
 
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(from_body_label, FALSE);
+	gtk_widget_set_can_focus(to_body_label, FALSE);
+	gtk_widget_set_can_focus(cc_body_label, FALSE);
+	gtk_widget_set_can_focus(ng_body_label, FALSE);
+	gtk_widget_set_can_focus(subject_body_label, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(from_body_label, GTK_CAN_FOCUS);
 	GTK_WIDGET_UNSET_FLAGS(to_body_label, GTK_CAN_FOCUS);
 	GTK_WIDGET_UNSET_FLAGS(cc_body_label, GTK_CAN_FOCUS);
 	GTK_WIDGET_UNSET_FLAGS(ng_body_label, GTK_CAN_FOCUS);
 	GTK_WIDGET_UNSET_FLAGS(subject_body_label, GTK_CAN_FOCUS);
+#endif
 
 	gtk_widget_add_events(from_body_label, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
 	gtk_widget_add_events(to_body_label, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
