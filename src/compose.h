@@ -204,9 +204,9 @@ struct _Compose
 	GtkTooltip *toolbar_tip;
 #else
 	GtkTooltips *toolbar_tip;
+#endif
 
 	GtkWidget *sig_combo;
-#endif
 };
 
 struct _AttachInfo
