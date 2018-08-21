@@ -799,8 +799,10 @@ static void event_loop_iteration_func(void)
 static void app_init(void)
 {
 #if USE_THREADS
+#if !GLIB_CHECK_VERSION(2, 32, 0)
 	if (!g_thread_supported())
 		g_thread_init(NULL);
+#endif
 	if (!g_thread_supported())
 		g_error("g_thread is not supported by glib.");
 	else {
