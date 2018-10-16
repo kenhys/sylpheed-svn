@@ -1505,22 +1505,22 @@ void main_window_hide(MainWindow *mainwin)
 	GtkWidget *summary_wid = GTK_WIDGET_PTR(mainwin->summaryview);
 	GtkWidget *message_wid = GTK_WIDGET_PTR(mainwin->messageview);
 	GtkWidget *qsearch_wid = GTK_WIDGET_PTR(mainwin->summaryview->qsearch);
-	GtkWidget *vbox_summary = qsearch_wid->parent;
+	GtkWidget *vbox_summary = gtk_widget_get_parent(qsearch_wid);
 
 	/* remove widgets from those containers */
 	gtkut_container_remove
-		(GTK_CONTAINER(folder_wid->parent), folder_wid);
+		(GTK_CONTAINER(gtk_widget_get_parent(folder_wid)), folder_wid);
 	gtkut_container_remove
-		(GTK_CONTAINER(summary_wid->parent), summary_wid);
+		(GTK_CONTAINER(gtk_widget_get_parent(summary_wid)), summary_wid);
 	gtkut_container_remove
-		(GTK_CONTAINER(message_wid->parent), message_wid);
+		(GTK_CONTAINER(gtk_widget_get_parent(message_wid)), message_wid);
 	gtkut_container_remove
-		(GTK_CONTAINER(qsearch_wid->parent), qsearch_wid);
+		(GTK_CONTAINER(gtk_widget_get_parent(qsearch_wid)), qsearch_wid);
 
 	/* clean containers */
 	switch (mainwin->type) {
 	case SEPARATE_NONE:
-		if (!mainwin->win.sep_none.vpaned->parent)
+		if (!gtk_widget_get_parent(mainwin->win.sep_none.vpaned))
 			gtk_widget_destroy(mainwin->win.sep_none.vpaned);
 		gtk_widget_destroy(mainwin->win.sep_none.hpaned);
 		mainwin->win.sep_none.hpaned = NULL;
@@ -1528,7 +1528,7 @@ void main_window_hide(MainWindow *mainwin)
 		break;
 	case SEPARATE_FOLDER:
 		gtk_widget_destroy(mainwin->win.sep_folder.folderwin);
-		if (!mainwin->win.sep_folder.vpaned->parent)
+		if (!gtk_widget_get_parent(mainwin->win.sep_folder.vpaned))
 			gtk_widget_destroy(mainwin->win.sep_folder.vpaned);
 		gtk_widget_destroy(vbox_summary);
 		mainwin->win.sep_folder.folderwin = NULL;
@@ -1598,11 +1598,11 @@ void main_window_toggle_message_view(MainWindow *mainwin)
 	switch (mainwin->type) {
 	case SEPARATE_NONE:
 		vpaned = cwin->sep_none.vpaned;
-		container = GTK_WIDGET_PTR(summaryview->qsearch)->parent;
+		container = gtk_widget_get_parent(GTK_WIDGET_PTR(summaryview->qsearch));
 		break;
 	case SEPARATE_FOLDER:
 		vpaned = cwin->sep_folder.vpaned;
-		container = GTK_WIDGET_PTR(summaryview->qsearch)->parent;
+		container = gtk_widget_get_parent(GTK_WIDGET_PTR(summaryview->qsearch));
 		break;
 	case SEPARATE_MESSAGE:
 		msgwin = mainwin->win.sep_message.messagewin;
@@ -1622,7 +1622,7 @@ void main_window_toggle_message_view(MainWindow *mainwin)
 			gtk_widget_show(msgwin);
 			mainwin->messageview->visible = TRUE;
 		}
-	} else if (vpaned->parent != NULL) {
+	} else if (gtk_widget_get_parent(vpaned) != NULL) {
 		/* hide message view */
 		mainwin->messageview->visible = FALSE;
 		summaryview->displayed = NULL;
