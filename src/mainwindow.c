@@ -3473,7 +3473,7 @@ static void print_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
 static void toggle_offline_cb(MainWindow *mainwin, guint action,
 			      GtkWidget *widget)
 {
-	if (GTK_CHECK_MENU_ITEM(widget)->active &&
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)) &&
 	    folder_remote_folder_active_session_exist()) {
 		debug_print("Active session exist. Cancelling online switch.\n");
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(widget),
@@ -3482,7 +3482,7 @@ static void toggle_offline_cb(MainWindow *mainwin, guint action,
 	}
 
 	main_window_toggle_online
-		(mainwin, !GTK_CHECK_MENU_ITEM(widget)->active);
+		(mainwin, !gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)));
 }
 
 static void app_exit_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
@@ -3528,7 +3528,7 @@ static void toggle_folder_cb(MainWindow *mainwin, guint action,
 {
 	gboolean active;
 
-	active = GTK_CHECK_MENU_ITEM(widget)->active;
+	active = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget));
 
 	switch (mainwin->type) {
 	case SEPARATE_NONE:
@@ -3562,7 +3562,7 @@ static void toggle_message_cb(MainWindow *mainwin, guint action,
 {
 	gboolean active;
 
-	active = GTK_CHECK_MENU_ITEM(widget)->active;
+	active = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget));
 
 	if (active != messageview_is_visible(mainwin->messageview))
 		summary_toggle_view(mainwin->summaryview);
@@ -3580,7 +3580,7 @@ static void toggle_toolbar_cb(MainWindow *mainwin, guint action,
 static void toggle_searchbar_cb(MainWindow *mainwin, guint action,
 				GtkWidget *widget)
 {
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(mainwin->summaryview->qsearch->hbox);
 		prefs_common.show_searchbar = TRUE;
 	} else {
@@ -3593,7 +3593,7 @@ static void toggle_searchbar_cb(MainWindow *mainwin, guint action,
 static void toggle_statusbar_cb(MainWindow *mainwin, guint action,
 				GtkWidget *widget)
 {
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(mainwin->statusbar);
 		prefs_common.show_statusbar = TRUE;
 	} else {
@@ -3613,7 +3613,7 @@ static void change_layout_cb(MainWindow *mainwin, guint action,
 {
 	LayoutType type = action;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		main_window_change_layout(mainwin, type, mainwin->type);
 }
 
@@ -3622,7 +3622,7 @@ static void separate_widget_cb(MainWindow *mainwin, guint action,
 {
 	SeparateType type;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		type = mainwin->type | action;
 	else
 		type = mainwin->type & ~action;
@@ -3724,7 +3724,7 @@ static void show_all_header_cb(MainWindow *mainwin, guint action,
 {
 	if (mainwin->menu_lock_count) return;
 	summary_display_msg_selected(mainwin->summaryview, FALSE,
-				     GTK_CHECK_MENU_ITEM(widget)->active);
+				     gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)));
 }
 
 static void mark_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
@@ -3785,7 +3785,7 @@ static void set_charset_cb(MainWindow *mainwin, guint action,
 {
 	const gchar *str;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		str = conv_get_charset_str((CharSet)action);
 		g_free(prefs_common.force_charset);
 		prefs_common.force_charset = str ? g_strdup(str) : NULL;
@@ -3802,7 +3802,7 @@ static void thread_cb(MainWindow *mainwin, guint action, GtkWidget *widget)
 	if (mainwin->menu_lock_count) return;
 	if (!mainwin->summaryview->folder_item) return;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		summary_thread_build(mainwin->summaryview);
 	else
 		summary_unthread(mainwin->summaryview);
@@ -3835,11 +3835,11 @@ static void sort_summary_cb(MainWindow *mainwin, guint action,
 
 	if (mainwin->menu_lock_count) return;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active && item) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)) && item) {
 		menuitem = gtk_item_factory_get_item
 			(mainwin->menu_factory, "/View/Sort/Ascending");
 		summary_sort(mainwin->summaryview, (FolderSortKey)action,
-			     GTK_CHECK_MENU_ITEM(menuitem)->active
+			     gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem))
 			     ? SORT_ASCENDING : SORT_DESCENDING);
 	}
 }
@@ -3851,7 +3851,7 @@ static void sort_summary_type_cb(MainWindow *mainwin, guint action,
 
 	if (mainwin->menu_lock_count) return;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active && item)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)) && item)
 		summary_sort(mainwin->summaryview,
 			     item->sort_key, (FolderSortType)action);
 }
