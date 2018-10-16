@@ -1994,7 +1994,7 @@ static gboolean folderview_key_pressed(GtkWidget *widget, GdkEventKey *event,
 			return FALSE;
 		adj = gtk_scrolled_window_get_hadjustment
 			(GTK_SCROLLED_WINDOW(folderview->scrolledwin));
-		if (adj->lower < adj->value)
+		if (gtk_adjustment_get_lower(adj) < gtk_adjustment_get_value(adj))
 			return FALSE;
 		if (folderview->selected) {
 			selected = gtk_tree_row_reference_get_path
@@ -2018,7 +2018,7 @@ static gboolean folderview_key_pressed(GtkWidget *widget, GdkEventKey *event,
 			return FALSE;
 		adj = gtk_scrolled_window_get_hadjustment
 			(GTK_SCROLLED_WINDOW(folderview->scrolledwin));
-		if (adj->upper - adj->page_size > adj->value)
+		if (gtk_adjustment_get_upper(adj) - gtk_adjustment_get_page_size(adj) > gtk_adjustment_get_value(adj))
 			return FALSE;
 		if (folderview->selected) {
 			selected = gtk_tree_row_reference_get_path
