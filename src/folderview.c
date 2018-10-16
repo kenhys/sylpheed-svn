@@ -1784,7 +1784,7 @@ static gboolean folderview_menu_popup(FolderView *folderview,
 		GtkWidget *sep = NULL;				\
 								\
 		child = g_list_find				\
-			(GTK_MENU_SHELL(popup)->children, widget); \
+			(gtk_container_get_children(GTK_CONTAINER(popup)), widget); \
 		if (child && child->next)			\
 			sep = GTK_WIDGET(child->next->data);	\
 		if (visible) {					\
