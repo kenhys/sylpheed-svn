@@ -1157,7 +1157,7 @@ MainWindow *main_window_create(SeparateType type)
 	color[1] = summaryview->color_dim;
 	color[2] = folderview->color_new;
 
-	colormap = gdk_window_get_colormap(window->window);
+	colormap = gdk_window_get_colormap(gtk_widget_get_window(window));
 	gdk_colormap_alloc_colors(colormap, color, 3, FALSE, TRUE, success);
 	for (i = 0; i < 3; i++) {
 		if (success[i] == FALSE)
@@ -1264,7 +1264,7 @@ void main_window_cursor_wait(MainWindow *mainwin)
 {
 
 	if (mainwin->cursor_count == 0)
-		gdk_window_set_cursor(mainwin->window->window, watch_cursor);
+		gdk_window_set_cursor(gtk_widget_get_window(mainwin->window), watch_cursor);
 
 	mainwin->cursor_count++;
 
@@ -1277,7 +1277,7 @@ void main_window_cursor_normal(MainWindow *mainwin)
 		mainwin->cursor_count--;
 
 	if (mainwin->cursor_count == 0)
-		gdk_window_set_cursor(mainwin->window->window, NULL);
+		gdk_window_set_cursor(gtk_widget_get_window(mainwin->window), NULL);
 
 	gdk_flush();
 }
