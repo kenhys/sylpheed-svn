@@ -1363,7 +1363,7 @@ static void main_window_set_account_selector_menu(MainWindow *mainwin,
 	PrefsAccount *ac_prefs;
 
 	/* destroy all previous menu item */
-	cur_item = GTK_MENU_SHELL(mainwin->ac_menu)->children;
+	cur_item = gtk_container_get_children(GTK_CONTAINER(mainwin->ac_menu));
 	while (cur_item != NULL) {
 		GList *next = cur_item->next;
 		gtk_widget_destroy(GTK_WIDGET(cur_item->data));
@@ -1396,7 +1396,7 @@ static void main_window_set_account_receive_menu(MainWindow *mainwin,
 					   "/Message/Receive");
 
 	/* search for separator */
-	for (cur_item = GTK_MENU_SHELL(menu)->children; cur_item != NULL;
+	for (cur_item = gtk_container_get_children(GTK_CONTAINER(menu)); cur_item != NULL;
 	     cur_item = cur_item->next) {
 		if (GTK_BIN(cur_item->data)->child == NULL) {
 			cur_item = cur_item->next;
@@ -2256,7 +2256,7 @@ void main_window_set_menu_sensitive(MainWindow *mainwin)
 	menu = gtk_item_factory_get_widget(ifactory, "/Message/Receive");
 
 	/* search for separator */
-	for (cur_item = GTK_MENU_SHELL(menu)->children; cur_item != NULL;
+	for (cur_item = gtk_container_get_children(GTK_CONTAINER(menu)); cur_item != NULL;
 	     cur_item = cur_item->next) {
 		if (GTK_BIN(cur_item->data)->child == NULL) {
 			cur_item = cur_item->next;
