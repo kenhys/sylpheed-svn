@@ -1662,56 +1662,56 @@ void main_window_toggle_message_view(MainWindow *mainwin)
 
 void main_window_get_size(MainWindow *mainwin)
 {
-	GtkAllocation *allocation;
+	GtkAllocation allocation;
 	gboolean vlayout = (prefs_common.layout_type == LAYOUT_VERTICAL);
 
-	allocation = &(GTK_WIDGET_PTR(mainwin->summaryview)->allocation);
-	if (allocation->width > 1 && allocation->height > 1) {
+	gtk_widget_get_allocation(GTK_WIDGET_PTR(mainwin->summaryview), &allocation);
+	if (allocation.width > 1 && allocation.height > 1) {
 		if (vlayout) {
 			if (!(mainwin->type & SEPARATE_MESSAGE) &&
 			    messageview_is_visible(mainwin->messageview))
-				prefs_common.summaryview_vwidth = allocation->width;
-			prefs_common.summaryview_vheight = allocation->height;
+				prefs_common.summaryview_vwidth = allocation.width;
+			prefs_common.summaryview_vheight = allocation.height;
 		} else {
 			if (!prefs_common.mainwin_maximized) {
-				prefs_common.summaryview_width = allocation->width;
-				prefs_common.mainview_width = allocation->width;
+				prefs_common.summaryview_width = allocation.width;
+				prefs_common.mainview_width = allocation.width;
 			}
 			if ((mainwin->type == SEPARATE_NONE ||
 			     mainwin->type == SEPARATE_FOLDER) &&
 			    messageview_is_visible(mainwin->messageview))
-				prefs_common.summaryview_height = allocation->height;
+				prefs_common.summaryview_height = allocation.height;
 		}
 	}
 
 	if (prefs_common.mainwin_maximized) {
-		allocation = &(GTK_WIDGET_PTR(mainwin->folderview)->allocation);
-		if (allocation->width > 1 && allocation->height > 1)
-			prefs_common.folderview_width  = allocation->width;
+		gtk_widget_get_allocation(GTK_WIDGET_PTR(mainwin->folderview), &allocation);
+		if (allocation.width > 1 && allocation.height > 1)
+			prefs_common.folderview_width  = allocation.width;
 		return;
 	}
 
-	allocation = &mainwin->window->allocation;
-	if (allocation->width > 1 && allocation->height > 1) {
-		prefs_common.mainview_height = allocation->height;
-		prefs_common.mainwin_width   = allocation->width;
-		prefs_common.mainwin_height  = allocation->height;
+	gtk_widget_get_allocation(GTK_WIDGET_PTR(mainwin->window), &allocation);
+	if (allocation.width > 1 && allocation.height > 1) {
+		prefs_common.mainview_height = allocation.height;
+		prefs_common.mainwin_width   = allocation.width;
+		prefs_common.mainwin_height  = allocation.height;
 	}
 
-	allocation = &(GTK_WIDGET_PTR(mainwin->folderview)->allocation);
-	if (allocation->width > 1 && allocation->height > 1) {
-		prefs_common.folderview_width  = allocation->width;
-		prefs_common.folderview_height = allocation->height;
+	gtk_widget_get_allocation(GTK_WIDGET_PTR(mainwin->folderview), &allocation);
+	if (allocation.width > 1 && allocation.height > 1) {
+		prefs_common.folderview_width  = allocation.width;
+		prefs_common.folderview_height = allocation.height;
 	}
 
-	allocation = &(GTK_WIDGET_PTR(mainwin->messageview)->allocation);
-	if (allocation->width > 1 && allocation->height > 1) {
+	gtk_widget_get_allocation(GTK_WIDGET_PTR(mainwin->messageview), &allocation);
+	if (allocation.width > 1 && allocation.height > 1) {
 		if (vlayout) {
-			prefs_common.msgview_vwidth = allocation->width;
-			prefs_common.msgview_vheight = allocation->height;
+			prefs_common.msgview_vwidth = allocation.width;
+			prefs_common.msgview_vheight = allocation.height;
 		} else {
-			prefs_common.msgview_width = allocation->width;
-			prefs_common.msgview_height = allocation->height;
+			prefs_common.msgview_width = allocation.width;
+			prefs_common.msgview_height = allocation.height;
 		}
 	}
 
