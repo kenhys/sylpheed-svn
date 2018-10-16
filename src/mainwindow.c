@@ -1398,7 +1398,7 @@ static void main_window_set_account_receive_menu(MainWindow *mainwin,
 	/* search for separator */
 	for (cur_item = gtk_container_get_children(GTK_CONTAINER(menu)); cur_item != NULL;
 	     cur_item = cur_item->next) {
-		if (GTK_BIN(cur_item->data)->child == NULL) {
+		if (gtk_bin_get_child(GTK_BIN(cur_item->data)) == NULL) {
 			cur_item = cur_item->next;
 			break;
 		}
@@ -2258,7 +2258,7 @@ void main_window_set_menu_sensitive(MainWindow *mainwin)
 	/* search for separator */
 	for (cur_item = gtk_container_get_children(GTK_CONTAINER(menu)); cur_item != NULL;
 	     cur_item = cur_item->next) {
-		if (GTK_BIN(cur_item->data)->child == NULL) {
+		if (gtk_bin_get_child(GTK_BIN(cur_item->data)) == NULL) {
 			cur_item = cur_item->next;
 			break;
 		}
@@ -2766,7 +2766,7 @@ static GtkWidget *main_window_toolbar_create_from_list(MainWindow *mainwin,
 
 		g_signal_connect(G_OBJECT(toolitem), "clicked",
 				 G_CALLBACK(item->callback), mainwin);
-		g_signal_connect(G_OBJECT(GTK_BIN(toolitem)->child),
+		g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(toolitem))),
 				 "button_press_event",
 				 G_CALLBACK(toolbar_button_pressed), mainwin);
 
