@@ -419,7 +419,7 @@ FolderView *folderview_create(void)
 
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 	gtk_tree_view_set_expander_column(GTK_TREE_VIEW(treeview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(folderview_col_resized), folderview);
 
 	renderer = gtk_cell_renderer_text_new();
@@ -435,7 +435,7 @@ FolderView *folderview_create(void)
 	gtk_tree_view_column_set_min_width(column, 8);
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(folderview_col_resized), folderview);
 
 	renderer = gtk_cell_renderer_text_new();
@@ -451,7 +451,7 @@ FolderView *folderview_create(void)
 	gtk_tree_view_column_set_min_width(column, 8);
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(folderview_col_resized), folderview);
 
 	renderer = gtk_cell_renderer_text_new();
@@ -467,7 +467,7 @@ FolderView *folderview_create(void)
 	gtk_tree_view_column_set_min_width(column, 8);
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(folderview_col_resized), folderview);
 
 	/* add rightmost empty column */
@@ -2241,7 +2241,7 @@ static void folderview_col_resized(GtkWidget *widget, GtkAllocation *allocation,
 	for (type = 0; type <= COL_TOTAL; type++) {
 		column = gtk_tree_view_get_column
 			(GTK_TREE_VIEW(folderview->treeview), type);
-		if (column && column->button == widget) {
+		if (column && gtk_tree_view_column_get_widget(column) == widget) {
 			switch (type) {
 			case COL_FOLDER_NAME:
 				prefs_common.folder_col_folder = width;
