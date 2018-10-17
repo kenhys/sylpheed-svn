@@ -760,9 +760,11 @@ static gboolean textview_part_widget_exposed(GtkWidget *widget,
 	GdkDrawable *drawable;
 	GdkGC *gc;
 	gint w, h;
+	GtkAllocation allocation;
 
-	w = widget->allocation.width - 1;
-	h = widget->allocation.height - 1;
+	gtk_widget_get_allocation(widget, &allocation);
+	w = allocation.width - 1;
+	h = allocation.height - 1;
 	if (w <= 0 || h <= 0)
 		return FALSE;
 
