@@ -332,7 +332,7 @@ static void headerview_show_xface(HeaderView *headerview, MsgInfo *msginfo)
 	create_xpm_from_xface(xpm_xface, xface);
 
 	pixmap = gdk_pixmap_create_from_xpm_d
-		(gtk_widget_get_window(hbox), &mask, &hbox->style->white, xpm_xface);
+		(gtk_widget_get_window(hbox), &mask, &gtk_widget_get_style(hbox)->white, xpm_xface);
 
 	if (!headerview->image) {
 		GtkWidget *image;
