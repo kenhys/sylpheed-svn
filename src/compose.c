@@ -5646,6 +5646,8 @@ static Compose *compose_create(PrefsAccount *account, ComposeMode mode)
 	edit_vbox = gtk_vbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox2), edit_vbox, TRUE, TRUE, 0);
 
+#if 0
+	// FIXME:
 	/* ruler */
 	ruler_hbox = gtk_hbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(edit_vbox), ruler_hbox, FALSE, FALSE, 0);
@@ -5653,6 +5655,7 @@ static Compose *compose_create(PrefsAccount *account, ComposeMode mode)
 	ruler = gtk_shruler_new();
 	gtk_ruler_set_range(GTK_RULER(ruler), 0.0, 100.0, 1.0, 100.0);
 	gtk_box_pack_start(GTK_BOX(ruler_hbox), ruler, TRUE, TRUE, 0);
+#endif
 
 	/* text widget */
 	scrolledwin = gtk_scrolled_window_new(NULL, NULL);
@@ -5676,8 +5679,11 @@ static Compose *compose_create(PrefsAccount *account, ComposeMode mode)
 	sig_tag = gtk_text_buffer_create_tag(buffer, "signature", NULL);
 	gtk_container_add(GTK_CONTAINER(scrolledwin), text);
 
+#if 0
+	// FIXME:
 	gtk_shruler_set_start_pos(GTK_SHRULER(ruler),
 				  gtk_widget_get_style(text)->xthickness + TEXTVIEW_MARGIN);
+#endif
 
 	g_signal_connect(G_OBJECT(text), "grab_focus",
 			 G_CALLBACK(compose_grab_focus_cb), compose);
