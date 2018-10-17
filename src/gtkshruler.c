@@ -147,6 +147,7 @@ gtk_shruler_draw_ticks(GtkRuler *ruler)
 	gint ythickness;
 	gint pos;
 	GtkStyle *style;
+	GtkAllocation allocation;
 
 	g_return_if_fail (ruler != NULL);
 	g_return_if_fail (GTK_IS_HRULER (ruler));
@@ -163,14 +164,15 @@ gtk_shruler_draw_ticks(GtkRuler *ruler)
 	xthickness = style->xthickness;
 	ythickness = style->ythickness;
 
-	width = widget->allocation.width;
-	height = widget->allocation.height - ythickness * 2;
+	gtk_widget_get_allocation(widget, &allocation);
+	width = allocation.width;
+	height = allocation.height - ythickness * 2;
   
 	gtk_paint_box (style, ruler->backing_store,
 		       GTK_STATE_NORMAL, GTK_SHADOW_OUT, 
 		       NULL, widget, "hruler",
 		       0, 0, 
-		       widget->allocation.width, widget->allocation.height);
+		       allocation.width, allocation.height);
 
 #if 0
 	gdk_draw_line (ruler->backing_store, gc,
@@ -183,7 +185,7 @@ gtk_shruler_draw_ticks(GtkRuler *ruler)
 	/* assume ruler->max_size has the char width */
 	/* i is increment of char_width,  pos is label number
 	 * y position is based on height of widget itself */
-	for ( pos = GTK_SHRULER(ruler)->start_pos, i = 0; pos < widget->allocation.width - xthickness; pos += ruler->max_size, i++ ) {	
+	for ( pos = GTK_SHRULER(ruler)->start_pos, i = 0; pos < allocation.width - xthickness; pos += ruler->max_size, i++ ) {
 		gint length = height / 8;
 	
 		if ( i % 10 == 0 ) length = ( 2 * height / 3 );
