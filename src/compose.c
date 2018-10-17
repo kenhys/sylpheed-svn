@@ -5961,7 +5961,7 @@ static Compose *compose_create(PrefsAccount *account, ComposeMode mode)
 	gtk_widget_show(window);
 
 	color[0] = quote_color;
-	cmap = gdk_window_get_colormap(window->window);
+	cmap = gdk_window_get_colormap(gtk_widget_get_window(window));
 	gdk_colormap_alloc_colors(cmap, color, 1, FALSE, TRUE, success);
 	if (success[0] == FALSE) {
 		GtkStyle *style;
