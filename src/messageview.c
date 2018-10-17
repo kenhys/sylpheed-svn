@@ -1104,7 +1104,7 @@ static void set_charset_cb(gpointer data, guint action, GtkWidget *widget)
 	MessageView *messageview = (MessageView *)data;
 	const gchar *charset;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		charset = conv_get_charset_str((CharSet)action);
 		g_free(messageview->forced_charset);
 		messageview->forced_charset = g_strdup(charset);
@@ -1136,7 +1136,7 @@ static void show_all_header_cb(gpointer data, guint action, GtkWidget *widget)
 
 	messageview->msginfo = NULL;
 	messageview_show(messageview, msginfo,
-			 GTK_CHECK_MENU_ITEM(widget)->active);
+			 gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)));
 	procmsg_msginfo_free(msginfo);
 }
 
