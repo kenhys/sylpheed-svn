@@ -595,7 +595,7 @@ SummaryView *summary_create(void)
 
 	summaryview->reedit_menuitem =
 		gtk_item_factory_get_widget(popupfactory, "/Re-edit");
-	child = g_list_find(GTK_MENU_SHELL(popupmenu)->children,
+	child = g_list_find(gtk_container_get_children(GTK_CONTAINER(popupmenu)),
 			    summaryview->reedit_menuitem);
 	summaryview->reedit_separator = GTK_WIDGET(child->next->data);
 
@@ -604,7 +604,7 @@ SummaryView *summary_create(void)
 	summaryview->nojunk_menuitem =
 		gtk_item_factory_get_widget(popupfactory,
 					    "/Set as not junk mail");
-	child = g_list_find(GTK_MENU_SHELL(popupmenu)->children,
+	child = g_list_find(gtk_container_get_children(GTK_CONTAINER(popupmenu)),
 			    summaryview->nojunk_menuitem);
 	summaryview->junk_separator = GTK_WIDGET(child->next->data);
 
@@ -5331,7 +5331,7 @@ static void summary_colorlabel_menu_item_activate_item_cb(GtkMenuItem *menuitem,
 	g_object_set_data(G_OBJECT(menu), "dont_toggle", GINT_TO_POINTER(1));
 
 	/* clear items. get item pointers. */
-	for (n = 0, menu_cur = menu->children; menu_cur != NULL;
+	for (n = 0, menu_cur = gtk_container_get_children(GTK_CONTAINER(menu)); menu_cur != NULL;
 	     menu_cur = menu_cur->next) {
 		if (GTK_IS_CHECK_MENU_ITEM(menu_cur->data)) {
 			gtk_check_menu_item_set_active
