@@ -6574,6 +6574,8 @@ static void compose_destroy(Compose *compose)
 	AttachInfo *ainfo;
 	GtkTextBuffer *buffer;
 	GtkClipboard *clipboard;
+	GtkAllocation allocation;
+	GtkAllocation scrolled_allocation;
 
 	compose_list = g_list_remove(compose_list, compose);
 
@@ -6635,10 +6637,10 @@ static void compose_destroy(Compose *compose)
 		gtkut_widget_get_uposition(compose->window,
 					   &prefs_common.compose_x,
 					   &prefs_common.compose_y);
-		prefs_common.compose_width =
-			compose->scrolledwin->allocation.width;
-		prefs_common.compose_height =
-			compose->window->allocation.height;
+		gtk_widget_get_allocation(compose->window, &allocation);
+		gtk_widget_get_allocation(compose->scrolledwin, &scrolled_allocation);
+		prefs_common.compose_width = scrolled_allocation.width;
+		prefs_common.compose_height = allocation.height;
 	}
 
 	if (!gtk_widget_get_parent(compose->paned))
