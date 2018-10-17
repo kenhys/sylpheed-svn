@@ -8462,9 +8462,9 @@ static void compose_attach_drag_received_cb (GtkWidget		*widget,
 		content_type = "message/rfc822";
 
 	debug_print("compose_attach_drag_received_cb(): received %s\n",
-		    (const gchar *)data->data);
+		    (const gchar *)gtk_selection_data_get_data(data));
 
-	list = uri_list_extract_filenames((const gchar *)data->data);
+	list = uri_list_extract_filenames((const gchar *)gtk_selection_data_get_data(data));
 	for (cur = list; cur != NULL; cur = cur->next) {
 		path = (gchar *)cur->data;
 		filename = conv_filename_to_utf8(path);
@@ -8496,7 +8496,7 @@ static void compose_insert_drag_received_cb (GtkWidget		*widget,
 	static guint time_ = G_MAXUINT;
 
 	debug_print("compose_insert_drag_received_cb(): received %s\n",
-		    (const gchar *)data->data);
+		    (const gchar *)gtk_selection_data_get_data(data));
 
 	/* FIXME: somehow drag-data-received signal is emitted twice.
 	 * This hack prevents duplicated insertion. */
