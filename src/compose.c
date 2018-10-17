@@ -6379,7 +6379,7 @@ static void compose_change_spell_lang_menu(Compose *compose, const gchar *lang)
 		return;
 
 	menu = gtk_menu_item_get_submenu(GTK_MENU_ITEM(compose->spell_menu));
-	for (cur_item = GTK_MENU_SHELL(menu)->children; cur_item != NULL;
+	for (cur_item = gtk_container_get_children(GTK_CONTAINER(menu)); cur_item != NULL;
 	     cur_item = cur_item->next) {
 		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(cur_item->data)))
 			def_item = GTK_WIDGET(cur_item->data);
