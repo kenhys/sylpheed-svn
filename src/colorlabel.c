@@ -137,6 +137,7 @@ static gboolean colorlabel_drawing_area_expose_event_cb
 	gulong c = (gulong) GPOINTER_TO_INT(data);
 	GdkColor color;
 	GdkGC *gc;
+	GtkAllocation allocation;
 
 	color.red   = ((c >> 16UL) & 0xFFUL) << 8UL;
 	color.green = ((c >>  8UL) & 0xFFUL) << 8UL;
@@ -146,13 +147,14 @@ static gboolean colorlabel_drawing_area_expose_event_cb
 
 	gc = gdk_gc_new(drawable);
 
+	gtk_widget_get_allocation(widget, &allocation);
 	gdk_gc_set_foreground(gc, &color);
 	gdk_draw_rectangle(drawable, gc,
-			   TRUE, 0, 0, widget->allocation.width - 1,
-			   widget->allocation.height - 1);
+			   TRUE, 0, 0, allocation.width - 1,
+			   allocation.height - 1);
 	gdk_draw_rectangle(drawable, widget->style->black_gc,
-			   FALSE, 0, 0, widget->allocation.width - 1,
-			   widget->allocation.height - 1);
+			   FALSE, 0, 0, allocation.width - 1,
+			   allocation.height - 1);
 
 	gdk_gc_unref(gc);			   
 
