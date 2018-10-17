@@ -8476,8 +8476,11 @@ static void compose_attach_drag_received_cb (GtkWidget		*widget,
 	if (list) compose_changed_cb(NULL, compose);
 	g_list_free(list);
 
+#if 0
+	// FIXME:/
 	if ((gdk_drag_context_get_actions(drag_context) & GDK_ACTION_MOVE) != 0)
 		drag_context->action = 0;
+#endif
 	gtk_drag_finish(drag_context, TRUE, FALSE, time);
 }
 
