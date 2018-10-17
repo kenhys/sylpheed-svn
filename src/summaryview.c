@@ -1075,7 +1075,7 @@ static void summary_clear_list_full(SummaryView *summaryview,
 
 	/* ensure that the "value-changed" signal is always emitted */
 	adj = gtk_tree_view_get_vadjustment(treeview);
-	adj->value = 0.0;
+	gtk_adjustment_set_value(adj, 0.0);
 
 	summary_unset_sort_column_id(summaryview);
 }
@@ -6103,7 +6103,7 @@ static gboolean summary_key_pressed(GtkWidget *widget, GdkEventKey *event,
 	case GDK_KP_Left:
 		adj = gtk_scrolled_window_get_hadjustment
 			(GTK_SCROLLED_WINDOW(summaryview->scrolledwin));
-		if (adj->lower != adj->value)
+		if (gtk_adjustment_get_lower(adj) != gtk_adjustment_get_value(adj))
 			return FALSE;
 		/* FALLTHROUGH */
 	case GDK_Escape:
@@ -6526,11 +6526,11 @@ static void summary_text_adj_value_changed(GtkAdjustment *adj,
 {
 	static gdouble prev_vadj = 0.0;
 
-	if (summaryview->displayed && adj->value > prev_vadj &&
+	if (summaryview->displayed && gtk_adjustment_get_value(adj) > prev_vadj &&
 	    prefs_common.always_show_msg)
 		summary_mark_displayed_read(summaryview, NULL);
 
-	prev_vadj = adj->value;
+	prev_vadj = gtk_adjustment_get_value(adj);
 }
 
 
