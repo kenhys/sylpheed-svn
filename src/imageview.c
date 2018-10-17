@@ -171,9 +171,11 @@ GdkPixbuf *imageview_get_resized_pixbuf(GdkPixbuf *pixbuf, GtkWidget *parent,
 	gint avail_height;
 	gint new_width;
 	gint new_height;
+	GtkAllocation allocation;
 
-	avail_width = parent->allocation.width;
-	avail_height = parent->allocation.height;
+	gtk_widget_get_allocation(parent, &allocation);
+	avail_width = allocation.width;
+	avail_height = allocation.height;
 	if (avail_width > margin) avail_width -= margin;
 	if (avail_height > margin) avail_height -= margin;
 
