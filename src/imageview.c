@@ -92,7 +92,7 @@ void imageview_show_image(ImageView *imageview, MimeInfo *mimeinfo,
 
 	g_return_if_fail(imageview != NULL);
 	g_return_if_fail(imageview->scrolledwin != NULL);
-	g_return_if_fail(imageview->scrolledwin->parent != NULL);
+	g_return_if_fail(gtk_widget_get_parent(imageview->scrolledwin) != NULL);
 
 	if (file) {
 		imageview_clear(imageview);
@@ -118,7 +118,7 @@ void imageview_show_image(ImageView *imageview, MimeInfo *mimeinfo,
 
 	if (resize) {
 		pixbuf = imageview_get_resized_pixbuf
-			(pixbuf, imageview->scrolledwin->parent, 8);
+			(pixbuf, gtk_widget_get_parent(imageview->scrolledwin), 8);
 	} else
 		g_object_ref(pixbuf);
 
@@ -304,7 +304,7 @@ static void size_allocate_cb(GtkWidget *widget,GtkAllocation *allocation,
 			imageview->resizing = FALSE;
 			return;
 		}
-		if (!imageview->scrolledwin->parent)
+		if (!gtk_widget_get_parent(imageview->scrolledwin))
 			return;
 		if (!imageview->image_data)
 			return;
