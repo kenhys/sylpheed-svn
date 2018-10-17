@@ -259,7 +259,7 @@ MimeView *mimeview_create(void)
 				      "<MimeView>", &popupfactory, mimeview);
 
 	reply_menuitem = gtk_item_factory_get_item(popupfactory, "/Reply");
-	child = g_list_find(GTK_MENU_SHELL(popupmenu)->children,
+	child = g_list_find(gtk_container_get_children(GTK_CONTAINER(popupmenu)),
 			    reply_menuitem);
 	reply_separator = GTK_WIDGET(child->prev->data);
 
