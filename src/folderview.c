@@ -3326,12 +3326,12 @@ static gboolean folderview_drag_motion_cb(GtkWidget      *widget,
 #endif
 
 	if (acceptable) {
-		if ((context->actions & GDK_ACTION_MOVE) != 0 &&
+		if ((gdk_drag_context_get_actions(context) & GDK_ACTION_MOVE) != 0 &&
 		    FOLDER_ITEM_CAN_ADD(src_item))
 			gdk_drag_status(context, GDK_ACTION_MOVE, time);
-		else if ((context->actions & GDK_ACTION_COPY) != 0)
+		else if ((gdk_drag_context_get_actions(context) & GDK_ACTION_COPY) != 0)
 			gdk_drag_status(context, GDK_ACTION_COPY, time);
-		else if ((context->actions & GDK_ACTION_LINK) != 0)
+		else if ((gdk_drag_context_get_actions(context) & GDK_ACTION_LINK) != 0)
 			gdk_drag_status(context, GDK_ACTION_LINK, time);
 		else
 			gdk_drag_status(context, 0, time);
@@ -3384,12 +3384,12 @@ static void folderview_drag_received_cb(GtkWidget        *widget,
 	if (FOLDER_ITEM_CAN_ADD(item) && src_item && src_item != item &&
 	    src_item->stype != F_QUEUE && item->stype != F_QUEUE &&
 	    item->stype != F_VIRTUAL) {
-		if ((context->actions & GDK_ACTION_MOVE) != 0 &&
+		if ((gdk_drag_context_get_actions(context) & GDK_ACTION_MOVE) != 0 &&
 		    FOLDER_ITEM_CAN_ADD(src_item)) {
 			summary_move_selected_to(folderview->summaryview, item);
 			context->action = 0;
 			gtk_drag_finish(context, TRUE, FALSE, time);
-		} else if ((context->actions & GDK_ACTION_COPY) != 0) {
+		} else if ((gdk_drag_context_get_actions(context) & GDK_ACTION_COPY) != 0) {
 			summary_copy_selected_to(folderview->summaryview, item);
 			gtk_drag_finish(context, TRUE, FALSE, time);
 		} else
