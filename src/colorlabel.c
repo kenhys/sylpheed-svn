@@ -152,7 +152,7 @@ static gboolean colorlabel_drawing_area_expose_event_cb
 	gdk_draw_rectangle(drawable, gc,
 			   TRUE, 0, 0, allocation.width - 1,
 			   allocation.height - 1);
-	gdk_draw_rectangle(drawable, widget->style->black_gc,
+	gdk_draw_rectangle(drawable, gtk_widget_get_style(widget)->black_gc,
 			   FALSE, 0, 0, allocation.width - 1,
 			   allocation.height - 1);
 
