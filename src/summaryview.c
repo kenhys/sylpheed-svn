@@ -6440,7 +6440,7 @@ static void summary_drag_data_get(GtkWidget        *widget,
 	GtkTreeIter iter;
 
 	if (info == DRAG_TYPE_TEXT) {
-		gtk_selection_data_set(selection_data, selection_data->target,
+		gtk_selection_data_set(selection_data, gtk_selection_data_get_target(selection_data),
 				       8, (guchar *)"drag-from-summary", 17);
 		return;
 	}
@@ -6515,7 +6515,7 @@ static void summary_drag_data_get(GtkWidget        *widget,
 
 	if (summaryview->drag_list) {
 		gtk_selection_data_set(selection_data,
-				       selection_data->target, 8,
+				       gtk_selection_data_get_target(selection_data), 8,
 				       (guchar *)summaryview->drag_list,
 				       strlen(summaryview->drag_list));
 	}
