@@ -5505,10 +5505,10 @@ static GtkWidget *summary_tree_view_create(SummaryView *summaryview)
 	/* gtk_tree_view_column_set_sort_column_id(column, col); */	\
 	gtk_tree_view_column_set_reorderable(column, TRUE);		\
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);	\
-	g_signal_connect(G_OBJECT(column->button), "clicked",		\
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "clicked", \
 			 G_CALLBACK(summary_column_clicked),		\
 			 summaryview);					\
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",	\
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate", \
 			 G_CALLBACK(summary_col_resized), summaryview);	\
 }
 
@@ -6334,7 +6334,7 @@ static void summary_col_resized(GtkWidget *widget, GtkAllocation *allocation,
 	SummaryColumnType type;
 
 	for (type = 0; type < N_SUMMARY_VISIBLE_COLS; type++) {
-		if (summaryview->columns[type]->button == widget) {
+		if (gtk_tree_view_column_get_widget(summaryview->columns[type]) == widget) {
 			prefs_common.summary_col_size[type] = allocation->width;
 			break;
 		}
@@ -6387,7 +6387,7 @@ static void summary_column_clicked(GtkWidget *button, SummaryView *summaryview)
 	SummaryColumnType type;
 
 	for (type = 0; type < N_SUMMARY_VISIBLE_COLS; type++) {
-		if (summaryview->columns[type]->button == button) {
+		if (gtk_tree_view_column_get_widget(summaryview->columns[type]) == button) {
 			summary_sort_by_column_click(summaryview, type);
 			break;
 		}
