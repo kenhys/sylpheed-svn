@@ -3387,7 +3387,10 @@ static void folderview_drag_received_cb(GtkWidget        *widget,
 		if ((gdk_drag_context_get_actions(context) & GDK_ACTION_MOVE) != 0 &&
 		    FOLDER_ITEM_CAN_ADD(src_item)) {
 			summary_move_selected_to(folderview->summaryview, item);
+#ifndef GSEAL_ENABLE
+			/* FIXME: */
 			context->action = 0;
+#endif
 			gtk_drag_finish(context, TRUE, FALSE, time);
 		} else if ((gdk_drag_context_get_actions(context) & GDK_ACTION_COPY) != 0) {
 			summary_copy_selected_to(folderview->summaryview, item);
