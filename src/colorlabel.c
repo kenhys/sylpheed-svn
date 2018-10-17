@@ -133,7 +133,7 @@ void colorlabel_set_color_text(gint color_index, const gchar *label)
 static gboolean colorlabel_drawing_area_expose_event_cb
 	(GtkWidget *widget, GdkEventExpose *expose, gpointer data)
 {
-	GdkDrawable *drawable = widget->window;
+	GdkDrawable *drawable = gtk_widget_get_window(widget);
 	gulong c = (gulong) GPOINTER_TO_INT(data);
 	GdkColor color;
 	GdkGC *gc;
