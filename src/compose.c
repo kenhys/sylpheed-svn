@@ -3303,7 +3303,7 @@ static gboolean compose_check_recipients(Compose *compose)
 		gint size;
 
 		size = pango_font_description_get_size
-			(label->style->font_desc);
+			(gtk_widget_get_style(label)->font_desc);
 		font_desc = pango_font_description_new();
 		pango_font_description_set_weight
 			(font_desc, PANGO_WEIGHT_BOLD);
@@ -5674,7 +5674,7 @@ static Compose *compose_create(PrefsAccount *account, ComposeMode mode)
 	gtk_container_add(GTK_CONTAINER(scrolledwin), text);
 
 	gtk_shruler_set_start_pos(GTK_SHRULER(ruler),
-				  text->style->xthickness + TEXTVIEW_MARGIN);
+				  gtk_widget_get_style(text)->xthickness + TEXTVIEW_MARGIN);
 
 	g_signal_connect(G_OBJECT(text), "grab_focus",
 			 G_CALLBACK(compose_grab_focus_cb), compose);
