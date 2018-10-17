@@ -6139,7 +6139,7 @@ static GtkWidget *compose_toolbar_create_from_list(Compose *compose,
 
 		g_signal_connect(G_OBJECT(toolitem), "clicked",
 				 G_CALLBACK(item->callback), compose);
-		g_signal_connect(G_OBJECT(GTK_BIN(toolitem)->child),
+		g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(toolitem))),
 				 "button_press_event",
 				 G_CALLBACK(toolbar_button_pressed), compose);
 
