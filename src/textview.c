@@ -729,7 +729,7 @@ static gboolean textview_part_widget_button_pressed(GtkWidget *widget,
 	menu = textview->popup_menu;
 	mimeinfo = g_object_get_data(G_OBJECT(widget), "mimeinfo");
 
-	for (cur = GTK_MENU_SHELL(menu)->children; cur != NULL; cur = cur->next) {
+	for (cur = gtk_container_get_children(GTK_CONTAINER(menu)); cur != NULL; cur = cur->next) {
 		GtkWidget *menuitem = GTK_WIDGET(cur->data);
 		gint type = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(menuitem), MENU_VAL_ID));
 		if (type == PART_MENU_PRINT) {
