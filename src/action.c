@@ -420,7 +420,7 @@ static void action_update_menu(GtkItemFactory *ifactory, gchar *branch_path,
 	menuitem = gtk_item_factory_get_widget(ifactory, branch_path);
 	g_return_if_fail(menuitem != NULL);
 
-	amenu = GTK_MENU_SHELL(menuitem)->children;
+	amenu = gtk_container_get_children(GTK_CONTAINER(menuitem));
 	while (amenu != NULL) {
 		GList *alist = amenu->next;
 		gtk_widget_destroy(GTK_WIDGET(amenu->data));
