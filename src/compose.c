@@ -5306,8 +5306,10 @@ static void compose_add_entry_field(GtkWidget *table, GtkWidget **hbox,
 				    gboolean is_addr_entry)
 {
 	GtkWidget *label;
+	guint n_rows, n_columns;
 
-	if (GTK_TABLE(table)->nrows < (*count) + 1)
+	gtk_table_get_size(GTK_TABLE(table), &n_rows, &n_columns);
+	if (n_rows < (*count) + 1)
 		gtk_table_resize(GTK_TABLE(table), (*count) + 1, 2);
 
 	*hbox = gtk_hbox_new(FALSE, 0);
@@ -5320,7 +5322,8 @@ static void compose_add_entry_field(GtkWidget *table, GtkWidget **hbox,
 	gtk_entry_set_max_length(GTK_ENTRY(*entry), MAX_ENTRY_LENGTH);
 	gtk_table_attach_defaults
 		(GTK_TABLE(table), *entry, 1, 2, *count, (*count) + 1);
-	if (GTK_TABLE(table)->nrows > (*count) + 1)
+	gtk_table_get_size(GTK_TABLE(table), &n_rows, &n_columns);
+	if (n_rows > (*count) + 1)
 		gtk_table_set_row_spacing(GTK_TABLE(table), *count, 4);
 
 	if (is_addr_entry && prefs_common.enable_address_completion)
