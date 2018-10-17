@@ -666,6 +666,7 @@ static void part_menu_button_position(GtkMenu *menu, gint *x, gint *y,
 {
 	GtkWidget *widget;
 	GtkRequisition requisition;
+	GtkRequisition widget_requisition;
 	gint button_xpos, button_ypos;
 	gint xpos, ypos;
 	gint width, height;
@@ -679,8 +680,9 @@ static void part_menu_button_position(GtkMenu *menu, gint *x, gint *y,
 	height = requisition.height;
 	gdk_window_get_origin(gtk_widget_get_window(widget), &button_xpos, &button_ypos);
 
+	gtk_widget_get_requisition(widget, &widget_requisition);
 	xpos = button_xpos;
-	ypos = button_ypos + widget->requisition.height;
+	ypos = button_ypos + widget_requisition.height;
 
 	scr_width = gdk_screen_width();
 	scr_height = gdk_screen_height();
@@ -688,7 +690,7 @@ static void part_menu_button_position(GtkMenu *menu, gint *x, gint *y,
 	if (xpos + width > scr_width)
 		xpos -= (xpos + width) - scr_width;
 	if (ypos + height > scr_height)
-		ypos -= widget->requisition.height + height;
+		ypos -= widget_requisition.height + height;
 	if (xpos < 0)
 		xpos = 0;
 	if (ypos < 0)
