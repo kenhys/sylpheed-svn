@@ -1083,7 +1083,7 @@ static void create_io_dialog(Children *children)
 
 	dialog = gtk_dialog_new();
 	gtk_container_set_border_width
-		(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area), 5);
+		(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), 5);
 	gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
 	gtk_window_set_title(GTK_WINDOW(dialog), _("Action's input/output"));
 	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
@@ -1171,7 +1171,7 @@ static void create_io_dialog(Children *children)
 	if (children->nb)
 		gtk_widget_set_sensitive(close_button, FALSE);
 
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area), hbox);
+	gtk_container_add(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), hbox);
 
 	children->dialog      = dialog;
 	children->scrolledwin = scrolledwin;
