@@ -7922,7 +7922,7 @@ static void compose_set_encoding_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		compose->out_encoding = (CharSet)action;
 }
 
@@ -8185,7 +8185,7 @@ static void compose_toggle_autowrap_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	compose->autowrap = GTK_CHECK_MENU_ITEM(widget)->active;
+	compose->autowrap = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget));
 	if (compose->autowrap)
 		compose_wrap_all_full(compose, TRUE);
 }
@@ -8195,7 +8195,7 @@ static void compose_toggle_to_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(compose->to_hbox);
 		gtk_widget_show(compose->to_entry);
 		gtk_table_set_row_spacing(GTK_TABLE(compose->table), 1, 4);
@@ -8214,7 +8214,7 @@ static void compose_toggle_cc_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(compose->cc_hbox);
 		gtk_widget_show(compose->cc_entry);
 		gtk_table_set_row_spacing(GTK_TABLE(compose->table), 3, 4);
@@ -8233,7 +8233,7 @@ static void compose_toggle_bcc_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(compose->bcc_hbox);
 		gtk_widget_show(compose->bcc_entry);
 		gtk_table_set_row_spacing(GTK_TABLE(compose->table), 4, 4);
@@ -8252,7 +8252,7 @@ static void compose_toggle_replyto_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(compose->reply_hbox);
 		gtk_widget_show(compose->reply_entry);
 		gtk_table_set_row_spacing(GTK_TABLE(compose->table), 5, 4);
@@ -8271,7 +8271,7 @@ static void compose_toggle_followupto_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(compose->followup_hbox);
 		gtk_widget_show(compose->followup_entry);
 		gtk_table_set_row_spacing(GTK_TABLE(compose->table), 6, 4);
@@ -8290,7 +8290,7 @@ static void compose_toggle_attach_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_ref(compose->edit_vbox);
 
 		gtkut_container_remove(GTK_CONTAINER(compose->vbox2),
@@ -8339,7 +8339,7 @@ static void compose_toggle_mdn_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		compose->use_mdn = TRUE;
 	else
 		compose->use_mdn = FALSE;
@@ -8354,7 +8354,7 @@ static void compose_toggle_sign_cb(gpointer data, guint action,
 	if (!rfc2015_is_available())
 		return;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		compose->use_signing = TRUE;
 	else
 		compose->use_signing = FALSE;
@@ -8371,7 +8371,7 @@ static void compose_toggle_encrypt_cb(gpointer data, guint action,
 	if (!rfc2015_is_available())
 		return;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active)
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		compose->use_encryption = TRUE;
 	else
 		compose->use_encryption = FALSE;
@@ -8388,7 +8388,7 @@ static void compose_toggle_spell_cb(gpointer data, guint action,
 	Compose *compose = (Compose *)data;
 	GtkSpell *speller;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		debug_print("Spell checking enabled: %s\n",
 			    compose->spell_lang ? compose->spell_lang : "(none)");
 		speller = gtkspell_new_attach(GTK_TEXT_VIEW(compose->text),
@@ -8432,7 +8432,7 @@ static void compose_toggle_ruler_cb(gpointer data, guint action,
 {
 	Compose *compose = (Compose *)data;
 
-	if (GTK_CHECK_MENU_ITEM(widget)->active) {
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget))) {
 		gtk_widget_show(compose->ruler_hbox);
 		prefs_common.show_ruler = TRUE;
 	} else {
