@@ -219,16 +219,22 @@ void
 gtk_shruler_set_pos(GtkSHRuler * ruler, gfloat pos)
 {
 	GtkRuler * ruler_;
+	gdouble lower;
+	gdouble upper;
+	gdouble position;
+	gdouble max_size;
+
 	g_return_if_fail( ruler != NULL );
 	
 	ruler_ = GTK_RULER(ruler);
 	
-	if ( pos < ruler_->lower ) 
-		pos = ruler_->lower;
-	if ( pos > ruler_->upper )
-		pos = ruler_->upper;
+	gtk_ruler_get_range(ruler_, &lower, &upper, &position, &max_size);
+	if ( pos < lower )
+		pos = lower;
+	if ( pos > upper )
+		pos = upper;
 	
-	ruler_->position = pos;	
+	gtk_ruler_set_range(ruler_, lower, upper, pos, max_size);
 	
 	/*  Make sure the ruler has been allocated already  */
 	if ( ruler_->backing_store != NULL )
