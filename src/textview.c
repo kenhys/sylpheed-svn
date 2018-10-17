@@ -677,7 +677,7 @@ static void part_menu_button_position(GtkMenu *menu, gint *x, gint *y,
 	gtk_widget_get_child_requisition(GTK_WIDGET(menu), &requisition);
 	width = requisition.width;
 	height = requisition.height;
-	gdk_window_get_origin(widget->window, &button_xpos, &button_ypos);
+	gdk_window_get_origin(gtk_widget_get_window(widget), &button_xpos, &button_ypos);
 
 	xpos = button_xpos;
 	ypos = button_ypos + widget->requisition.height;
