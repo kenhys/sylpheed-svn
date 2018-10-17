@@ -642,7 +642,7 @@ void summary_init(SummaryView *summaryview)
 
 	font_desc = pango_font_description_new();
 	size = pango_font_description_get_size
-		(summaryview->statlabel_folder->style->font_desc);
+		(gtk_widget_get_style(summaryview->statlabel_folder)->font_desc);
 	pango_font_description_set_size(font_desc, size * PANGO_SCALE_SMALL);
 	gtk_widget_modify_font(summaryview->statlabel_folder, font_desc);
 	gtk_widget_modify_font(summaryview->statlabel_select, font_desc);
