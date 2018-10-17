@@ -702,7 +702,7 @@ static void messageview_set_tool_menu(MessageView *messageview,
 	cur_item = gtk_container_get_children(GTK_CONTAINER(messageview->tool_menu));
 	while (cur_item != NULL) {
 		next = cur_item->next;
-		if (GTK_BIN(cur_item->data)->child == NULL)
+		if (gtk_bin_get_child(GTK_BIN(cur_item->data)) == NULL)
 			break;
 		gtk_widget_destroy(GTK_WIDGET(cur_item->data));
 		cur_item = next;
