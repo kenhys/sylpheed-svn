@@ -661,12 +661,12 @@ void summary_init(SummaryView *summaryview)
 	summary_set_menu_sensitive(summaryview);
 
 	textview = summaryview->messageview->textview;
-	adj = GTK_TEXT_VIEW(textview->text)->vadjustment;
+	adj = gtk_text_view_get_vadjustment(GTK_TEXT_VIEW(textview->text));
 	g_signal_connect(adj, "value-changed",
 			 G_CALLBACK(summary_text_adj_value_changed),
 			 summaryview);
 	textview = summaryview->messageview->mimeview->textview;
-	adj = GTK_TEXT_VIEW(textview->text)->vadjustment;
+	adj = gtk_text_view_get_vadjustment(GTK_TEXT_VIEW(textview->text));
 	g_signal_connect(adj, "value-changed",
 			 G_CALLBACK(summary_text_adj_value_changed),
 			 summaryview);
