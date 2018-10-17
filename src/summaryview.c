@@ -6351,7 +6351,7 @@ static void summary_show_all_header_cb(SummaryView *summaryview,
 				       guint action, GtkWidget *widget)
 {
 	summary_display_msg_selected(summaryview, FALSE,
-				     GTK_CHECK_MENU_ITEM(widget)->active);
+				     gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)));
 }
 
 static void summary_add_address_cb(SummaryView *summaryview,
