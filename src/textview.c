@@ -304,7 +304,7 @@ TextView *textview_create(void)
 	g_signal_connect(G_OBJECT(text), "populate-popup",
 			 G_CALLBACK(textview_populate_popup), textview);
 
-	g_signal_connect(G_OBJECT(GTK_TEXT_VIEW(text)->vadjustment),
+	g_signal_connect(G_OBJECT(gtk_text_view_get_vadjustment(GTK_TEXT_VIEW(text))),
 			 "value-changed",
 			 G_CALLBACK(textview_adj_value_changed), textview);
 
@@ -1648,7 +1648,7 @@ void textview_clear(TextView *textview)
 
 	/* workaround for the assertion failure in
 	   gtk_text_view_validate_onscreen() */
-	text->vadjustment->value = 0.0;
+	gtk_adjustment_set_value(gtk_text_view_get_vadjustment(text), 0.0);
 
 	STATUSBAR_POP(textview);
 	textview_uri_list_remove_all(textview->uri_list);
@@ -1922,26 +1922,28 @@ gboolean textview_search_string_backward(TextView *textview, const gchar *str,
 void textview_scroll_one_line(TextView *textview, gboolean up)
 {
 	GtkTextView *text = GTK_TEXT_VIEW(textview->text);
-	GtkAdjustment *vadj = text->vadjustment;
+	GtkAdjustment *vadj = gtk_text_view_get_vadjustment(text);
 	gfloat upper;
+	gfloat value;
 
 	if (prefs_common.enable_smooth_scroll) {
 		textview_smooth_scroll_one_line(textview, up);
 		return;
 	}
 
+	value = gtk_adjustment_get_value(vadj);
 	if (!up) {
-		upper = vadj->upper - vadj->page_size;
-		if (vadj->value < upper) {
-			vadj->value += vadj->step_increment;
-			vadj->value = MIN(vadj->value, upper);
+		upper = gtk_adjustment_get_upper(vadj) - gtk_adjustment_get_page_size(vadj);
+		if (value < upper) {
+			value += gtk_adjustment_get_step_increment(vadj);
+			gtk_adjustment_set_value(vadj, MIN(value, upper));
 			g_signal_emit_by_name(G_OBJECT(vadj),
 					      "value_changed", 0);
 		}
 	} else {
-		if (vadj->value > 0.0) {
-			vadj->value -= vadj->step_increment;
-			vadj->value = MAX(vadj->value, 0.0);
+		if (value > 0.0) {
+			value -= gtk_adjustment_get_step_increment(vadj);
+			gtk_adjustment_set_value(vadj, MAX(value, 0.0));
 			g_signal_emit_by_name(G_OBJECT(vadj),
 					      "value_changed", 0);
 		}
@@ -1951,31 +1953,34 @@ void textview_scroll_one_line(TextView *textview, gboolean up)
 gboolean textview_scroll_page(TextView *textview, gboolean up)
 {
 	GtkTextView *text = GTK_TEXT_VIEW(textview->text);
-	GtkAdjustment *vadj = text->vadjustment;
+	GtkAdjustment *vadj = gtk_text_view_get_vadjustment(text);
 	gfloat upper;
 	gfloat page_incr;
+	gfloat value;
 
 	if (prefs_common.enable_smooth_scroll)
 		return textview_smooth_scroll_page(textview, up);
 
 	if (prefs_common.scroll_halfpage)
-		page_incr = vadj->page_increment / 2;
+		page_incr = gtk_adjustment_get_page_increment(vadj) / 2;
 	else
-		page_incr = vadj->page_increment;
+		page_incr = gtk_adjustment_get_page_increment(vadj);
 
+	value = gtk_adjustment_get_value(vadj);
 	if (!up) {
-		upper = vadj->upper - vadj->page_size;
-		if (vadj->value < upper) {
-			vadj->value += page_incr;
-			vadj->value = MIN(vadj->value, upper);
+		upper = gtk_adjustment_get_upper(vadj) - gtk_adjustment_get_page_size(vadj);
+		gtk_adjustment_set_upper(vadj, upper);
+		if (value < upper) {
+			value += page_incr;
+			gtk_adjustment_set_value(vadj, MIN(value, upper));
 			g_signal_emit_by_name(G_OBJECT(vadj),
 					      "value_changed", 0);
 		} else
 			return FALSE;
 	} else {
-		if (vadj->value > 0.0) {
-			vadj->value -= page_incr;
-			vadj->value = MAX(vadj->value, 0.0);
+		if (value > 0.0) {
+			value -= page_incr;
+			gtk_adjustment_set_value(vadj, MAX(value, 0.0));
 			g_signal_emit_by_name(G_OBJECT(vadj),
 					      "value_changed", 0);
 		} else
@@ -1990,7 +1995,7 @@ static void textview_smooth_scroll_do(TextView *textview,
 				      gint step)
 {
 	GtkTextView *text = GTK_TEXT_VIEW(textview->text);
-	GtkAdjustment *vadj = text->vadjustment;
+	GtkAdjustment *vadj = gtk_text_view_get_vadjustment(text);
 	gint change_value;
 	gboolean up;
 	gint i;
@@ -2009,14 +2014,14 @@ static void textview_smooth_scroll_do(TextView *textview,
 					textview);
 
 	for (i = step; i <= change_value; i += step) {
-		vadj->value = old_value + (up ? -i : i);
+		gtk_adjustment_set_value(vadj, old_value + (up ? -i : i));
 		g_signal_emit_by_name(G_OBJECT(vadj), "value_changed", 0);
 	}
 
 	g_signal_handlers_unblock_by_func(vadj, textview_adj_value_changed,
 					  textview);
 
-	vadj->value = last_value;
+	gtk_adjustment_set_value(vadj, last_value);
 	g_signal_emit_by_name(G_OBJECT(vadj), "value_changed", 0);
 
 	/* gdk_key_repeat_restore(); */
@@ -2027,16 +2032,18 @@ static void textview_smooth_scroll_do(TextView *textview,
 static void textview_smooth_scroll_one_line(TextView *textview, gboolean up)
 {
 	GtkTextView *text = GTK_TEXT_VIEW(textview->text);
-	GtkAdjustment *vadj = text->vadjustment;
+	GtkAdjustment *vadj = gtk_text_view_get_vadjustment(text);
 	gfloat upper;
 	gfloat old_value;
 	gfloat last_value;
+	gfloat value;
 
+	value = gtk_adjustment_get_value(vadj);
 	if (!up) {
-		upper = vadj->upper - vadj->page_size;
-		if (vadj->value < upper) {
-			old_value = vadj->value;
-			last_value = vadj->value + vadj->step_increment;
+		upper = gtk_adjustment_get_upper(vadj) - gtk_adjustment_get_page_size(vadj);
+		if (value < upper) {
+			old_value = value;
+			last_value = value + gtk_adjustment_get_step_increment(vadj);
 			last_value = MIN(last_value, upper);
 
 			textview_smooth_scroll_do(textview, old_value,
@@ -2044,9 +2051,9 @@ static void textview_smooth_scroll_one_line(TextView *textview, gboolean up)
 						  prefs_common.scroll_step);
 		}
 	} else {
-		if (vadj->value > 0.0) {
-			old_value = vadj->value;
-			last_value = vadj->value - vadj->step_increment;
+		if (value > 0.0) {
+			old_value = value;
+			last_value = value - gtk_adjustment_get_step_increment(vadj);
 			last_value = MAX(last_value, 0.0);
 
 			textview_smooth_scroll_do(textview, old_value,
@@ -2059,22 +2066,24 @@ static void textview_smooth_scroll_one_line(TextView *textview, gboolean up)
 static gboolean textview_smooth_scroll_page(TextView *textview, gboolean up)
 {
 	GtkTextView *text = GTK_TEXT_VIEW(textview->text);
-	GtkAdjustment *vadj = text->vadjustment;
+	GtkAdjustment *vadj = gtk_text_view_get_vadjustment(text);
 	gfloat upper;
 	gfloat page_incr;
 	gfloat old_value;
 	gfloat last_value;
+	gfloat value;
 
 	if (prefs_common.scroll_halfpage)
-		page_incr = vadj->page_increment / 2;
+		page_incr = gtk_adjustment_get_page_increment(vadj) / 2;
 	else
-		page_incr = vadj->page_increment;
+		page_incr = gtk_adjustment_get_page_increment(vadj);
 
+	value = gtk_adjustment_get_value(vadj);
 	if (!up) {
-		upper = vadj->upper - vadj->page_size;
-		if (vadj->value < upper) {
-			old_value = vadj->value;
-			last_value = vadj->value + page_incr;
+		upper = gtk_adjustment_get_upper(vadj) - gtk_adjustment_get_page_size(vadj);
+		if (value < upper) {
+			old_value = value;
+			last_value = value + page_incr;
 			last_value = MIN(last_value, upper);
 
 			textview_smooth_scroll_do(textview, old_value,
@@ -2083,9 +2092,9 @@ static gboolean textview_smooth_scroll_page(TextView *textview, gboolean up)
 		} else
 			return FALSE;
 	} else {
-		if (vadj->value > 0.0) {
-			old_value = vadj->value;
-			last_value = vadj->value - page_incr;
+		if (value > 0.0) {
+			old_value = value;
+			last_value = value - page_incr;
 			last_value = MAX(last_value, 0.0);
 
 			textview_smooth_scroll_do(textview, old_value,
