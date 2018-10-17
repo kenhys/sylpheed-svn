@@ -699,7 +699,7 @@ static void messageview_set_tool_menu(MessageView *messageview,
 	gint pos = 0;
 	gboolean exist;
 
-	cur_item = GTK_MENU_SHELL(messageview->tool_menu)->children;
+	cur_item = gtk_container_get_children(GTK_CONTAINER(messageview->tool_menu));
 	while (cur_item != NULL) {
 		next = cur_item->next;
 		if (GTK_BIN(cur_item->data)->child == NULL)
