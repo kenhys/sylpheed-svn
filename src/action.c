@@ -1095,7 +1095,7 @@ static void create_io_dialog(Children *children)
 			 children);
 
 	vbox = gtk_vbox_new(FALSE, 8);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), vbox);
+	gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
 	gtk_widget_show(vbox);
 
