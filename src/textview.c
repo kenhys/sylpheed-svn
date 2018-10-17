@@ -766,7 +766,7 @@ static gboolean textview_part_widget_exposed(GtkWidget *widget,
 	if (w <= 0 || h <= 0)
 		return FALSE;
 
-	drawable = GDK_DRAWABLE(widget->window);
+	drawable = GDK_DRAWABLE(gtk_widget_get_window(widget));
 	gc = widget->style->dark_gc[gtkut_widget_get_state(widget)];
 	gdk_gc_set_clip_rectangle(gc, &event->area);
 	gdk_gc_set_line_attributes(gc, 1, GDK_LINE_SOLID, GDK_CAP_NOT_LAST,
@@ -2181,10 +2181,10 @@ static gboolean textview_key_pressed(GtkWidget *widget, GdkEventKey *event,
 		/* fall through */
 	default:
 		if (summaryview &&
-		    event->window != messageview->mainwin->window->window) {
+		    event->window != gtk_widget_get_window(messageview->mainwin->window)) {
 			GdkEventKey tmpev = *event;
 
-			tmpev.window = messageview->mainwin->window->window;
+			tmpev.window = gtk_widget_get_window(messageview->mainwin->window);
 			KEY_PRESS_EVENT_STOP();
 			gtk_widget_event(messageview->mainwin->window,
 					 (GdkEvent *)&tmpev);
@@ -2392,7 +2392,7 @@ static gboolean textview_motion_notify(GtkWidget *widget,
 					      GTK_TEXT_WINDOW_WIDGET,
 					      event->x, event->y, &x, &y);
 	textview_set_cursor(textview, GTK_TEXT_VIEW(widget), x, y);
-	gdk_window_get_pointer(widget->window, NULL, NULL, NULL);
+	gdk_window_get_pointer(gtk_widget_get_window(widget), NULL, NULL, NULL);
 
 	return FALSE;
 }
@@ -2420,7 +2420,7 @@ static gboolean textview_visibility_notify(GtkWidget *widget,
 	if (window != event->window)
 		return FALSE;
 
-	gdk_window_get_pointer(widget->window, &wx, &wy, NULL);
+	gdk_window_get_pointer(gtk_widget_get_window(widget), &wx, &wy, NULL);
 	gtk_text_view_window_to_buffer_coords(GTK_TEXT_VIEW(widget),
 					      GTK_TEXT_WINDOW_WIDGET,
 					      wx, wy, &bx, &by);
@@ -2460,7 +2460,7 @@ static void textview_populate_popup(GtkWidget *widget, GtkMenu *menu,
 
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
 
-	gdk_window_get_pointer(widget->window, &px, &py, NULL);
+	gdk_window_get_pointer(gtk_widget_get_window(widget), &px, &py, NULL);
 	gtk_text_view_window_to_buffer_coords(GTK_TEXT_VIEW(widget),
 					      GTK_TEXT_WINDOW_WIDGET,
 					      px, py, &x, &y);
