@@ -1362,13 +1362,13 @@ void compose_entry_append(Compose *compose, const gchar *text,
 	if (type != COMPOSE_ENTRY_SUBJECT) {
 		str = gtk_entry_get_text(entry);
 		if (*str != '\0') {
-			pos = entry->text_length;
+			pos = gtk_entry_get_text_length(entry);
 			gtk_editable_insert_text(GTK_EDITABLE(entry),
 						 ", ", -1, &pos);
 		}
 	}
 
-	pos = entry->text_length;
+	pos = gtk_entry_get_text_length(entry);
 	gtk_editable_insert_text(GTK_EDITABLE(entry), text, -1, &pos);
 }
 
