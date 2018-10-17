@@ -102,10 +102,12 @@ static void
 gtk_shruler_init (GtkSHRuler * shruler)
 {
 	GtkWidget * widget;
-	
+	GtkAllocation allocation;
+
 	widget = GTK_WIDGET (shruler);
-	widget->requisition.width = widget->style->xthickness * 2 + 1;
-	widget->requisition.height = widget->style->ythickness * 2 + RULER_HEIGHT;
+	allocation.width = widget->style->xthickness * 2 + 1;
+	allocation.height = widget->style->ythickness * 2 + RULER_HEIGHT;
+	gtk_widget_size_allocate(widget, &allocation);
 	shruler->start_pos = 0;
 }
 
