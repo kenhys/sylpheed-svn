@@ -103,10 +103,12 @@ gtk_shruler_init (GtkSHRuler * shruler)
 {
 	GtkWidget * widget;
 	GtkAllocation allocation;
+	GtkStyle *style;
 
 	widget = GTK_WIDGET (shruler);
-	allocation.width = widget->style->xthickness * 2 + 1;
-	allocation.height = widget->style->ythickness * 2 + RULER_HEIGHT;
+	style = gtk_widget_get_style(widget);
+	allocation.width = style->xthickness * 2 + 1;
+	allocation.height = style->ythickness * 2 + RULER_HEIGHT;
 	gtk_widget_size_allocate(widget, &allocation);
 	shruler->start_pos = 0;
 }
@@ -144,6 +146,7 @@ gtk_shruler_draw_ticks(GtkRuler *ruler)
 	gint xthickness;
 	gint ythickness;
 	gint pos;
+	GtkStyle *style;
 
 	g_return_if_fail (ruler != NULL);
 	g_return_if_fail (GTK_IS_HRULER (ruler));
@@ -153,16 +156,17 @@ gtk_shruler_draw_ticks(GtkRuler *ruler)
 
 	widget = GTK_WIDGET (ruler);
 	
-	gc = widget->style->fg_gc[GTK_STATE_NORMAL];
-	bg_gc = widget->style->bg_gc[GTK_STATE_NORMAL];
+	style = gtk_widget_get_style(widget);
+	gc = style->fg_gc[GTK_STATE_NORMAL];
+	bg_gc = style->bg_gc[GTK_STATE_NORMAL];
 
-	xthickness = widget->style->xthickness;
-	ythickness = widget->style->ythickness;
+	xthickness = style->xthickness;
+	ythickness = style->ythickness;
 
 	width = widget->allocation.width;
 	height = widget->allocation.height - ythickness * 2;
   
-	gtk_paint_box (widget->style, ruler->backing_store,
+	gtk_paint_box (style, ruler->backing_store,
 		       GTK_STATE_NORMAL, GTK_SHADOW_OUT, 
 		       NULL, widget, "hruler",
 		       0, 0, 
