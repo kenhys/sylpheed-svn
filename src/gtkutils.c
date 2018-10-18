@@ -1015,23 +1015,23 @@ void gtkut_window_popup(GtkWidget *window)
 	gint x, y, sx, sy, new_x, new_y;
 
 	g_return_if_fail(window != NULL);
-	g_return_if_fail(window->window != NULL);
+	g_return_if_fail(gtk_widget_get_window(window) != NULL);
 
 	sx = gdk_screen_width();
 	sy = gdk_screen_height();
 
-	gdk_window_get_origin(window->window, &x, &y);
+	gdk_window_get_origin(gtk_widget_get_window(window), &x, &y);
 	new_x = x % sx; if (new_x < 0) new_x = 0;
 	new_y = y % sy; if (new_y < 0) new_y = 0;
 	if (new_x != x || new_y != y)
-		gdk_window_move(window->window, new_x, new_y);
+		gdk_window_move(gtk_widget_get_window(window), new_x, new_y);
 
 	gtk_window_set_skip_taskbar_hint(GTK_WINDOW(window), FALSE);
 	gtk_widget_show(window);
 	gtk_window_present(GTK_WINDOW(window));
 #ifdef G_OS_WIN32
 	/* ensure that the window is displayed at the top */
-	gdk_window_show(window->window);
+	gdk_window_show(gtk_widget_get_window(window));
 #endif
 }
 
@@ -1076,13 +1076,13 @@ void gtkut_widget_get_uposition(GtkWidget *widget, gint *px, gint *py)
 	gint sx, sy;
 
 	g_return_if_fail(widget != NULL);
-	g_return_if_fail(widget->window != NULL);
+	g_return_if_fail(gtk_widget_get_window(widget) != NULL);
 
 	sx = gdk_screen_width();
 	sy = gdk_screen_height();
 
 	/* gdk_window_get_root_origin ever return *rootwindow*'s position */
-	gdk_window_get_root_origin(widget->window, &x, &y);
+	gdk_window_get_root_origin(gtk_widget_get_window(widget), &x, &y);
 
 	x %= sx; if (x < 0) x = 0;
 	y %= sy; if (y < 0) y = 0;
@@ -1093,7 +1093,7 @@ void gtkut_widget_get_uposition(GtkWidget *widget, gint *px, gint *py)
 void gtkut_widget_draw_now(GtkWidget *widget)
 {
 	if (gtkut_widget_get_visible(widget) && GTK_WIDGET_DRAWABLE(widget))
-		gdk_window_process_updates(widget->window, FALSE);
+		gdk_window_process_updates(gtk_widget_get_window(widget), FALSE);
 }
 
 static void gtkut_clist_bindings_add(GtkWidget *clist)
