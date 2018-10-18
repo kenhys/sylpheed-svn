@@ -1130,7 +1130,7 @@ static gboolean completion_window_key_press(GtkWidget *widget,
 		GtkWidget *pwin = entry;
 
 		while ((pwin = gtk_widget_get_parent(pwin)) != NULL) {
-			if (GTK_WIDGET_TOPLEVEL(pwin)) {
+			if (gtk_widget_is_toplevel(pwin)) {
 				gtk_window_propagate_key_event
 					(GTK_WINDOW(pwin), event);
 				if (prefs_common.fullauto_completion_mode)
