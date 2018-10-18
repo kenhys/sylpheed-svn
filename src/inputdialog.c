@@ -180,7 +180,7 @@ static void input_dialog_create(InputDialogType dialog_type)
 	gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 	gtk_widget_set_size_request(dialog, DIALOG_WIDTH * gtkut_get_dpi_multiplier(), -1);
 	gtk_container_set_border_width
-		(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area), 5 * gtkut_get_dpi_multiplier());
+		(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), 5 * gtkut_get_dpi_multiplier());
 	gtk_window_set_position(GTK_WINDOW(dialog),
 				GTK_WIN_POS_CENTER_ON_PARENT);
 	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
@@ -234,7 +234,7 @@ static void input_dialog_create(InputDialogType dialog_type)
 				      &ok_button, GTK_STOCK_OK,
 				      &cancel_button, GTK_STOCK_CANCEL,
 				      NULL, NULL);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area),
+	gtk_container_add(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(dialog))),
 			  confirm_area);
 	gtk_widget_grab_default(ok_button);
 
