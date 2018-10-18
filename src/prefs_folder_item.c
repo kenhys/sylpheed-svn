@@ -434,7 +434,7 @@ static void prefs_folder_item_set_dialog(PrefsFolderItemDialog *dialog)
 
 	optmenu = GTK_OPTION_MENU(dialog->type_optmenu);
 	menu = gtk_option_menu_get_menu(optmenu);
-	for (cur = GTK_MENU_SHELL(menu)->children, n = 0;
+	for (cur = gtk_container_get_children(GTK_CONTAINER(menu)), n = 0;
 	     cur != NULL; cur = cur->next, n++) {
 		menuitem = GTK_WIDGET(cur->data);
 		type = (SpecialFolderItemType)
