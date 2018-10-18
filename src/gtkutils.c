@@ -76,7 +76,7 @@ PangoFontDescription *gtkut_get_default_font_desc(void)
 		window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		gtk_widget_ensure_style(window);
 		font_desc = pango_font_description_copy
-			(window->style->font_desc);
+			(gtk_widget_get_style(window)->font_desc);
 		gtk_object_sink(GTK_OBJECT(window));
 	}
 
@@ -89,7 +89,7 @@ void gtkut_widget_set_small_font_size(GtkWidget *widget)
 	gint size;
 
 	g_return_if_fail(widget != NULL);
-	g_return_if_fail(widget->style != NULL);
+	g_return_if_fail(gtk_widget_get_style(widget) != NULL);
 
 	font_desc = gtkut_get_default_font_desc();
 	size = pango_font_description_get_size(font_desc);
