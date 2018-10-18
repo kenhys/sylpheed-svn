@@ -423,8 +423,8 @@ static void clist_select_row(GtkCList *clist, gint row, gint column, GdkEventBut
 void gtkut_clist_set_redraw(GtkCList *clist)
 {
 #ifdef G_OS_WIN32
-	if (clist->vadjustment) {
-		g_signal_connect(G_OBJECT(clist->vadjustment), "changed",
+	if (gtk_widget_get_vadjustment(clist)) {
+		g_signal_connect(G_OBJECT(gtk_widget_get_vadjustment(clist)), "changed",
 				 G_CALLBACK(vadjustment_changed), clist);
 	}
 #elif defined(__APPLE__)
