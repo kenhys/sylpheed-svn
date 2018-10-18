@@ -192,7 +192,7 @@ static void about_create(void)
 	for (i = 1; i <= strlen(HOMEPAGE_URI); i++) buf[i] = '_';
 	strcpy(buf + i, " ");
 	gtk_label_set_pattern(GTK_LABEL(gtk_bin_get_child(GTK_BIN(button))), buf);
-	cmap = gdk_window_get_colormap(window->window);
+	cmap = gdk_window_get_colormap(gtk_widget_get_window(window));
 	gdk_colormap_alloc_colors(cmap, uri_color, 2, FALSE, TRUE, success);
 	if (success[0] == TRUE && success[1] == TRUE) {
 		gtk_widget_ensure_style(gtk_bin_get_child(GTK_BIN(button)));
