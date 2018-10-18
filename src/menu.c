@@ -201,7 +201,7 @@ void menu_button_position(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 	gtk_widget_get_child_requisition(GTK_WIDGET(menu), &requisition);
 	width = requisition.width;
 	height = requisition.height;
-	gdk_window_get_origin(button->window, &button_xpos, &button_ypos);
+	gdk_window_get_origin(gtk_widget_get_window(button), &button_xpos, &button_ypos);
 
 	xpos = button_xpos + button->allocation.x;
 	ypos = button_ypos + button->allocation.y + button->allocation.height;
@@ -240,7 +240,7 @@ void menu_widget_position(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 	gtk_widget_get_child_requisition(GTK_WIDGET(menu), &requisition);
 	width = requisition.width;
 	height = requisition.height;
-	gdk_window_get_origin(widget->window, &w_xpos, &w_ypos);
+	gdk_window_get_origin(gtk_widget_get_window(widget), &w_xpos, &w_ypos);
 
 	xpos = w_xpos;
 	ypos = w_ypos;
