@@ -65,7 +65,7 @@ struct _ComboButton
 	if (!pixmap) { \
 		GtkStyle *style = gtk_widget_get_style(widget); \
 		pixmap = gdk_pixmap_create_from_xpm_d \
-			(widget->window, &mask, \
+			(gtk_widget_get_window(widget), &mask,        \
 			 &style->bg[GTK_STATE_NORMAL], xpm_d); \
 	} \
 }
