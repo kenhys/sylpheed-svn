@@ -325,9 +325,8 @@ static void prefs_display_header_create(void)
 				      GTK_SELECTION_BROWSE);
 	gtk_clist_set_auto_sort(GTK_CLIST (hidden_headers_clist), TRUE);
 	gtkut_clist_set_redraw (GTK_CLIST (hidden_headers_clist));
-	GTK_WIDGET_UNSET_FLAGS (GTK_CLIST (hidden_headers_clist)->
-				column[0].button, GTK_CAN_FOCUS);
-
+	gtk_widget_set_can_focus (GTK_CLIST (hidden_headers_clist)->
+				column[0].button, FALSE);
 	btn_vbox = gtk_vbox_new (FALSE, 8);
 	gtk_widget_show (btn_vbox);
 	gtk_box_pack_start (GTK_BOX (clist_hbox2), btn_vbox, FALSE, FALSE, 0);
