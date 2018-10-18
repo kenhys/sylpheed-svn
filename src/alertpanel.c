@@ -245,7 +245,7 @@ static void alertpanel_create(const gchar *title,
 	spacing = 12 * gtkut_get_dpi_multiplier();
 	hbox = gtk_hbox_new(FALSE, spacing);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), spacing);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
 			   hbox, FALSE, FALSE, 0);
 
 	/* title icon */
@@ -317,7 +317,7 @@ static void alertpanel_create(const gchar *title,
 
 	if (can_disable) {
 		hbox = gtk_hbox_new(FALSE, 0);
-		gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox,
+		gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox,
 				   FALSE, FALSE, 0);
 
 		disable_chkbtn = gtk_check_button_new_with_label
