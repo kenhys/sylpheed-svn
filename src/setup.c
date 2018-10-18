@@ -153,7 +153,7 @@ void setup_mailbox(void)
 		gint size;
 
 		size = pango_font_description_get_size
-			(label->style->font_desc);
+			(gtk_widget_get_style(label)->font_desc);
 		font_desc = pango_font_description_new();
 		pango_font_description_set_weight
 			(font_desc, PANGO_WEIGHT_BOLD);
@@ -718,7 +718,7 @@ PrefsAccount *setup_account(void)
 		gint size;
 
 		size = pango_font_description_get_size
-			(label->style->font_desc);
+			(gtk_widget_get_style(label)->font_desc);
 		font_desc = pango_font_description_new();
 		pango_font_description_set_weight
 			(font_desc, PANGO_WEIGHT_BOLD);
