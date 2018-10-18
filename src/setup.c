@@ -133,7 +133,7 @@ void setup_mailbox(void)
 
 	hbox = gtk_hbox_new(FALSE, 12);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 12);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
 			   hbox, FALSE, FALSE, 0);
 
 	image = stock_pixbuf_widget(dialog, STOCK_PIXMAP_SYLPHEED);
@@ -177,7 +177,7 @@ void setup_mailbox(void)
 
 	vbox = gtk_vbox_new(FALSE, 8);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 12);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), vbox,
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox,
 			   TRUE, TRUE, 0);
 
 	radio = gtk_radio_button_new_with_label
@@ -698,7 +698,7 @@ PrefsAccount *setup_account(void)
 
 	hbox = gtk_hbox_new(FALSE, 12);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 12);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
 			   hbox, FALSE, FALSE, 0);
 
 	image = stock_pixbuf_widget(dialog, STOCK_PIXMAP_SYLPHEED);
@@ -742,7 +742,7 @@ PrefsAccount *setup_account(void)
 
 	vbox = gtk_vbox_new(FALSE, 8);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), vbox,
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox,
 			   TRUE, TRUE, 0);
 
 	setupac.notebook = gtk_notebook_new();
