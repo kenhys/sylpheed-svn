@@ -345,7 +345,7 @@ static void undo_add(const gchar *text,
 
 	vadj = GTK_ADJUSTMENT(gtk_text_view_get_vadjustment(GTK_TEXT_VIEW(undostruct->textview)));
 	undoinfo = undo_object_new(g_strdup(text), start_pos, end_pos, action,
-				   vadj->value);
+				   gtk_adjustment_get_value(vadj));
 
 	if (end_pos - start_pos != 1 || text[0] == '\n')
 		undoinfo->mergeable = FALSE;
