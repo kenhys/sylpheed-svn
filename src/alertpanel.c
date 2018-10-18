@@ -177,7 +177,7 @@ static void alertpanel_show(void)
 
 	sx = gdk_screen_width();
 	sy = gdk_screen_height();
-	gdk_window_get_origin(dialog->window, &x, &y);
+	gdk_window_get_origin(gtk_widget_get_window(dialog), &x, &y);
 	w = dialog->allocation.width;
 	h = dialog->allocation.height;
 	if (x < 0 || y < 0 || x + w > sx || y + h > sy) {
