@@ -210,7 +210,7 @@ static void subscribe_dialog_create(void)
 	gtk_widget_realize(dialog);
 
 	vbox = gtk_vbox_new(FALSE, 8);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), vbox);
+	gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
 
 	hbox = gtk_hbox_new(FALSE, 0);
@@ -315,7 +315,7 @@ static void subscribe_dialog_create(void)
 	g_signal_connect(G_OBJECT(refresh_button), "clicked",
 			 G_CALLBACK(refresh_clicked), NULL);
 
-	gtk_widget_show_all(GTK_DIALOG(dialog)->vbox);
+	gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(dialog)));
 }
 
 static GHashTable *branch_node_table;
