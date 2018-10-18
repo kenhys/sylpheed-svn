@@ -198,7 +198,7 @@ static void subscribe_dialog_create(void)
 				    SUBSCRIBE_DIALOG_WIDTH * gtkut_get_dpi_multiplier(),
 				    SUBSCRIBE_DIALOG_HEIGHT * gtkut_get_dpi_multiplier());
 	gtk_container_set_border_width
-		(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area), 5);
+		(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), 5);
 	gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
 	gtk_window_set_title(GTK_WINDOW(dialog), _("Subscribe to newsgroup"));
 	g_signal_connect(G_OBJECT(dialog), "delete_event",
@@ -304,7 +304,7 @@ static void subscribe_dialog_create(void)
 				      &ok_button, GTK_STOCK_OK,
 				      &cancel_button, GTK_STOCK_CANCEL,
 				      &refresh_button, GTK_STOCK_REFRESH);
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area),
+	gtk_container_add(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(dialog))),
 			  confirm_area);
 	gtk_widget_grab_default(ok_button);
 
