@@ -195,7 +195,11 @@ void setup_mailbox(void)
 	gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_MIDDLE);
 #endif
 	gtk_label_set_selectable(GTK_LABEL(label), TRUE);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(label, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(label, GTK_CAN_FOCUS);
+#endif
 	MODIFY_LABEL_STYLE();
 
 	g_free(fullpath);
@@ -224,7 +228,11 @@ void setup_mailbox(void)
 	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
 	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 	gtk_label_set_selectable(GTK_LABEL(label), TRUE);
+#if GTK_CHECK_VERSION(2, 18, 0)
+	gtk_widget_set_can_focus(label, FALSE);
+#else
 	GTK_WIDGET_UNSET_FLAGS(label, GTK_CAN_FOCUS);
+#endif
 	MODIFY_LABEL_STYLE();
 
 	if (prefs_common.comply_gnome_hig) {
