@@ -809,7 +809,7 @@ static void addressbook_create(void)
 	gtk_tree_view_column_set_sort_column_id(column, COL_NAME);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(listview), column);
 	gtk_tree_view_set_expander_column(GTK_TREE_VIEW(listview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(addressbook_col_resized),
 			 GINT_TO_POINTER(COL_NAME));
 
@@ -830,7 +830,7 @@ static void addressbook_create(void)
 #endif
 	gtk_tree_view_column_set_sort_column_id(column, COL_ADDRESS);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(listview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(addressbook_col_resized),
 			 GINT_TO_POINTER(COL_ADDRESS));
 
@@ -851,7 +851,7 @@ static void addressbook_create(void)
 #endif
 	gtk_tree_view_column_set_sort_column_id(column, COL_NICKNAME);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(listview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(addressbook_col_resized),
 			 GINT_TO_POINTER(COL_NICKNAME));
 
@@ -870,7 +870,7 @@ static void addressbook_create(void)
 #endif
 	gtk_tree_view_column_set_sort_column_id(column, COL_REMARKS);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(listview), column);
-	g_signal_connect(G_OBJECT(column->button), "size-allocate",
+	g_signal_connect(G_OBJECT(gtk_tree_view_column_get_widget(column)), "size-allocate",
 			 G_CALLBACK(addressbook_col_resized),
 			 GINT_TO_POINTER(COL_REMARKS));
 
