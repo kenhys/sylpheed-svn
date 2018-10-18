@@ -194,7 +194,7 @@ static void input_dialog_create(InputDialogType dialog_type)
 	MANAGE_WINDOW_SIGNALS_CONNECT(dialog);
 
 	vbox = gtk_vbox_new(FALSE, 8 * gtkut_get_dpi_multiplier());
-	gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), vbox);
+	gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
 
 	hbox = gtk_hbox_new(FALSE, 0);
@@ -243,7 +243,7 @@ static void input_dialog_create(InputDialogType dialog_type)
 	g_signal_connect(G_OBJECT(cancel_button), "clicked",
 			 G_CALLBACK(cancel_clicked), NULL);
 
-	gtk_widget_show_all(GTK_DIALOG(dialog)->vbox);
+	gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(dialog)));
 }
 
 static gchar *input_dialog_open(const gchar *title, const gchar *message,
