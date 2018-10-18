@@ -1879,6 +1879,7 @@ static gboolean addressbook_drag_motion(GtkWidget *widget,
 	AddressDataSource *src_ds;
 	AddressBookFile *src_abf;
 	gboolean acceptable;
+	GdkDragAction actions;
 
 	if (!gtk_tree_view_get_dest_row_at_pos
 		(GTK_TREE_VIEW(widget), x, y, &path, NULL)) {
@@ -1913,12 +1914,15 @@ static gboolean addressbook_drag_motion(GtkWidget *widget,
 	}
 #endif
 
+	actions = gdk_drag_context_get_actions(context);
 	if (!src_ds->iface ||
-	    (src_ds->iface->readOnly || !src_ds->iface->haveLibrary))
-		context->actions &= ~GDK_ACTION_MOVE;
+	    (src_ds->iface->readOnly || !src_ds->iface->haveLibrary)) {
+		actions &= ~GDK_ACTION_MOVE;
+		g_object_set(G_OBJECT(context), "actions", actions, NULL);
+	}
 
 	acceptable = addressbook_obj_is_droppable(model, obj);
-	if ((context->actions & (GDK_ACTION_MOVE | GDK_ACTION_COPY)) == 0)
+	if ((actions & (GDK_ACTION_MOVE | GDK_ACTION_COPY)) == 0)
 		acceptable = FALSE;
 
 	if (!acceptable) {
@@ -1929,9 +1933,9 @@ static gboolean addressbook_drag_motion(GtkWidget *widget,
 	} else {
 		GdkDragAction action = 0;
 
-		if ((context->actions & GDK_ACTION_MOVE) != 0)
+		if ((actions & GDK_ACTION_MOVE) != 0)
 			action = GDK_ACTION_MOVE;
-		else if ((context->actions & GDK_ACTION_COPY) != 0)
+		else if ((actions & GDK_ACTION_COPY) != 0)
 			action = GDK_ACTION_COPY;
 		gtk_tree_view_set_drag_dest_row
 			(GTK_TREE_VIEW(widget), path,
@@ -1969,6 +1973,7 @@ static void addressbook_drag_received(GtkWidget	*widget,
 	GList *node;
 	ItemFolder *folder = NULL;
 	ItemPerson *person, *new_person;
+	GdkDragAction actions;
 
 	if (!gtk_tree_view_get_dest_row_at_pos
 		(GTK_TREE_VIEW(widget), x, y, &path, NULL))
@@ -1998,16 +2003,17 @@ static void addressbook_drag_received(GtkWidget	*widget,
 	if (!abf)
 		acceptable = FALSE;
 
-	if ((context->actions & (GDK_ACTION_MOVE | GDK_ACTION_COPY)) == 0)
+	actions = gdk_drag_context_get_actions(context);
+	if ((actions & (GDK_ACTION_MOVE | GDK_ACTION_COPY)) == 0)
 		acceptable = FALSE;
-	is_move = (context->actions & GDK_ACTION_MOVE) != 0;
+	is_move = (actions & GDK_ACTION_MOVE) != 0;
 
 	if (!src_ds->iface ||
 	    (src_ds->iface->readOnly || !src_ds->iface->haveLibrary))
 		is_move = FALSE;
 
 	if (!_addressListSelection_ || !acceptable) {
-		context->action = 0;
+		g_object_set(G_OBJECT(context), "action", 0, NULL);
 		gtk_drag_finish(context, FALSE, FALSE, time);
 		gtk_tree_path_free(path);
 		return;
@@ -2054,7 +2060,7 @@ static void addressbook_drag_received(GtkWidget	*widget,
 		addressbook_reopen();
 	}
 
-	context->action = 0;
+	g_object_set(G_OBJECT(context), "action", 0, NULL);
 	gtk_drag_finish(context, TRUE, FALSE, time);
 
 	gtk_tree_path_free(path);
