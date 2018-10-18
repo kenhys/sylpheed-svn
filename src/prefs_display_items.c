@@ -435,7 +435,7 @@ void prefs_display_items_dialog_set_visible(PrefsDisplayItemsDialog *dialog,
 	gtk_widget_ensure_style(GTK_WIDGET(shown_clist));
 	gtk_clist_set_foreground
 		(shown_clist, row,
-		 &GTK_WIDGET(shown_clist)->style->text[GTK_STATE_INSENSITIVE]);
+		 &gtk_widget_get_style(GTK_WIDGET(shown_clist))->text[GTK_STATE_INSENSITIVE]);
 
 	prefs_display_items_update_available(dialog);
 	prefs_display_items_set_sensitive(dialog);
