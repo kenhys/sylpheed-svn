@@ -193,6 +193,7 @@ void menu_button_position(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 	gint xpos, ypos;
 	gint width, height;
 	gint scr_width, scr_height;
+	GtkAllocation allocation;
 
 	g_return_if_fail(x != NULL && y != NULL && push_in != NULL);
 
@@ -203,8 +204,9 @@ void menu_button_position(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 	height = requisition.height;
 	gdk_window_get_origin(gtk_widget_get_window(button), &button_xpos, &button_ypos);
 
-	xpos = button_xpos + button->allocation.x;
-	ypos = button_ypos + button->allocation.y + button->allocation.height;
+	gtk_widget_get_allocation(button, &allocation);
+	xpos = button_xpos + allocation.x;
+	ypos = button_ypos + allocation.y + allocation.height;
 
 	scr_width = gdk_screen_width();
 	scr_height = gdk_screen_height();
@@ -212,7 +214,7 @@ void menu_button_position(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 	if (xpos + width > scr_width)
 		xpos -= (xpos + width) - scr_width;
 	if (ypos + height > scr_height)
-		ypos -= button->allocation.height + height;
+		ypos -= allocation.height + height;
 	if (xpos < 0)
 		xpos = 0;
 	if (ypos < 0)
