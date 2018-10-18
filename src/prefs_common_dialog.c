@@ -3778,6 +3778,7 @@ static void quote_color_set_dialog(GtkWidget *widget, gpointer data)
 	gdouble color[4] = {0.0, 0.0, 0.0, 0.0};
 	gint rgbvalue = 0;
 	GtkColorSelectionDialog *dialog;
+	GtkWidget *ok_button, *cancel_button;
 
 	if(g_ascii_strcasecmp(type, "LEVEL1") == 0) {
 		title = _("Pick color for quotation level 1");
@@ -3802,12 +3803,16 @@ static void quote_color_set_dialog(GtkWidget *widget, gpointer data)
 	gtk_window_set_policy(GTK_WINDOW(color_dialog), FALSE, FALSE, FALSE);
 	manage_window_set_transient(GTK_WINDOW(color_dialog));
 
-	g_signal_connect(G_OBJECT(GTK_COLOR_SELECTION_DIALOG(color_dialog)->ok_button),
+	g_object_get(GTK_COLOR_SELECTION_DIALOG(color_dialog), "ok-button", &ok_button, NULL);
+	g_object_get(GTK_COLOR_SELECTION_DIALOG(color_dialog), "cancel-button", &cancel_button, NULL);
+	g_signal_connect(G_OBJECT(ok_button),
 			 "clicked", G_CALLBACK(quote_colors_set_dialog_ok), data);
-	g_signal_connect(G_OBJECT(GTK_COLOR_SELECTION_DIALOG(color_dialog)->cancel_button),
+	g_signal_connect(G_OBJECT(cancel_button),
 			 "clicked", G_CALLBACK(quote_colors_set_dialog_cancel), data);
 	g_signal_connect(G_OBJECT(color_dialog), "key_press_event",
 			 G_CALLBACK(quote_colors_set_dialog_key_pressed), data);
+	g_object_unref(ok_button);
+	g_object_unref(cancel_button);
 
 	/* preselect the previous color in the color selection dialog */
 	color[0] = (gdouble) ((rgbvalue & 0xff0000) >> 16) / 255.0;
