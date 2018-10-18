@@ -2891,7 +2891,7 @@ static void addressbook_drag_data_get(GtkWidget *widget,
 				      guint info, guint time, gpointer data)
 {
 	if (info == DRAG_TYPE_OBJ) {
-		gtk_selection_data_set(selection_data, selection_data->target,
+		gtk_selection_data_set(selection_data, gtk_selection_data_get_target(selection_data),
 				       8, (guchar *)"drag-from-list", 14);
 	}
 }
