@@ -729,7 +729,7 @@ void syl_plugin_menu_set_sensitive_all(GtkMenuShell *menu_shell,
 {
 	GList *cur;
 
-	for (cur = menu_shell->children; cur != NULL; cur = cur->next)
+	for (cur = gtk_container_get_children(GTK_CONTAINER(menu_shell)); cur != NULL; cur = cur->next)
 		gtk_widget_set_sensitive(GTK_WIDGET(cur->data), sensitive);
 }
 
