@@ -3775,10 +3775,11 @@ static void quote_color_set_dialog(GtkWidget *widget, gpointer data)
 {
 	gchar *type = (gchar *)data;
 	gchar *title = NULL;
-	gdouble color[4] = {0.0, 0.0, 0.0, 0.0};
+	GdkColor color;
 	gint rgbvalue = 0;
 	GtkColorSelectionDialog *dialog;
 	GtkWidget *ok_button, *cancel_button;
+	GtkColorSelection *colorsel;
 
 	if(g_ascii_strcasecmp(type, "LEVEL1") == 0) {
 		title = _("Pick color for quotation level 1");
@@ -3815,12 +3816,12 @@ static void quote_color_set_dialog(GtkWidget *widget, gpointer data)
 	g_object_unref(cancel_button);
 
 	/* preselect the previous color in the color selection dialog */
-	color[0] = (gdouble) ((rgbvalue & 0xff0000) >> 16) / 255.0;
-	color[1] = (gdouble) ((rgbvalue & 0x00ff00) >>  8) / 255.0;
-	color[2] = (gdouble)  (rgbvalue & 0x0000ff)        / 255.0;
+	color.red = (gdouble) ((rgbvalue & 0xff0000) >> 16) / 255.0;
+	color.green = (gdouble) ((rgbvalue & 0x00ff00) >>  8) / 255.0;
+	color.blue = (gdouble)  (rgbvalue & 0x0000ff)        / 255.0;
 	dialog = GTK_COLOR_SELECTION_DIALOG(color_dialog);
-	gtk_color_selection_set_color
-		(GTK_COLOR_SELECTION(dialog->colorsel), color);
+	colorsel = GTK_COLOR_SELECTION(gtk_color_selection_dialog_get_color_selection(dialog));
+	gtk_color_selection_set_current_color(colorsel, &color);
 
 	gtk_widget_show(color_dialog);
 }
@@ -3828,7 +3829,7 @@ static void quote_color_set_dialog(GtkWidget *widget, gpointer data)
 static void quote_colors_set_dialog_ok(GtkWidget *widget, gpointer data)
 {
 	GtkColorSelection *colorsel = (GtkColorSelection *)
-						((GtkColorSelectionDialog *)color_dialog)->colorsel;
+						(gtk_color_selection_dialog_get_color_selection((GtkColorSelectionDialog *)color_dialog));
 	gdouble color[4];
 	gint red, green, blue, rgbvalue;
 	gchar *type = (gchar *)data;
