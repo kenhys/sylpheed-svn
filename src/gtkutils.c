@@ -710,7 +710,7 @@ void gtkut_tree_view_vertical_autoscroll(GtkTreeView *treeview)
 	}
 
 	vadj = gtk_tree_view_get_vadjustment(treeview);
-	value = CLAMP(vadj->value + offset, 0.0, vadj->upper - vadj->page_size);
+	value = CLAMP(gtk_adjustment_get_value(vadj) + offset, 0.0, gtk_adjustment_get_upper(vadj) - gtk_adjustment_get_page_size(vadj));
 	gtk_adjustment_set_value(vadj, value);
 }
 
@@ -847,9 +847,9 @@ void gtkut_scrolled_window_reset_position(GtkScrolledWindow *window)
 	GtkAdjustment *adj;
 
 	adj = gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(window));
-	gtk_adjustment_set_value(adj, adj->lower);
+	gtk_adjustment_set_value(adj, gtk_adjustment_get_lower(adj));
 	adj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(window));
-	gtk_adjustment_set_value(adj, adj->lower);
+	gtk_adjustment_set_value(adj, gtk_adjustment_get_lower(adj));
 }
 
 gboolean gtkut_text_buffer_match_string(GtkTextBuffer *textbuf,
