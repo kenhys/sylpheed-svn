@@ -883,6 +883,7 @@ static void address_completion_create_completion_window(GtkEntry *entry_,
 	GtkRequisition r;
 	guint count = 0;
 	GtkWidget *entry = GTK_WIDGET(entry_);
+	GtkAllocation allocation;
 
 	debug_print("address_completion_create_completion_window\n");
 
@@ -923,7 +924,8 @@ static void address_completion_create_completion_window(GtkEntry *entry_,
 
 	gdk_window_get_origin(gtk_widget_get_window(entry), &x, &y);
 	gtk_widget_size_request(entry, &r);
-	width = entry->allocation.width;
+	gtk_widget_get_allocation(entry, &allocation);
+	width = allocation.width;
 	y += r.height;
 	gtk_window_move(GTK_WINDOW(completion_window), x, y);
 
