@@ -146,8 +146,8 @@ passphrase_mbox(const gchar *uid_hint, const gchar *pass_hint, gint prev_bad)
 #ifdef GDK_WINDOWING_X11
 	gdk_x11_display_grab(gdk_display_get_default());
 #endif /* GDK_WINDOWING_X11 */
-        if (gdk_pointer_grab(window->window, TRUE, 0,
-                             window->window, NULL, GDK_CURRENT_TIME)) {
+        if (gdk_pointer_grab(gtk_widget_get_window(window), TRUE, 0,
+                             gtk_widget_get_window(window), NULL, GDK_CURRENT_TIME)) {
 #ifdef GDK_WINDOWING_X11
             gdk_x11_display_ungrab(gdk_display_get_default());
 #endif /* GDK_WINDOWING_X11 */
@@ -155,7 +155,7 @@ passphrase_mbox(const gchar *uid_hint, const gchar *pass_hint, gint prev_bad)
             gtk_widget_destroy(window);
             return NULL;
         }
-        if (gdk_keyboard_grab(window->window, FALSE, GDK_CURRENT_TIME)) {
+        if (gdk_keyboard_grab(gtk_widget_get_window(window), FALSE, GDK_CURRENT_TIME)) {
             gdk_display_pointer_ungrab(gdk_display_get_default(),
 			 	       GDK_CURRENT_TIME);
 #ifdef GDK_WINDOWING_X11
