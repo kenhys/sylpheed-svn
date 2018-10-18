@@ -1408,7 +1408,7 @@ static void prefs_filter_edit_set_cond_header_menu(FilterCondEdit *cond_edit,
 		(GTK_OPTION_MENU(hbox->cond_type_optmenu));
 
 	/* destroy header items */
-	child = GTK_MENU_SHELL(menu)->children;
+	child = gtk_container_get_children(GTK_CONTAINER(menu));
 	while (child != NULL) {
 		GList *next = child->next;
 		menuitem = GTK_WIDGET(child->data);
@@ -1456,7 +1456,7 @@ static void prefs_filter_edit_activate_cond_header(FilterCondEdit *cond_edit,
 	menu = gtk_option_menu_get_menu
 		(GTK_OPTION_MENU(hbox->cond_type_optmenu));
 
-	for (cur = GTK_MENU_SHELL(menu)->children, index = 0;
+	for (cur = gtk_container_get_children(GTK_CONTAINER(menu)), index = 0;
 	     cur != NULL; cur = cur->next, index++) {
 		menuitem = GTK_WIDGET(cur->data);
 		menu_header = g_object_get_data(G_OBJECT(menuitem),
