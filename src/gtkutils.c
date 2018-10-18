@@ -284,8 +284,10 @@ static void combo_button_size_request(GtkWidget *widget,
 				      gpointer data)
 {
 	ComboButton *combo = (ComboButton *)data;
+	GtkAllocation allocation;
 
-	if (combo->arrow->allocation.height != requisition->height)
+	gtk_widget_get_allocation(combo->arrow, &allocation);
+	if (allocation.height != requisition->height)
 		gtk_widget_set_size_request(combo->arrow,
 					    -1, requisition->height);
 }
