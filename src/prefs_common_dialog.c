@@ -1160,7 +1160,7 @@ static void prefs_send_create(void)
 
 	PACK_CHECK_BUTTON (vbox2, checkbtn_check_attach,
 			   _("Notify for missing attachments when the following strings (comma-separated) are found in the message body"));
-	gtk_label_set_line_wrap(GTK_LABEL(GTK_BIN(checkbtn_check_attach)->child), TRUE);
+	gtk_label_set_line_wrap(GTK_LABEL(gtk_bin_get_child(GTK_BIN(checkbtn_check_attach))), TRUE);
 
 	hbox1 = gtk_hbox_new (FALSE, 8);
 	gtk_widget_show (hbox1);
