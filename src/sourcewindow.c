@@ -99,7 +99,7 @@ SourceWindow *source_window_create(void)
 	gtk_container_add(GTK_CONTAINER(scrolledwin), text);
 	gtk_widget_show(text);
 
-	g_signal_connect(G_OBJECT(GTK_TEXT_VIEW(text)->vadjustment),
+	g_signal_connect(G_OBJECT(gtk_text_view_get_vadjustment(GTK_TEXT_VIEW(text))),
 			 "value-changed",
 			 G_CALLBACK(adj_value_changed), sourcewin);
 
