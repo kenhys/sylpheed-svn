@@ -680,7 +680,7 @@ static gboolean foldersel_tree_key_pressed(GtkWidget *widget,
 			return FALSE;
 		adj = gtk_scrolled_window_get_hadjustment
 			(GTK_SCROLLED_WINDOW(scrolledwin));
-		if (adj->lower < adj->value)
+		if (gtk_adjustment_get_lower(adj) < gtk_adjustment_get_value(adj))
 			return FALSE;
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 		if (!gtk_tree_selection_get_selected(selection, &model, &iter))
@@ -702,7 +702,7 @@ static gboolean foldersel_tree_key_pressed(GtkWidget *widget,
 			return FALSE;
 		adj = gtk_scrolled_window_get_hadjustment
 			(GTK_SCROLLED_WINDOW(scrolledwin));
-		if (adj->lower - adj->page_size > adj->value)
+		if (gtk_adjustment_get_lower(adj) - gtk_adjustment_get_page_size(adj) > gtk_adjustment_get_value(adj))
 			return FALSE;
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 		if (!gtk_tree_selection_get_selected(selection, &model, &iter))
