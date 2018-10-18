@@ -169,7 +169,7 @@ void menu_set_sensitive_all(GtkMenuShell *menu_shell, gboolean sensitive)
 {
 	GList *cur;
 
-	for (cur = menu_shell->children; cur != NULL; cur = cur->next)
+	for (cur = gtk_container_get_children(GTK_CONTAINER(menu_shell)); cur != NULL; cur = cur->next)
 		gtk_widget_set_sensitive(GTK_WIDGET(cur->data), sensitive);
 }
 
@@ -273,7 +273,7 @@ gint menu_find_option_menu_index(GtkOptionMenu *optmenu, gpointer data,
 
 	menu = gtk_option_menu_get_menu(optmenu);
 
-	for (cur = GTK_MENU_SHELL(menu)->children, n = 0;
+	for (cur = gtk_container_get_children(GTK_CONTAINER(menu)), n = 0;
 	     cur != NULL; cur = cur->next, n++) {
 		menuitem = GTK_WIDGET(cur->data);
 		menu_data = g_object_get_data(G_OBJECT(menuitem), MENU_VAL_ID);
