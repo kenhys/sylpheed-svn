@@ -266,7 +266,7 @@ void gtkut_box_set_reverse_order(GtkBox *box, gboolean reverse)
 	g_object_set_data(G_OBJECT(box), "reverse-order",
 			  GINT_TO_POINTER(reverse));
 
-	for (cur = box->children; cur != NULL; cur = cur->next) {
+	for (cur = gtk_container_get_children(GTK_CONTAINER(box)); cur != NULL; cur = cur->next) {
 		GtkBoxChild *cinfo = cur->data;
 		new_order = g_list_prepend(new_order, cinfo->widget);
 	}
