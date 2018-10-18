@@ -134,7 +134,7 @@ gint notification_window_open(const gchar *message, const gchar *submessage,
 	gtk_window_set_opacity(GTK_WINDOW(window), 0.0);
 #endif
 	gtk_widget_realize(window);
-	gdk_window_set_type_hint(window->window, GDK_WINDOW_TYPE_HINT_NOTIFICATION);
+	gdk_window_set_type_hint(gtk_widget_get_window(window), GDK_WINDOW_TYPE_HINT_NOTIFICATION);
 
 	/* move window bottom-right */
 	get_work_area(&rect);
