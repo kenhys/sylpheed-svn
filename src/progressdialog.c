@@ -57,7 +57,7 @@ ProgressDialog *progress_dialog_create(void)
 
 	scrolledwin = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_show(scrolledwin);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(progress->window)->vbox),
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(progress->window))),
 			   scrolledwin, TRUE, TRUE, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolledwin),
 				       GTK_POLICY_AUTOMATIC,
@@ -139,11 +139,11 @@ ProgressDialog *progress_dialog_simple_create(void)
 
 	gtk_container_set_border_width
 		(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area), 0);
-	gtk_box_set_spacing(GTK_BOX(GTK_DIALOG(dialog)->vbox), 8);
+	gtk_box_set_spacing(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), 8);
 	gtk_dialog_set_has_separator(GTK_DIALOG(dialog), FALSE);
 
 	hbox = gtk_hbox_new(FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox,
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox,
 			   FALSE, FALSE, 8);
 	gtk_widget_show(hbox);
 
@@ -158,7 +158,7 @@ ProgressDialog *progress_dialog_simple_create(void)
 	gtk_widget_grab_focus(cancel_btn);
 
 	progressbar = gtk_progress_bar_new();
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), progressbar,
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), progressbar,
 			   FALSE, FALSE, 0);
 	gtk_widget_show(progressbar);
 
