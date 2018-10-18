@@ -1094,7 +1094,7 @@ void gtkut_widget_get_uposition(GtkWidget *widget, gint *px, gint *py)
 
 void gtkut_widget_draw_now(GtkWidget *widget)
 {
-	if (gtkut_widget_get_visible(widget) && GTK_WIDGET_DRAWABLE(widget))
+	if (gtkut_widget_get_visible(widget) && gtk_widget_is_drawable(widget))
 		gdk_window_process_updates(gtk_widget_get_window(widget), FALSE);
 }
 
