@@ -921,7 +921,7 @@ static void address_completion_create_completion_window(GtkEntry *entry_,
 		g_free(text[0]);
 	}
 
-	gdk_window_get_origin(entry->window, &x, &y);
+	gdk_window_get_origin(gtk_widget_get_window(entry), &x, &y);
 	gtk_widget_size_request(entry, &r);
 	width = entry->allocation.width;
 	y += r.height;
@@ -947,7 +947,7 @@ static void address_completion_create_completion_window(GtkEntry *entry_,
 			 "key-press-event",
 			 G_CALLBACK(completion_window_key_press),
 			 &completion_window);
-	gdk_pointer_grab(completion_window->window, TRUE,
+	gdk_pointer_grab(gtk_widget_get_window(completion_window), TRUE,
 			 GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
 			 GDK_BUTTON_RELEASE_MASK,
 			 NULL, NULL, GDK_CURRENT_TIME);
