@@ -483,7 +483,7 @@ void edit_ldap_set_optmenu( GtkOptionMenu *optmenu, const gint value ) {
 	g_return_if_fail(optmenu != NULL);
 
 	menu = gtk_option_menu_get_menu(optmenu);
-	for( cur = GTK_MENU_SHELL(menu)->children; cur != NULL; cur = cur->next ) {
+	for( cur = gtk_container_get_children(GTK_CONTAINER(menu)); cur != NULL; cur = cur->next ) {
 		menuitem = GTK_WIDGET(cur->data);
 		menuVal = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(menuitem), "user_data"));
 		if( menuVal == value ) {
