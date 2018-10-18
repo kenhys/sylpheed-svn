@@ -171,6 +171,7 @@ void alertpanel_error(const gchar *format, ...)
 static void alertpanel_show(void)
 {
 	gint x, y, w, h, sx, sy;
+	GtkAllocation allocation;
 	value = G_ALERTWAIT;
 
 	inc_lock();
@@ -178,8 +179,9 @@ static void alertpanel_show(void)
 	sx = gdk_screen_width();
 	sy = gdk_screen_height();
 	gdk_window_get_origin(gtk_widget_get_window(dialog), &x, &y);
-	w = dialog->allocation.width;
-	h = dialog->allocation.height;
+	gtk_widget_get_allocation(dialog, &allocation);
+	w = allocation.width;
+	h = allocation.height;
 	if (x < 0 || y < 0 || x + w > sx || y + h > sy) {
 		debug_print("sx, sy,  x, y,  w, h = %d, %d,  %d, %d,  %d, %d\n",
 			    sx, sy, x, y, w, h);
