@@ -1021,7 +1021,7 @@ static gboolean completion_window_button_press(GtkWidget *widget,
 				restore = FALSE;
 				break;
 			}
-		    event_widget = event_widget->parent;
+			event_widget = gtk_widget_get_parent(event_widget);
 		}
 	}
 
