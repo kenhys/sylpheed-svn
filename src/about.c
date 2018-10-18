@@ -191,17 +191,17 @@ static void about_create(void)
 	buf[0] = ' ';
 	for (i = 1; i <= strlen(HOMEPAGE_URI); i++) buf[i] = '_';
 	strcpy(buf + i, " ");
-	gtk_label_set_pattern(GTK_LABEL(GTK_BIN(button)->child), buf);
+	gtk_label_set_pattern(GTK_LABEL(gtk_bin_get_child(GTK_BIN(button))), buf);
 	cmap = gdk_window_get_colormap(window->window);
 	gdk_colormap_alloc_colors(cmap, uri_color, 2, FALSE, TRUE, success);
 	if (success[0] == TRUE && success[1] == TRUE) {
-		gtk_widget_ensure_style(GTK_BIN(button)->child);
+		gtk_widget_ensure_style(gtk_bin_get_child(GTK_BIN(button)));
 		style = gtk_style_copy
-			(gtk_widget_get_style(GTK_BIN(button)->child));
+			(gtk_widget_get_style(gtk_bin_get_child(GTK_BIN(button))));
 		style->fg[GTK_STATE_NORMAL]   = uri_color[0];
 		style->fg[GTK_STATE_ACTIVE]   = uri_color[1];
 		style->fg[GTK_STATE_PRELIGHT] = uri_color[0];
-		gtk_widget_set_style(GTK_BIN(button)->child, style);
+		gtk_widget_set_style(gtk_bin_get_child(GTK_BIN(button)), style);
 	} else
 		g_warning("about_create(): color allocation failed.\n");
 
