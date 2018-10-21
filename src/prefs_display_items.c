@@ -122,7 +122,9 @@ PrefsDisplayItemsDialog *prefs_display_items_dialog_create(void)
 	gtk_window_set_position(GTK_WINDOW(window),
 				GTK_WIN_POS_CENTER_ON_PARENT);
 	gtk_window_set_modal(GTK_WINDOW(window), TRUE);
+#if 0
 	gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
+#endif
 	gtk_window_set_title(GTK_WINDOW(window), _("Display items setting"));
 	g_signal_connect(G_OBJECT(window), "delete_event",
 			 G_CALLBACK(prefs_display_items_delete_event), dialog);
