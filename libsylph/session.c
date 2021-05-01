@@ -81,6 +81,7 @@ static gboolean session_write_data_cb	(SockInfo	*source,
 					 GIOCondition	 condition,
 					 gpointer	 data);
 
+static gboolean is_over_ui_refresh_interval	(Session	*session);
 
 void session_init(Session *session)
 {
@@ -97,7 +98,11 @@ void session_init(Session *session)
 	session->state = SESSION_READY;
 	session->last_access_time = time(NULL);
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	session->usec_prev = g_get_real_time();
+#else
 	g_get_current_time(&session->tv_prev);
+#endif
 
 	session->conn_id = 0;
 
@@ -396,6 +401,20 @@ static gboolean session_ping_cb(gpointer data)
 		return FALSE;
 
 	if (session->io_tag > 0 && sock && sock->callback) {
+#if GLIB_CHECK_VERSION(2, 62, 0)
+		gint64 cur;
+
+		cur = g_get_real_time();
+		if (cur - session->usec_prev > G_USEC_PER_SEC) {
+			SockFlags save_flags;
+
+			debug_print("state machine freeze for 1 second detected, forcing dispatch.\n");
+			save_flags = sock->flags;
+			SOCK_UNSET_FLAGS(sock->flags, SYL_SOCK_CHECK_IO);
+			sock->callback(sock, sock->condition, sock->data);
+			sock->flags = save_flags;
+		}
+#else
 		GTimeVal tv_cur, tv_result;
 
 		g_get_current_time(&tv_cur);
@@ -415,6 +434,7 @@ static gboolean session_ping_cb(gpointer data)
 			sock->callback(sock, sock->condition, sock->data);
 			sock->flags = save_flags;
 		}
+#endif
 	}
 
 	return TRUE;
@@ -599,7 +619,11 @@ gint session_send_data(Session *session, FILE *data_fp, guint size)
 	session->write_data_fp = data_fp;
 	session->write_data_pos = 0;
 	session->write_data_len = size;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	session->usec_prev = g_get_real_time();
+#else
 	g_get_current_time(&session->tv_prev);
+#endif
 
 #ifdef G_OS_WIN32
 	sock_set_nonblocking_mode(session->sock, FALSE);
@@ -632,7 +656,11 @@ gint session_recv_data(Session *session, guint size, const gchar *terminator)
 
 	g_free(session->read_data_terminator);
 	session->read_data_terminator = g_strdup(terminator);
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	session->usec_prev = g_get_real_time();
+#else
 	g_get_current_time(&session->tv_prev);
+#endif
 
 	if (session->read_buf_len > 0)
 		session->idle_tag = g_idle_add(session_recv_data_idle_cb,
@@ -675,7 +703,11 @@ gint session_recv_data_as_file(Session *session, guint size,
 
 	g_free(session->read_data_terminator);
 	session->read_data_terminator = g_strdup(terminator);
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	session->usec_prev = g_get_real_time();
+#else
 	g_get_current_time(&session->tv_prev);
+#endif
 
 	session->read_data_fp = my_tmpfile();
 	if (!session->read_data_fp) {
@@ -880,17 +912,16 @@ static gboolean session_read_data_cb(SockInfo *source, GIOCondition condition,
 
 	/* incomplete read */
 	if (!complete) {
-		GTimeVal tv_cur;
-
-		g_get_current_time(&tv_cur);
-		if (tv_cur.tv_sec - session->tv_prev.tv_sec > 0 ||
-		    tv_cur.tv_usec - session->tv_prev.tv_usec >
-		    UI_REFRESH_INTERVAL) {
+		if (is_over_ui_refresh_interval(session)) {
 			if (session->recv_data_progressive_notify)
 				session->recv_data_progressive_notify
 					(session, data_buf->len, 0,
 					 session->recv_data_progressive_notify_data);
+#if GLIB_CHECK_VERSION(2, 62, 0)
+			session->usec_prev = g_get_real_time();
+#else
 			g_get_current_time(&session->tv_prev);
+#endif
 		}
 		return TRUE;
 	}
@@ -1045,17 +1076,17 @@ static gboolean session_read_data_as_file_cb(SockInfo *source,
 		session->preread_len = PREREAD_SIZE;
 		session->read_buf_len = 0;
 
-		g_get_current_time(&tv_cur);
-		if (tv_cur.tv_sec - session->tv_prev.tv_sec > 0 ||
-		    tv_cur.tv_usec - session->tv_prev.tv_usec >
-		    UI_REFRESH_INTERVAL) {
+		if (is_over_ui_refresh_interval(session)) {
 			if (session->recv_data_progressive_notify)
 				session->recv_data_progressive_notify
 					(session, session->read_data_pos, 0,
 					 session->recv_data_progressive_notify_data);
+#if GLIB_CHECK_VERSION(2, 62, 0)
+			session->usec_prev = g_get_real_time();
+#else
 			g_get_current_time(&session->tv_prev);
+#endif
 		}
-
 		return TRUE;
 	}
 
@@ -1283,12 +1314,7 @@ static gboolean session_write_data_cb(SockInfo *source,
 			priv->error_val = SESSION_ERROR_IO;
 		return FALSE;
 	} else if (ret > 0) {
-		GTimeVal tv_cur;
-
-		g_get_current_time(&tv_cur);
-		if (tv_cur.tv_sec - session->tv_prev.tv_sec > 0 ||
-		    tv_cur.tv_usec - session->tv_prev.tv_usec >
-		    UI_REFRESH_INTERVAL) {
+		if (is_over_ui_refresh_interval(session)) {
 			session_set_timeout(session, session->timeout_interval);
 			if (session->send_data_progressive_notify)
 				session->send_data_progressive_notify
@@ -1296,7 +1322,11 @@ static gboolean session_write_data_cb(SockInfo *source,
 					 session->write_data_pos,
 					 write_data_len,
 					 session->send_data_progressive_notify_data);
+#if GLIB_CHECK_VERSION(2, 62, 0)
+			session->usec_prev = g_get_real_time();
+#else
 			g_get_current_time(&session->tv_prev);
+#endif
 		}
 		return TRUE;
 	}
@@ -1316,5 +1346,27 @@ static gboolean session_write_data_cb(SockInfo *source,
 	sock_set_nonblocking_mode(session->sock, session->nonblocking);
 #endif
 
+	return FALSE;
+}
+
+static gboolean is_over_ui_refresh_interval(Session *session)
+{
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 usec_cur;
+
+	usec_cur = g_get_real_time();
+	if (usec_cur - session->usec_prev > UI_REFRESH_INTERVAL) {
+		return TRUE;
+        }
+#else
+	GTimeVal tv_cur;
+
+	g_get_current_time(&tv_cur);
+	if (tv_cur.tv_sec - session->tv_prev.tv_sec > 0 ||
+		tv_cur.tv_usec - session->tv_prev.tv_usec >
+		UI_REFRESH_INTERVAL) {
+		return TRUE;
+	}
+#endif
 	return FALSE;
 }

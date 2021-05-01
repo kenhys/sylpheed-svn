@@ -118,7 +118,11 @@ struct _Session
 	SessionState state;
 
 	stime_t last_access_time;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 usec_prev;
+#else
 	GTimeVal tv_prev;
+#endif
 
 	gint conn_id;
 
