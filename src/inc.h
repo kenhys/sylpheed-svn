@@ -60,8 +60,13 @@ struct _IncProgressDialog
 
 	gboolean show_dialog;
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 progress_usec;
+	gint64 folder_usec;
+#else
 	GTimeVal progress_tv;
 	GTimeVal folder_tv;
+#endif
 
 	GList *queue_list;	/* list of IncSession */
 	gint cur_row;

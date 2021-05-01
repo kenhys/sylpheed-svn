@@ -721,8 +721,13 @@ static IncProgressDialog *inc_progress_dialog_create(gboolean autocheck)
 	}
 
 	dialog->dialog = progress;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	g_get_real_time(&dialog->progress_tv);
+	g_get_real_time(&dialog->folder_tv);
+#else
 	g_get_current_time(&dialog->progress_tv);
 	g_get_current_time(&dialog->folder_tv);
+#endif
 	dialog->queue_list = NULL;
 	dialog->cur_row = 0;
 
@@ -1297,11 +1302,22 @@ static void inc_update_folderview(IncProgressDialog *inc_dialog,
 static void inc_progress_dialog_update_periodic(IncProgressDialog *inc_dialog,
 						IncSession *inc_session)
 {
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 cur;
+	gint64 msec;
+        g_get_real_time(&cur);
+
+	msec = (cur - inc_dialog->progress_usec) / G_USEC_PER_SEC / 1000;
+	if (msec > PROGRESS_UPDATE_INTERVAL) {
+		inc_progress_dialog_update(inc_dialog, inc_session);
+		inc_dialog->progress_usec = cur;
+	}
+#else
 	GTimeVal tv_cur;
 	GTimeVal tv_result;
 	gint msec;
 
-	g_get_current_time(&tv_cur);
+        g_get_current_time(&tv_cur);
 
 	tv_result.tv_sec = tv_cur.tv_sec - inc_dialog->progress_tv.tv_sec;
 	tv_result.tv_usec = tv_cur.tv_usec - inc_dialog->progress_tv.tv_usec;
@@ -1316,11 +1332,24 @@ static void inc_progress_dialog_update_periodic(IncProgressDialog *inc_dialog,
 		inc_dialog->progress_tv.tv_sec = tv_cur.tv_sec;
 		inc_dialog->progress_tv.tv_usec = tv_cur.tv_usec;
 	}
+#endif
 }
 
 static void inc_update_folderview_periodic(IncProgressDialog *inc_dialog,
 					   IncSession *inc_session)
 {
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 cur;
+	gint64 msec;
+
+	g_get_real_time(&cur);
+
+	msec = (cur - inc_dialog->folder_usec) / G_USEC_PER_SEC / 1000;
+	if (msec > FOLDER_UPDATE_INTERVAL) {
+		inc_update_folderview(inc_dialog, inc_session);
+		inc_dialog->folder_usec = cur;
+	}
+#else
 	GTimeVal tv_cur;
 	GTimeVal tv_result;
 	gint msec;
@@ -1340,6 +1369,7 @@ static void inc_update_folderview_periodic(IncProgressDialog *inc_dialog,
 		inc_dialog->folder_tv.tv_sec = tv_cur.tv_sec;
 		inc_dialog->folder_tv.tv_usec = tv_cur.tv_usec;
 	}
+#endif
 }
 
 static gint inc_recv_data_progressive(Session *session, guint cur_len,
