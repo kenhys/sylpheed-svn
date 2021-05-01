@@ -688,7 +688,11 @@ typedef struct _QueryData
 	gint count;
 	gint total;
 	gint flag;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 usec_prev;
+#else
 	GTimeVal tv_prev;
+#endif
 	GSList *mlist;
 #if USE_THREADS
 	GAsyncQueue *queue;
@@ -733,7 +737,11 @@ static gpointer query_search_folder_func(gpointer data)
 	QueryData *qdata = (QueryData *)data;
 	GSList *mlist, *cur;
 	FilterInfo fltinfo;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 usec_cur;
+#else
 	GTimeVal tv_cur;
+#endif
 
 	debug_print("query_search_folder_func start\n");
 
@@ -756,6 +764,17 @@ static gpointer query_search_folder_func(gpointer data)
 
 		g_atomic_int_add(&qdata->count, 1);
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+		usec_cur = g_get_real_time();
+		if (usec_cur - qdata->usec_prev > PROGRESS_UPDATE_INTERVAL * 1000) {
+#ifndef USE_THREADS
+			query_search_folder_show_progress(qdata->folder_name,
+							  qdata->count,
+							  qdata->total);
+#endif
+			qdata->usec_prev = usec_cur;
+		}
+#else
 		g_get_current_time(&tv_cur);
 		if ((tv_cur.tv_sec - qdata->tv_prev.tv_sec) * G_USEC_PER_SEC +
 		    tv_cur.tv_usec - qdata->tv_prev.tv_usec >
@@ -767,6 +786,7 @@ static gpointer query_search_folder_func(gpointer data)
 #endif
 			qdata->tv_prev = tv_cur;
 		}
+#endif
 
 		if (search_window.cancelled)
 			break;

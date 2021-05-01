@@ -122,13 +122,27 @@ static gint import_progress_delete_event(GtkWidget	*widget,
 static gboolean import_mbox_func(Folder *folder, FolderItem *item, guint count, guint total, gpointer data)
 {
 	gchar str[64];
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	static gint64 usec_prev = 0;
+	gint64 usec_cur;
+
+	usec_cur = g_get_real_time();
+#else
 	static GTimeVal tv_prev = {0, 0};
 	GTimeVal tv_cur;
 
 	g_get_current_time(&tv_cur);
+#endif
 	g_snprintf(str, sizeof(str), "%u", count);
 	gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress->progressbar), str);
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	if (usec_prev == 0 || usec_cur - usec_prev > 100 * 1000) {
+		gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress->progressbar));
+		ui_update();
+		usec_prev = usec_cur;
+	}
+#else
 	if (tv_prev.tv_sec == 0 ||
 	    (tv_cur.tv_sec - tv_prev.tv_sec) * G_USEC_PER_SEC +
 	    tv_cur.tv_usec - tv_prev.tv_usec > 100 * 1000) {
@@ -136,6 +150,7 @@ static gboolean import_mbox_func(Folder *folder, FolderItem *item, guint count, 
 		ui_update();
 		tv_prev = tv_cur;
 	}
+#endif
 
 	if (import_progress_cancelled)
 		return FALSE;

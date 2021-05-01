@@ -331,7 +331,11 @@ static GSList *virtual_search_folder(VirtualSearchInfo *info, FolderItem *item)
 	GSList *cur;
 	FilterInfo fltinfo;
 	gint count = 1, total, ncachehit = 0;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 usec_prev, usec_cur;
+#else
 	GTimeVal tv_prev, tv_cur;
+#endif
 
 	g_return_val_if_fail(info != NULL, NULL);
 	g_return_val_if_fail(info->rule != NULL, NULL);
@@ -342,7 +346,11 @@ static GSList *virtual_search_folder(VirtualSearchInfo *info, FolderItem *item)
 	if (item->stype == F_VIRTUAL)
 		return NULL;
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	usec_prev = g_get_real_time();
+#else
 	g_get_current_time(&tv_prev);
+#endif
 	status_print(_("Searching %s ..."), item->path);
 
 	mlist = folder_item_get_msg_list(item, TRUE);
@@ -358,6 +366,14 @@ static GSList *virtual_search_folder(VirtualSearchInfo *info, FolderItem *item)
 		MsgInfo *msginfo = (MsgInfo *)cur->data;
 		GSList *hlist;
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+		usec_cur = g_get_real_time();
+		if (usec_cur - usec_prev > PROGRESS_UPDATE_INTERVAL * 1000) {
+			status_print(_("Searching %s (%d / %d)..."),
+				     item->path, count, total);
+			usec_prev = usec_cur;
+		}
+#else
 		g_get_current_time(&tv_cur);
 		if (tv_cur.tv_sec > tv_prev.tv_sec ||
 		    tv_cur.tv_usec - tv_prev.tv_usec >
@@ -366,6 +382,7 @@ static GSList *virtual_search_folder(VirtualSearchInfo *info, FolderItem *item)
 				     item->path, count, total);
 			tv_prev = tv_cur;
 		}
+#endif
 		++count;
 
 		if (info->search_cache_table) {

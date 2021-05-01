@@ -676,6 +676,21 @@ static void get_msg_list_func(Folder *folder, FolderItem *item, gpointer data)
 {
 	SummaryView *summary = (SummaryView *)folder->data;
 	gint count = GPOINTER_TO_INT(data);
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	static gint64 usec_prev = 0;
+	gint64 usec_cur;
+
+	usec_cur = g_get_real_time();
+	if (usec_prev == 0 || usec_cur - usec_prev  > 100 * 1000) {
+		gchar buf[256];
+
+		g_snprintf(buf, sizeof(buf), _("Scanning folder (%s) (%d)..."),
+			   item->path, count);
+		STATUSBAR_POP(summary->mainwin);
+		STATUSBAR_PUSH(summary->mainwin, buf);
+		usec_prev = usec_cur;
+	}
+#else
 	static GTimeVal tv_prev = {0, 0};
 	GTimeVal tv_cur;
 
@@ -692,6 +707,7 @@ static void get_msg_list_func(Folder *folder, FolderItem *item, gpointer data)
 		STATUSBAR_PUSH(summary->mainwin, buf);
 		tv_prev = tv_cur;
 	}
+#endif
 }
 
 gboolean summary_show(SummaryView *summaryview, FolderItem *item,

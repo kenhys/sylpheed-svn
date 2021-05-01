@@ -115,13 +115,30 @@ static void export_progress_cancel_cb	(GtkWidget	*widget,
 static gboolean export_mbox_func(Folder *folder, FolderItem *item, guint count, guint total, gpointer data)
 {
 	gchar str[64];
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	static gint64 usec_prev = 0;
+	gint64 usec_cur;
+
+	usec_cur = g_get_real_time();
+#else
 	static GTimeVal tv_prev = {0, 0};
 	GTimeVal tv_cur;
 
 	g_get_current_time(&tv_cur);
+#endif
 	g_snprintf(str, sizeof(str), "%u / %d", count, total);
 	gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress->progressbar), str);
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	if (usec_prev == 0 || usec_cur - usec_prev > 100 * 1000) {
+		if (item->total > 0)
+			gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress->progressbar), (gdouble)count / item->total);
+		else
+			gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress->progressbar));
+		ui_update();
+		usec_prev = usec_cur;
+	}
+#else
 	if (tv_prev.tv_sec == 0 ||
 	    (tv_cur.tv_sec - tv_prev.tv_sec) * G_USEC_PER_SEC +
 	    tv_cur.tv_usec - tv_prev.tv_usec > 100 * 1000) {
@@ -132,6 +149,7 @@ static gboolean export_mbox_func(Folder *folder, FolderItem *item, guint count, 
 		ui_update();
 		tv_prev = tv_cur;
 	}
+#endif
 
 	if (progress_cancel)
 		return FALSE;

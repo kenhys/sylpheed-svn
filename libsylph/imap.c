@@ -1365,7 +1365,11 @@ static gint imap_add_msgs(Folder *folder, FolderItem *dest, GSList *file_list,
 	gint count = 1;
 	gint total;
 	gint ok;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 usec_prev, usec_cur;
+#else
 	GTimeVal tv_prev, tv_cur;
+#endif
 
 	g_return_val_if_fail(folder != NULL, -1);
 	g_return_val_if_fail(dest != NULL, -1);
@@ -1374,7 +1378,11 @@ static gint imap_add_msgs(Folder *folder, FolderItem *dest, GSList *file_list,
 	session = imap_session_get(folder);
 	if (!session) return -1;
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	usec_prev = g_get_real_time();
+#else
 	g_get_current_time(&tv_prev);
+#endif
 	ui_update();
 
 	ok = imap_status(session, IMAP_FOLDER(folder), dest->path,
@@ -1413,6 +1421,16 @@ static gint imap_add_msgs(Folder *folder, FolderItem *dest, GSList *file_list,
 		    dest->stype == F_DRAFT)
 			iflags |= IMAP_FLAG_SEEN;
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+		usec_cur = g_get_real_time();
+		if (usec_cur - usec_prev > PROGRESS_UPDATE_INTERVAL * 1000) {
+			status_print(_("Appending messages to %s (%d / %d)"),
+				     dest->path, count, total);
+			progress_show(count, total);
+			ui_update();
+			usec_prev = usec_cur;
+		}
+#else
 		g_get_current_time(&tv_cur);
 		if (tv_cur.tv_sec > tv_prev.tv_sec ||
 		    tv_cur.tv_usec - tv_prev.tv_usec >
@@ -1423,6 +1441,7 @@ static gint imap_add_msgs(Folder *folder, FolderItem *dest, GSList *file_list,
 			ui_update();
 			tv_prev = tv_cur;
 		}
+#endif
 		++count;
 
 		ok = imap_cmd_append(session, destdir, fileinfo->file, iflags,
@@ -2735,13 +2754,21 @@ static gint imap_get_uncached_messages_func(IMAPSession *session, gpointer data)
 	GString *str;
 	MsgInfo *msginfo;
 	gint count = 1;
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	gint64 usec_prev, usec_cur;
+#else
 	GTimeVal tv_prev, tv_cur;
+#endif
 	IMAPGetData *get_data = (IMAPGetData *)data;
 	FolderItem *item = get_data->item;
 	gint exists = get_data->exists;
 	gboolean update_count = get_data->update_count;
 
+#if GLIB_CHECK_VERSION(2, 62, 0)
+	usec_prev = g_get_real_time();
+#else
 	g_get_current_time(&tv_prev);
+#endif
 #ifndef USE_THREADS
 	ui_update();
 #endif
@@ -2754,6 +2781,19 @@ static gint imap_get_uncached_messages_func(IMAPSession *session, gpointer data)
 
 	for (;;) {
 		if (exists > 0 && count <= exists) {
+#if GLIB_CHECK_VERSION(2, 62, 0)
+			usec_cur = g_get_real_time();
+			if (usec_cur - usec_prev > PROGRESS_UPDATE_INTERVAL * 1000) {
+#if USE_THREADS
+				((IMAPRealSession *)session)->prog_count = count;
+				g_main_context_wakeup(NULL);
+#else
+				imap_get_uncached_messages_progress_func
+					(session, count, exists, data);
+#endif
+				usec_prev = usec_cur;
+			}
+#else
 			g_get_current_time(&tv_cur);
 			if (tv_cur.tv_sec > tv_prev.tv_sec ||
 			    tv_cur.tv_usec - tv_prev.tv_usec >
@@ -2767,6 +2807,7 @@ static gint imap_get_uncached_messages_func(IMAPSession *session, gpointer data)
 #endif
 				tv_prev = tv_cur;
 			}
+#endif
 		}
 		++count;
 
